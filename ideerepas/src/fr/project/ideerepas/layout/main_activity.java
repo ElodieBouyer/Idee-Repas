@@ -1,7 +1,9 @@
-package fr.project.ideerepas;
+package fr.project.ideerepas.layout;
 
 import android.app.Activity;
 import android.os.Bundle;
+
+import fr.project.ideerepas.R;
 
 public class main_activity extends Activity
 {
