@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name"> Idée Repas </string>
+    <string name="app_name">     Idée Repas </string>
+    <string name="liste_repas">  Mes Repas </string>
+    <string name="liste_menu">   Mes menus </string>
+	<string name="liste_course"> Ma liste de course </string>
+	<string name="quitter">      Quitter </string>
 </resources>
