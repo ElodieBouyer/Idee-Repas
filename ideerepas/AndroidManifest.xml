@@ -15,8 +15,7 @@
         </activity>
         
         <!-- Meals List activity. -->
-        <activity android:name=".layout.List"
-                  android:label="@string/liste_repas"/>
+        <activity android:name=".layout.List"/>
 
     </application>
 </manifest>
