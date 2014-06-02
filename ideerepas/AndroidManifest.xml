@@ -4,6 +4,8 @@
       android:versionCode="1"
       android:versionName="1.0">
     <application android:label="@string/app_name" android:icon="@drawable/ic_launcher">
+        
+        <!-- Menu. -->
         <activity android:name=".layout.Start"
                   android:label="@string/app_name">
             <intent-filter>
@@ -11,5 +13,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!-- Meals List activity. -->
+        <activity android:name=".layout.List"
+                  android:label="@string/liste_repas"/>
+
     </application>
 </manifest>
