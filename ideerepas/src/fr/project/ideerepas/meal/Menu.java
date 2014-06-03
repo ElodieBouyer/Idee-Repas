@@ -6,6 +6,10 @@ public class Menu {
 	public Menu() {
 		this.name = "Unknown";
 	}
+	
+	public Menu(String name) {
+		this.name = name;
+	}
 
 	/**
 	 * Get the recipe description.

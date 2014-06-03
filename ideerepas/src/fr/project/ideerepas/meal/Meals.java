@@ -10,9 +10,9 @@ public class Meals implements Functionality{
 	
 	public Meals() {
 		this.m_meals = new ArrayList<Meal>();
-		this.m_meals = null;
 	}
 	
+	@Override
 	public String[] getNames() {
 		if( this.m_meals == null || this.m_meals.size() == 0 ) {
 			return null;
@@ -24,5 +24,11 @@ public class Meals implements Functionality{
 			i++;
 		}
 		return nameList;
+	}
+	
+	@Override
+	public void add(String name) {
+		Meal meal = new Meal(name);
+		this.m_meals.add(meal);
 	}
 }

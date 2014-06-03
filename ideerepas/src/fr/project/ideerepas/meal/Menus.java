@@ -8,9 +8,9 @@ private List<Menu> m_menu;
 	
 	public Menus() {
 		this.m_menu = new ArrayList<Menu>();
-		this.m_menu = null;
 	}
 	
+	@Override
 	public String[] getNames() {
 		if( this.m_menu == null || this.m_menu.size() == 0 ) {
 			return null;
@@ -22,5 +22,11 @@ private List<Menu> m_menu;
 			i++;
 		}
 		return nameList;
+	}
+	
+	@Override
+	public void add(String name) {
+		Menu menu = new Menu(name);
+		this.m_menu.add(menu);
 	}
 }
