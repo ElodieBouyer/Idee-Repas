@@ -1,12 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">     Idée Repas </string>
+
+    <string name="app_name">          Idée Repas </string>
+    <string name="liste_repas">       Mes Repas          </string>
+    <string name="liste_menu">        Mes menus          </string>
+    <string name="liste_course">      Ma liste de course </string>
+    <string name="quitter">           Quitter            </string>
     
-    <string name="liste_repas">  Mes Repas </string>
-    <string name="liste_menu">   Mes menus </string>
-	<string name="liste_course"> Ma liste de course </string>
-	<string name="quitter">      Quitter </string>
-	
-	<string name="empty_meals">  Vous n\'avez pas encore de repas.</string>
-	<string name="empty_menu">  Vous n\'avez pas encore de menu.</string>
+    <string name="empty_meals">       Vous n\'avez pas encore de repas. </string>
+    <string name="empty_menu">        Vous n\'avez pas encore de menu.  </string>
+    
+    <string name="add_meal">          Ajouter un repas </string>
+    <string name="add_menu">          Ajouter un menu  </string>
+    <string name="add">               Ajouter          </string>
+    
+    <string name="new_meal">          Nouveau repas    </string>
+    <string name="new_menu">          Nouveau menu     </string>
+    
+    <string name="name_meal">         Nom du repas :   </string>
+    <string name="name_menu">         Nom du menu :    </string>
+    
+    <string name="popup_adding_meal"> Voulez-vous ajouter ce repas ? </string>
+    <string name="popup_adding_menu"> Voulez-vous ajouter ce menu ?  </string>
+    
+    <string name="ok">                Ok       </string>
+    <string name="cancel">            Annuler   </string>
+    
+     <string name="error_name">       Vous devez entrer un nom. </string>
+
 </resources>

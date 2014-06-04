@@ -1,34 +1,98 @@
 package fr.project.ideerepas.meal;
 
-import java.util.ArrayList;
-import java.util.List;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+import fr.project.ideerepas.database.DataBase;
+import fr.project.ideerepas.database.TABLEMEAL;
 
-public class Meals implements Functionality{
+public class Meals implements Functionality {
 
-	private List<Meal> m_meals;
-	
-	
-	public Meals() {
-		this.m_meals = new ArrayList<Meal>();
+	private static String TAG = Meals.class.getName();
+	private DataBase database;
+	private SQLiteDatabase db;
+
+	/**
+	 * Meals Constructor.
+	 * Create database if not exist.
+	 * @param context
+	 */
+	public Meals(Context context) {
+		this.database = new DataBase(context);
 	}
-	
+
+	/**
+	 * Opens the database in writable, 
+	 * and put its content into db.
+	 */
+	public void open() {
+		this.db = this.database.getWritableDatabase();
+	}
+
+	/**
+	 * Close access to the database db.
+	 */
+	public void close() {
+		this.db.close();
+	}
+
+	/**
+	 * Get all meals name.
+	 * @return Meals list name.
+	 */
 	@Override
 	public String[] getNames() {
-		if( this.m_meals == null || this.m_meals.size() == 0 ) {
-			return null;
+
+		try {
+			open();
+			Cursor c = this.db.query(
+					TABLEMEAL.TAB_MEALS,                 // Table name.
+					TABLEMEAL.ALL_COLUMNS,               // Columns.
+					null,null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				return null;
+			}
+			String names[] = new String[c.getCount()];
+
+			int i = 0;
+			c.moveToFirst();
+			while (c.isAfterLast() == false) {
+				names[i] = c.getString(TABLEMEAL.NUM_COL_NAME);
+				c.moveToNext();
+				i++;
+			}
+			close();
+			return names;
+			
 		}
-		String[] nameList = new String[this.m_meals.size()];
-		int i = 0;
-		for (Meal m : this.m_meals) {
-			nameList[i] = m.getName();
-			i++;
+		catch(Exception e) {
+			Log.i(TAG+"add", e.toString());
 		}
-		return nameList;
+		return null;
 	}
-	
+
+	/**
+	 * Add a new meal in the database.
+	 */
 	@Override
-	public void add(String name) {
-		Meal meal = new Meal(name);
-		this.m_meals.add(meal);
+	public void add(String name, String picture, int recipe) {
+
+		try {
+			open();
+			ContentValues values = new ContentValues();
+
+			values.put(TABLEMEAL.COL_NAME, name);
+			values.put(TABLEMEAL.COL_PICTURE, picture);
+			values.put(TABLEMEAL.COL_RECIPE_ID, recipe);
+
+			this.db.insert(TABLEMEAL.TAB_MEALS, null,values);
+			close();
+		}
+		catch(Exception e) {
+			Log.i(TAG+"add", e.toString());
+		}
 	}
 }

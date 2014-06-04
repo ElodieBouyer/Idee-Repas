@@ -1,9 +1,12 @@
 package fr.project.ideerepas.layout;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
@@ -18,15 +21,19 @@ public class List extends Activity {
 
 	private void createFunctionality() {
 		if (this.m_list == null) {
+			TextView add = (TextView) findViewById(R.id.buttonAdd);
+
 			switch (getIntent().getExtras().getInt("type")) {
 			case 1:
-				this.m_list = new Meals();
+				this.m_list = new Meals(getApplicationContext());
 				setTitle(getString(R.string.liste_repas));
+				add.setText(R.string.add_meal);
 				break;
 
 			case 2:
-				this.m_list = new Menus();
+				this.m_list = new Menus(getApplicationContext());
 				setTitle(getString(R.string.liste_menu));
+				add.setText(R.string.add_menu);
 				break;
 
 			default:
@@ -56,12 +63,6 @@ public class List extends Activity {
 		// Determine which functionality need.
 		createFunctionality();
 
-		// *** Test ***
-		for(int i = 0 ; i < 20 ; i++ ) {
-			this.m_list.add("Test"+i);
-		}
-		// ***
-		
 		// We retrieve name meals.
 		String[] values = this.m_list.getNames();
 
@@ -71,12 +72,23 @@ public class List extends Activity {
 			message.setText(displayEmptyText());
 			return;
 		}
+
+		// Else, to do a meal or menu name list.
+		LinearLayout list = (LinearLayout) findViewById(R.id.listView);
+		ListView lview = new ListView(getApplicationContext());
 		
-		// Else, to do a meal or menu name list.*/
-		ListView list = (ListView) findViewById(R.id.list);
 		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, values);
-		list.setAdapter(adapter);
+		lview.setAdapter(adapter);
+		
+		list.addView(lview);
+	}
+	
+	public void add(View view) {
+		Intent intent = new Intent(getApplicationContext(), Adding.class);
+		intent.putExtra("type", getIntent().getExtras().getInt("type"));
+		startActivity(intent);
+		finish();
 	}
 
 }
