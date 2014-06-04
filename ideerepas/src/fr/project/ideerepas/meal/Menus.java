@@ -8,7 +8,7 @@ import android.util.Log;
 import fr.project.ideerepas.database.DataBase;
 import fr.project.ideerepas.database.TABLEMENUS;
 
-public class Menus implements Functionality {
+public class Menus {
 
 	private static String TAG = Menus.class.getName();
 	private DataBase database;
@@ -37,7 +37,6 @@ public class Menus implements Functionality {
 	 * Get all menu name.
 	 * @return Menu list name.
 	 */
-	@Override
 	public String[] getNames() {
 		try {
 			open();
@@ -71,8 +70,7 @@ public class Menus implements Functionality {
 	/**
 	 * Add a new meal in the database.
 	 */
-	@Override
-	public void add(String name, String picture, int recipe) {
+	public void add(String name) {
 		try {
 			open();
 			ContentValues values = new ContentValues();

@@ -34,15 +34,11 @@ public class Start extends ListActivity {
 
 		switch (position) {
 		case 0: // Mes repas.
-			Intent intent = new Intent(getApplicationContext(), List.class);
-			intent.putExtra("type", 1);
+			Intent intent = new Intent(getApplicationContext(), ListMeal.class);
 			startActivity(intent);
 			break;
 
 		case 1: // Menus.
-			Intent intent2 = new Intent(getApplicationContext(), List.class);
-			intent2.putExtra("type", 2);
-			startActivity(intent2);
 			break;
 
 		case 2: // Liste de course.

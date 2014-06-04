@@ -8,7 +8,7 @@ import android.util.Log;
 import fr.project.ideerepas.database.DataBase;
 import fr.project.ideerepas.database.TABLEMEAL;
 
-public class Meals implements Functionality {
+public class Meals {
 
 	private static String TAG = Meals.class.getName();
 	private DataBase database;
@@ -42,7 +42,6 @@ public class Meals implements Functionality {
 	 * Get all meals name.
 	 * @return Meals list name.
 	 */
-	@Override
 	public String[] getNames() {
 
 		try {
@@ -77,7 +76,6 @@ public class Meals implements Functionality {
 	/**
 	 * Add a new meal in the database.
 	 */
-	@Override
 	public void add(String name, String picture, int recipe) {
 
 		try {
