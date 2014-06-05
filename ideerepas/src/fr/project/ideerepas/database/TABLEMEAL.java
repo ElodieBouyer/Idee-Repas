@@ -21,7 +21,7 @@ public class TABLEMEAL {
 	public static final String CREATE_TABLE_MEALS = 
 			"CREATE TABLE " + TAB_MEALS + " (" 
 					+ COL_ID        + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-					+ COL_NAME      + " TEXT NOT NULL, " 
+					+ COL_NAME      + " TEXT NOT NULL UNIQUE, " 
 					+ COL_PICTURE   + " TEXT," 
 					+ COL_RECIPE_ID + " INTEGER);";
 }

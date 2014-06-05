@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import fr.project.ideerepas.R;
+import fr.project.ideerepas.layout.meals.ListMeal;
 
 
 public class Start extends ListActivity {

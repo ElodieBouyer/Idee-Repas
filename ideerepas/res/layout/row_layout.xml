@@ -10,8 +10,7 @@
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:src="@drawable/interrogation" >
+        android:layout_marginBottom="5dp">
     </ImageView>
  
     <TextView
@@ -20,8 +19,7 @@
         android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:layout_marginLeft="10dp"
-        android:textSize="26sp" >
+        android:layout_marginLeft="10dp">
     </TextView>
  
 </LinearLayout>

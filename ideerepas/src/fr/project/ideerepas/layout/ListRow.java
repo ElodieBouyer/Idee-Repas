@@ -2,6 +2,7 @@ package fr.project.ideerepas.layout;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import fr.project.ideerepas.R;
 
 public class ListRow extends ArrayAdapter<String> {
 
+	private static String TAG = ListRow.class.getName();
 	private Uri[] picture;
 
 	@Override
@@ -27,7 +29,13 @@ public class ListRow extends ArrayAdapter<String> {
 		textView.setText(getItem(position));
 
 		if(convertView == null ) {
-			imageView.setImageURI(picture[position]);
+			if( picture[position] == null ) {
+				imageView.setImageResource(R.drawable.interrogation);
+			}
+			else {
+				imageView.setImageURI(picture[position]);
+			}
+			
 		}
 		else {
 			rowView = (View)convertView;
@@ -39,6 +47,18 @@ public class ListRow extends ArrayAdapter<String> {
 
 	public ListRow(Context context, String[] names, String[] pictures)  {
 		super(context, R.layout.row_layout, names);
+
 		this.picture = new Uri[pictures.length];
+		int i = 0;
+
+		for(String path : pictures) {
+			Uri uri = null;
+			if( path != null ) {
+				Log.i(TAG, path);
+				uri = Uri.parse(path);
+			}
+			picture[i] = uri;
+			i++;
+		}
 	}
 }

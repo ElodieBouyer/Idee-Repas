@@ -28,5 +28,10 @@
     <string name="cancel">            Annuler   </string>
     
      <string name="error_name">       Vous devez entrer un nom. </string>
+     
+     <string name="modif">         Modifier           </string>
+     <string name="modif_picture"> Modifier l\'image  </string>
+     <string name="save">          Enregistrer        </string>
+     <string name="saves">         Repas enregistré"        </string>
 
 </resources>

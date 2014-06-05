@@ -1,4 +1,4 @@
-package fr.project.ideerepas.layout;
+package fr.project.ideerepas.layout.meals;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,7 +24,7 @@ public class AddMeal extends Activity {
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private static String TAG = AddMeal.class.getName();
 	private Meals func;
-	private Uri photo;
+	private Uri photo=null;
 
 	/**
 	 * Called when the activity launched.
@@ -92,7 +91,8 @@ public class AddMeal extends Activity {
 		try {
 			// *** On la met dans l'ImageView.
 			ImageView imgView = (ImageView) findViewById(R.id.picture);
-			imgView.setImageURI(photo);
+			if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
+			else imgView.setImageURI(photo);
 		}
 		catch(Exception e) {
 			Log.i(TAG, "onActivityResutl() "+ e.toString());
@@ -120,20 +120,25 @@ public class AddMeal extends Activity {
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				EditText editName = (EditText) findViewById(R.id.name_edit);
-				String name = editName.getText().toString();
 				
-				func.add(name, photo.toString(), -1);
+				String name = editName.getText().toString();
+				String picture;
+				
+				if( photo != null ) picture =  photo.toString();
+				else picture = null;
+				
+				func.add(name, picture, -1);
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
+				
 				finish();
 				Intent intent = new Intent(getApplicationContext(), ListMeal.class);
 				startActivity(intent);
-				finish();
 			}
 		})
 
 		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				// User cancelled the dialog
+				photo = null;
 			}
 		});
 
