@@ -6,27 +6,27 @@
     android:orientation="vertical" >
 
     <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:src="@drawable/picture"
-            android:layout_margin="5dp"
-            android:layout_weight="1" />
-    
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:src="@drawable/picture" />
+
     <TextView
         android:id="@+id/emptyText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp" >
     </TextView>
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/listView"
         android:layout_width="wrap_content"
         android:layout_height="225dp"
         android:layout_gravity="top"
         android:layout_weight="1"
-        android:id="@+id/listView"
-        android:orientation="vertical">
-    </LinearLayout>
+        android:orientation="horizontal" >
+    </ListView>
 
     <Button
         android:id="@+id/buttonAdd"
@@ -36,7 +36,7 @@
         android:layout_margin="15dp"
         android:layout_weight="1"
         android:onClick="add"
-        android:text="@string/add_meal">
+        android:text="@string/add_meal" >
     </Button>
 
 </LinearLayout>

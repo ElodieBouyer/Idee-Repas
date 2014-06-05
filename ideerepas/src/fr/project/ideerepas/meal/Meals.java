@@ -1,5 +1,8 @@
 package fr.project.ideerepas.meal;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -65,6 +68,40 @@ public class Meals {
 			}
 			close();
 			return names;
+			
+		}
+		catch(Exception e) {
+			Log.i(TAG+"add", e.toString());
+		}
+		return null;
+	}
+	
+	/**
+	 * Get all couple name and picture.
+	 * @return Meals list picture.
+	 */
+	public Map<String,String> getCoupleNamePicture() {
+
+		Map<String,String> rows = new HashMap<String, String>();
+		
+		try {
+			open();
+			Cursor c = this.db.query(
+					TABLEMEAL.TAB_MEALS,                 // Table name.
+					TABLEMEAL.ALL_COLUMNS,               // Columns.
+					null,null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				return null;
+			}
+
+			c.moveToFirst();
+			while (c.isAfterLast() == false) {
+				rows.put(c.getString(TABLEMEAL.NUM_COL_NAME), c.getString(TABLEMEAL.NUM_COL_PICTURE));
+				c.moveToNext();
+			}
+			close();
+			return rows;
 			
 		}
 		catch(Exception e) {
