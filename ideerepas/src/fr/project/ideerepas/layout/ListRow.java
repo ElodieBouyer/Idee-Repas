@@ -10,11 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
+import fr.project.ideerepas.meal.Meals;
 
 public class ListRow extends ArrayAdapter<String> {
 
 	private static String TAG = ListRow.class.getName();
-	private Uri[] picture;
+	private Meals meals;
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -26,39 +27,27 @@ public class ListRow extends ArrayAdapter<String> {
 		TextView textView = (TextView) rowView.findViewById(R.id.label);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
 
-		textView.setText(getItem(position));
+		String name    = getItem(position);
+		Uri picture = meals.getPicture(name);
 
-		if(convertView == null ) {
-			if( picture[position] == null ) {
-				imageView.setImageResource(R.drawable.interrogation);
-			}
-			else {
-				imageView.setImageURI(picture[position]);
-			}
-			
+		textView.setText(name);
+
+		if( picture == null ) {
+			imageView.setImageResource(R.drawable.interrogation);
+			Log.i(TAG, name+" -> "+" ? ");
 		}
 		else {
-			rowView = (View)convertView;
+			imageView.setImageURI(picture);
+			Log.i(TAG, name+" -> "+picture.getPath());
 		}
 
 		return rowView;
 	}
 
 
-	public ListRow(Context context, String[] names, String[] pictures)  {
+	public ListRow(Context context, String[] names)  {
 		super(context, R.layout.row_layout, names);
-
-		this.picture = new Uri[pictures.length];
-		int i = 0;
-
-		for(String path : pictures) {
-			Uri uri = null;
-			if( path != null ) {
-				Log.i(TAG, path);
-				uri = Uri.parse(path);
-			}
-			picture[i] = uri;
-			i++;
-		}
+		Log.i(TAG, "nb name = "+names.length);
+		meals = new Meals(context);
 	}
 }

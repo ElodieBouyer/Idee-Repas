@@ -22,7 +22,6 @@ public class ListMeal extends Activity {
 	private static String TAG = Start.class.getName();
 
 	private Meals m_list      = null;
-	private String[] pictures = null;
 	private String[] names    = null;
 	private ListView lview;
 
@@ -44,10 +43,8 @@ public class ListMeal extends Activity {
 		if( rows != null) {
 			int i = 0;
 			names    = new String[rows.size()];
-			pictures = new String[rows.size()];
 			for (Map.Entry<String, String> entry : rows.entrySet()) {
 				names[i]    = entry.getKey();
-				pictures[i] = entry.getValue();
 				i++;
 			}
 		}
@@ -63,8 +60,7 @@ public class ListMeal extends Activity {
 	}
 
 	private void setListView() {
-		ListRow adapter = 
-				new ListRow(this, names, pictures);
+		ListRow adapter = new ListRow(this, names);
 		lview = (ListView) findViewById(R.id.listView);
 		lview.setAdapter(adapter);
 

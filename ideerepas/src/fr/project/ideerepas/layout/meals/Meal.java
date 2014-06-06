@@ -34,10 +34,20 @@ public class Meal extends Activity {
 		picture = (ImageView) findViewById(R.id.mealPicture);
 
 		m_list = new Meals(getApplicationContext());
-		Uri pathPicture = m_list.getPicture(extra.getString("meal"));
+		Uri pathPicture = null;
+		if( m_list.getPicture(extra.getString("meal")) != null) {
+			pathPicture = m_list.getPicture(extra.getString("meal"));
+		}
 
-		if(picture != null) picture.setImageURI(pathPicture);
-		else picture.setImageResource(R.drawable.interrogation);
+		Log.i(TAG, "Name="+extra.getString("meal"));
+		Log.i(TAG, "Picture="+pathPicture.toString());
+		
+		if(pathPicture != null) {
+			picture.setImageURI(pathPicture);
+		}
+		else {
+			picture.setImageResource(R.drawable.interrogation);
+		}
 		
 		name.setText(extra.getString("meal"));
 	}

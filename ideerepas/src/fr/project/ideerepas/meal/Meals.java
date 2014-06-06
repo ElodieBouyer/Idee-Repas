@@ -58,6 +58,7 @@ public class Meals {
 			c.moveToFirst();
 			String path = c.getString(TABLEMEAL.NUM_COL_PICTURE);
 			close();
+			if( path == null ) return null;
 			return Uri.parse(path);
 
 		}

@@ -38,6 +38,15 @@ public class AddMeal extends Activity {
 		setTitle(getString(R.string.new_meal));
 	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
+		photo = null;
+		ImageView imgView = (ImageView) findViewById(R.id.picture);
+		if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
+		else imgView.setImageURI(photo);
+	}
+	
 	/**
 	 * Called when user click in the button to add a picture.
 	 * @param view Button to add a picture.
@@ -122,10 +131,11 @@ public class AddMeal extends Activity {
 				EditText editName = (EditText) findViewById(R.id.name_edit);
 				
 				String name = editName.getText().toString();
-				String picture;
+				String picture=null;
 				
-				if( photo != null ) picture =  photo.toString();
-				else picture = null;
+				if( photo != null ) {
+					picture =  photo.getPath();
+				}
 				
 				func.add(name, picture, -1);
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
@@ -139,6 +149,9 @@ public class AddMeal extends Activity {
 		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				photo = null;
+				ImageView imgView = (ImageView) findViewById(R.id.picture);
+				if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
+				else imgView.setImageURI(photo);
 			}
 		});
 
