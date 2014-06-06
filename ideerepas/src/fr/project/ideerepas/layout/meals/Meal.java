@@ -41,14 +41,11 @@ public class Meal extends Activity {
 
 		Log.i(TAG, "Name="+extra.getString("meal"));
 		Log.i(TAG, "Picture="+pathPicture.toString());
-		
+
 		if(pathPicture != null) {
 			picture.setImageURI(pathPicture);
 		}
-		else {
-			picture.setImageResource(R.drawable.interrogation);
-		}
-		
+
 		name.setText(extra.getString("meal"));
 	}
 
@@ -58,5 +55,5 @@ public class Meal extends Activity {
 		startActivity(intent);
 		finish();
 	}
-	
+
 }

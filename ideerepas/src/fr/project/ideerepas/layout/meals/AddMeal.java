@@ -25,6 +25,7 @@ public class AddMeal extends Activity {
 	private static String TAG = AddMeal.class.getName();
 	private Meals func;
 	private Uri photo=null;
+	private ImageView imgView;
 
 	/**
 	 * Called when the activity launched.
@@ -36,17 +37,18 @@ public class AddMeal extends Activity {
 
 		setContentView(R.layout.add_meal);
 		setTitle(getString(R.string.new_meal));
+
+		ImageView imgView = (ImageView) findViewById(R.id.picture);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		photo = null;
-		ImageView imgView = (ImageView) findViewById(R.id.picture);
+		imgView = (ImageView) findViewById(R.id.picture);
 		if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
 		else imgView.setImageURI(photo);
 	}
-	
+
 	/**
 	 * Called when user click in the button to add a picture.
 	 * @param view Button to add a picture.
@@ -63,6 +65,8 @@ public class AddMeal extends Activity {
 		// start the image capture Intent
 		startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
 	}
+
+
 
 	/**
 	 * Called to prepare picture.
@@ -99,7 +103,6 @@ public class AddMeal extends Activity {
 
 		try {
 			// *** On la met dans l'ImageView.
-			ImageView imgView = (ImageView) findViewById(R.id.picture);
 			if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
 			else imgView.setImageURI(photo);
 		}
@@ -113,7 +116,7 @@ public class AddMeal extends Activity {
 
 		// Field verification.
 		EditText editName = (EditText) findViewById(R.id.name_edit);
-		
+
 
 		if (editName.getText().toString().isEmpty()) {
 			editName.setError(this.getResources().getString(R.string.error_name));
@@ -129,17 +132,17 @@ public class AddMeal extends Activity {
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				EditText editName = (EditText) findViewById(R.id.name_edit);
-				
+
 				String name = editName.getText().toString();
 				String picture=null;
-				
+
 				if( photo != null ) {
 					picture =  photo.getPath();
 				}
-				
+
 				func.add(name, picture, -1);
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
-				
+
 				finish();
 				Intent intent = new Intent(getApplicationContext(), ListMeal.class);
 				startActivity(intent);
@@ -149,7 +152,7 @@ public class AddMeal extends Activity {
 		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				photo = null;
-				ImageView imgView = (ImageView) findViewById(R.id.picture);
+				imgView = (ImageView) findViewById(R.id.picture);
 				if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
 				else imgView.setImageURI(photo);
 			}
