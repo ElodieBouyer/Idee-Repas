@@ -18,17 +18,22 @@ public class DataBase extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(TABLEMEAL.CREATE_TABLE_MEALS);
 		db.execSQL(TABLEMENUS.CREATE_TABLE_MENU);
+		db.execSQL(TABLEINGREDIENT.CREATE_TABLE_INGREDIENTS);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		db.execSQL("DROP TABLE IF EXISTS " + TABLEMEAL.TAB_MEALS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLEMENUS.TAB_MENU);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLEINGREDIENT.CREATE_TABLE_INGREDIENTS);
 	    onCreate(db);
 	}
 
 	public void delete(SQLiteDatabase db) {
-		db.execSQL("DROP TABLE " + TABLEMEAL.TAB_MEALS + " " + TABLEMENUS.TAB_MENU + ";");
+		db.execSQL("DROP TABLE " 
+				+ TABLEMEAL.TAB_MEALS + " " 
+				+ TABLEMENUS.TAB_MENU + " "
+				+ TABLEINGREDIENT.CREATE_TABLE_INGREDIENTS + ";");
 		onCreate(db);
 	}
 }

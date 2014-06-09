@@ -7,9 +7,14 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.TableRow.LayoutParams;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.meal.Meals;
 
@@ -19,6 +24,7 @@ public class Meal extends Activity {
 	private Meals m_list      = null;
 	private TextView name;
 	private ImageView picture;
+	private TableLayout tableIgd;
 
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
@@ -46,6 +52,9 @@ public class Meal extends Activity {
 		if(pathPicture != null) {
 			picture.setImageURI(pathPicture);
 		}
+		
+		tableIgd  = (TableLayout) findViewById(R.id.list_ingredient); 
+		setIngredient("test");
 	}
 
 	public void modifMeal(View view) {
@@ -80,6 +89,30 @@ public class Meal extends Activity {
 		});
 
 		builder.show();
+	}
+	
+	private void setIngredient(String igdName) {
+		TableRow    row    = new TableRow(getApplicationContext());
+		TextView    name   = new TextView(getApplicationContext());
+		ImageButton delete = new ImageButton(getApplicationContext());
+
+		row.setGravity(Gravity.CENTER);
+		row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
+				LayoutParams.MATCH_PARENT));
+		
+		name.setText(igdName);
+		name.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
+				LayoutParams.WRAP_CONTENT));
+		name.setPadding(10, 10, 10, 10);
+
+		delete.setBackgroundResource(R.drawable.delete);
+		delete.setPadding(10, 10, 10, 10);
+		
+		
+		row.addView(name);
+		row.addView(delete);
+
+		tableIgd.addView(row);
 	}
 
 }

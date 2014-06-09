@@ -13,9 +13,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TableRow.LayoutParams;
+import android.widget.TextView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.meal.Meals;
 
@@ -38,7 +44,7 @@ public class AddMeal extends Activity {
 		setContentView(R.layout.add_meal);
 		setTitle(getString(R.string.new_meal));
 
-		ImageView imgView = (ImageView) findViewById(R.id.picture);
+		imgView  = (ImageView) findViewById(R.id.picture);
 	}
 
 	@Override

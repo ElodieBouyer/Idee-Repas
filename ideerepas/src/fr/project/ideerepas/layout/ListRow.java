@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +24,7 @@ public class ListRow extends ArrayAdapter<String> {
 		LayoutInflater inflater = (LayoutInflater)
 				getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View rowView = inflater.inflate(R.layout.row_layout, parent, false);
+		View rowView = inflater.inflate(R.layout.row_list_layout, parent, false);
 
 		TextView textView = (TextView) rowView.findViewById(R.id.label);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
@@ -68,7 +67,7 @@ public class ListRow extends ArrayAdapter<String> {
 	}
 	
 	public ListRow(Context context, String[] names, String[] pictures)  {
-		super(context, R.layout.row_layout, names);
+		super(context, R.layout.row_list_layout, names);
 
 		this.picture = new Uri[pictures.length];
 		int i = 0;
