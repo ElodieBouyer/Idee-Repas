@@ -32,6 +32,8 @@ public class Meal extends Activity {
 
 		name    = (TextView)  findViewById(R.id.mealName);
 		picture = (ImageView) findViewById(R.id.mealPicture);
+		
+		name.setText(extra.getString("meal"));
 
 		m_list = new Meals(getApplicationContext());
 		Uri pathPicture = null;
@@ -45,13 +47,21 @@ public class Meal extends Activity {
 		if(pathPicture != null) {
 			picture.setImageURI(pathPicture);
 		}
-
-		name.setText(extra.getString("meal"));
 	}
 
 	public void modifMeal(View view) {
 		Intent intent = new Intent(getApplicationContext(), ModifMeal.class);
 		intent.putExtra("meal", getIntent().getExtras().getString("meal"));
+		startActivity(intent);
+		finish();
+	}
+	
+	public void deleteMeal(View view) {
+		if( m_list == null) {
+			return;
+		}
+		m_list.delete(name.getText().toString());
+		Intent intent = new Intent(getApplicationContext(), ListMeal.class);
 		startActivity(intent);
 		finish();
 	}

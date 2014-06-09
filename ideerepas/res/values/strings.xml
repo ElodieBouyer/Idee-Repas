@@ -24,8 +24,9 @@
     <string name="popup_adding_meal"> Voulez-vous ajouter ce repas ? </string>
     <string name="popup_adding_menu"> Voulez-vous ajouter ce menu ?  </string>
     
-    <string name="ok">                OK       </string>
-    <string name="cancel">            Annuler   </string>
+    <string name="ok">                OK          </string>
+    <string name="cancel">            Annuler     </string>
+    <string name="delete">            Supprimer   </string>
     
      <string name="error_name">       Vous devez entrer un nom. </string>
      

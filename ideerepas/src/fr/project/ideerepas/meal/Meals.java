@@ -1,5 +1,6 @@
 package fr.project.ideerepas.meal;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -200,6 +201,24 @@ public class Meals {
 		}
 		catch(Exception e) {
 			Log.i(TAG+"update", e.toString());
+		}
+	}
+	
+	public void delete(String name) {
+		try {
+			File file = new File(getPicture(name).getPath());
+			if( file.exists() ) {
+				file.delete();
+			}
+			
+			open();
+			int nbModif = this.db.delete(TABLEMEAL.TAB_MEALS, 
+					TABLEMEAL.COL_NAME + " LIKE \"" + name + "\"" , null);
+			Log.i(TAG+"delete", Integer.toString(nbModif));
+			close();
+		}
+		catch(Exception e) {
+			Log.i(TAG+"delete", e.toString());
 		}
 	}
 }

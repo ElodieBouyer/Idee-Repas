@@ -7,7 +7,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="300dp"
         android:orientation="vertical" >
 
         <ImageView
@@ -21,7 +21,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal" >
 
             <TextView
                 android:id="@+id/mealNameLabel"
@@ -43,12 +43,28 @@
     <Button
         android:id="@+id/modifAdd"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
+        android:layout_height="8dp"
         android:layout_gravity="center"
-        android:layout_margin="15dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
         android:layout_weight="1"
         android:onClick="modifMeal"
         android:text="@string/modif" >
+    </Button>
+
+    <Button
+        android:id="@+id/deleteMeal"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_weight="1"
+        android:onClick="deleteMeal"
+        android:text="@string/delete" >
     </Button>
 
 </LinearLayout>

@@ -51,6 +51,7 @@ public class ListRow extends ArrayAdapter<String> {
 	    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
 	    bmOptions.inJustDecodeBounds = true;
 	    BitmapFactory.decodeFile(uri.getPath(), bmOptions);
+	    	
 	    int photoW = bmOptions.outWidth;
 	    int photoH = bmOptions.outHeight;
 
