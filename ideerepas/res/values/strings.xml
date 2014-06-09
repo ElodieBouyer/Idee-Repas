@@ -21,8 +21,9 @@
     <string name="name_meal">         Nom du repas :   </string>
     <string name="name_menu">         Nom du menu :    </string>
     
-    <string name="popup_adding_meal"> Voulez-vous ajouter ce repas ? </string>
-    <string name="popup_adding_menu"> Voulez-vous ajouter ce menu ?  </string>
+    <string name="popup_adding_meal">   Voulez-vous ajouter ce repas ? </string>
+    <string name="popup_adding_menu">   Voulez-vous ajouter ce menu ?  </string>
+    <string name="popup_deleting_meal"> Voulez-vous supprimer ce repas ? </string>
     
     <string name="ok">                OK          </string>
     <string name="cancel">            Annuler     </string>

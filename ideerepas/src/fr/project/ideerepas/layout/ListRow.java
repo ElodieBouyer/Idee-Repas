@@ -69,7 +69,7 @@ public class ListRow extends ArrayAdapter<String> {
 	
 	public ListRow(Context context, String[] names, String[] pictures)  {
 		super(context, R.layout.row_layout, names);
-		Log.i(TAG, "Sniiif.");
+
 		this.picture = new Uri[pictures.length];
 		int i = 0;
 

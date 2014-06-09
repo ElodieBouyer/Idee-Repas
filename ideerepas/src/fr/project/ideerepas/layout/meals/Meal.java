@@ -1,6 +1,8 @@
 package fr.project.ideerepas.layout.meals;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,18 +34,15 @@ public class Meal extends Activity {
 
 		name    = (TextView)  findViewById(R.id.mealName);
 		picture = (ImageView) findViewById(R.id.mealPicture);
-		
+
 		name.setText(extra.getString("meal"));
 
 		m_list = new Meals(getApplicationContext());
+
 		Uri pathPicture = null;
 		if( m_list.getPicture(extra.getString("meal")) != null) {
 			pathPicture = m_list.getPicture(extra.getString("meal"));
 		}
-
-		Log.i(TAG, "Name="+extra.getString("meal"));
-		Log.i(TAG, "Picture="+pathPicture.toString());
-
 		if(pathPicture != null) {
 			picture.setImageURI(pathPicture);
 		}
@@ -55,15 +54,32 @@ public class Meal extends Activity {
 		startActivity(intent);
 		finish();
 	}
-	
+
 	public void deleteMeal(View view) {
 		if( m_list == null) {
 			return;
 		}
-		m_list.delete(name.getText().toString());
-		Intent intent = new Intent(getApplicationContext(), ListMeal.class);
-		startActivity(intent);
-		finish();
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setMessage(R.string.popup_deleting_meal)
+
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				m_list.delete(name.getText().toString());
+				Intent intent = new Intent(getApplicationContext(), ListMeal.class);
+				startActivity(intent);
+				finish();
+			}
+		})
+
+		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+
+			}
+		});
+
+		builder.show();
 	}
 
 }

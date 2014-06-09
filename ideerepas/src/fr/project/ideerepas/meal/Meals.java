@@ -206,9 +206,11 @@ public class Meals {
 	
 	public void delete(String name) {
 		try {
-			File file = new File(getPicture(name).getPath());
-			if( file.exists() ) {
-				file.delete();
+			if( getPicture(name) != null ) {
+				File file = new File(getPicture(name).getPath());
+				if( file.exists() ) {
+					file.delete();
+				}
 			}
 			
 			open();
