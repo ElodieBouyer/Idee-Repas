@@ -1,4 +1,4 @@
-package fr.project.ideerepas.layout.meals;
+package fr.project.ideerepas.layout;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,11 +13,9 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.layout.ListRow;
-import fr.project.ideerepas.layout.Start;
-import fr.project.ideerepas.meal.Meals;
+import fr.project.ideerepas.database.Meals;
 
-public class ListMeal extends Activity {
+public class ListMealLayout extends Activity {
 
 	private static String TAG = Start.class.getName();
 
@@ -26,6 +24,7 @@ public class ListMeal extends Activity {
 	private String[] names    = null;
 	private ListView lview;
 
+	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		setContentView(R.layout.list_meal);
@@ -71,7 +70,7 @@ public class ListMeal extends Activity {
 		lview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				Intent intent = new Intent(getApplicationContext(), Meal.class);
+				Intent intent = new Intent(getApplicationContext(), MealLayout.class);
 				intent.putExtra("meal", names[position]);
 				startActivity(intent);
 				m_list = null;
@@ -81,7 +80,7 @@ public class ListMeal extends Activity {
 	}
 
 	public void add(View view) {
-		Intent intent = new Intent(getApplicationContext(), AddMeal.class);
+		Intent intent = new Intent(getApplicationContext(), AddMealLayout.class);
 		startActivity(intent);
 		finish();
 	}

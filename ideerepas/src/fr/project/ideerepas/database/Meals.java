@@ -1,4 +1,4 @@
-package fr.project.ideerepas.meal;
+package fr.project.ideerepas.database;
 
 import java.io.File;
 import java.util.HashMap;
@@ -10,8 +10,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
-import fr.project.ideerepas.database.DataBase;
-import fr.project.ideerepas.database.TABLEMEAL;
 
 public class Meals {
 

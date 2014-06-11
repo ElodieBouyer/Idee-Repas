@@ -1,4 +1,4 @@
-package fr.project.ideerepas.meal;
+package fr.project.ideerepas.database;
 
 /**
  * Created by elodie on 28/02/14.

@@ -1,20 +1,25 @@
-package fr.project.ideerepas.layout.meals;
+package fr.project.ideerepas.layout;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.meal.Meals;
+import fr.project.ideerepas.database.Meals;
 
 public class ModifMeal extends Activity {
 
@@ -24,6 +29,7 @@ public class ModifMeal extends Activity {
 	private Uri photo=null;
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private int mealID;
+	private IngredientLayout igd;
 
 
 	@Override
@@ -48,8 +54,36 @@ public class ModifMeal extends Activity {
 
 		if( photo != null ) picture.setImageURI(photo);
 		else picture.setImageResource(R.drawable.interrogation);
-		
+
 		name.setText(extra.getString("meal"));
+		setIngredient();
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		if( photo == null ) picture.setImageResource(R.drawable.interrogation);
+		else picture.setImageURI(photo);
+	}
+
+	private void setIngredient() {
+		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
+		igd = new IngredientLayout(getApplicationContext(), name.getText().toString(), true);
+		tableIgd.addView(igd.getTableLayout());
+
+		Button adding = igd.getButtonAdd();
+		adding.setOnClickListener(new Button.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				EditText edit = igd.getEditView();
+				if( edit != null && !edit.getText().toString().isEmpty()) {
+					// TODO : Ajouter l'ingredient et recharger la vue.
+				}
+			}
+
+
+		});
 	}
 
 	public void modifPicture(View view) {
@@ -81,10 +115,12 @@ public class ModifMeal extends Activity {
 		if( photo != null ) picture =  photo.toString();
 		else picture = null;
 
+		// TODO : Prendre en compte l'ingredient ajouté.
+		
 		m_list.update(mealID, name.getText().toString(), picture, -1);
 
 		finish();
-		Intent intent = new Intent(getApplicationContext(), ListMeal.class);
+		Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
 		startActivity(intent);
 	}
 
@@ -101,7 +137,7 @@ public class ModifMeal extends Activity {
 			else picture.setImageResource(R.drawable.interrogation);
 		}
 		catch(Exception e) {
-			
+
 		}
 	}
 

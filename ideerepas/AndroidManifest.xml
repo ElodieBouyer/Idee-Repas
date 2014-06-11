@@ -35,16 +35,16 @@
         </activity>
 
         <!-- Meals List activity. -->
-        <activity android:name="fr.project.ideerepas.layout.meals.ListMeal" />
+        <activity android:name="fr.project.ideerepas.layout.ListMealLayout" />
 
         <!-- Adding form activity. -->
-        <activity android:name="fr.project.ideerepas.layout.meals.AddMeal" />
-        
+        <activity android:name="fr.project.ideerepas.layout.AddMealLayout" />   
+                
         <!-- Meal detail -->
-        <activity android:name="fr.project.ideerepas.layout.meals.Meal"></activity>
+        <activity android:name="fr.project.ideerepas.layout.MealLayout" />
         
         <!-- Meal modif -->
-        <activity android:name="fr.project.ideerepas.layout.meals.ModifMeal"></activity>
+        <activity android:name="fr.project.ideerepas.layout.ModifMeal" />
         
     </application>
 

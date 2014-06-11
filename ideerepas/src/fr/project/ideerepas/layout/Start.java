@@ -8,7 +8,6 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.layout.meals.ListMeal;
 
 
 public class Start extends ListActivity {
@@ -35,7 +34,7 @@ public class Start extends ListActivity {
 
 		switch (position) {
 		case 0: // Mes repas.
-			Intent intent = new Intent(getApplicationContext(), ListMeal.class);
+			Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
 			startActivity(intent);
 			break;
 

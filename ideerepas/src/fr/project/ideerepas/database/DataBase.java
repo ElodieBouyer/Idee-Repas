@@ -19,10 +19,12 @@ public class DataBase extends SQLiteOpenHelper {
 		db.execSQL(TABLEMEAL.CREATE_TABLE_MEALS);
 		db.execSQL(TABLEMENUS.CREATE_TABLE_MENU);
 		db.execSQL(TABLEINGREDIENT.CREATE_TABLE_INGREDIENTS);
+		db.execSQL(TABLEINGREDIENTMEAL.CREATE_TABLE_INGREDIENTMEAL);
 	}
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+		db.execSQL("DROP TABLE IF EXISTS " + TABLEINGREDIENTMEAL.CREATE_TABLE_INGREDIENTMEAL);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLEMEAL.TAB_MEALS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLEMENUS.TAB_MENU);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLEINGREDIENT.CREATE_TABLE_INGREDIENTS);
@@ -31,9 +33,10 @@ public class DataBase extends SQLiteOpenHelper {
 
 	public void delete(SQLiteDatabase db) {
 		db.execSQL("DROP TABLE " 
+				+ TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL + " "
 				+ TABLEMEAL.TAB_MEALS + " " 
 				+ TABLEMENUS.TAB_MENU + " "
-				+ TABLEINGREDIENT.CREATE_TABLE_INGREDIENTS + ";");
+				+ TABLEINGREDIENT.TAB_INGREDIENTS + ";");
 		onCreate(db);
 	}
 }

@@ -1,4 +1,4 @@
-package fr.project.ideerepas.layout.meals;
+package fr.project.ideerepas.layout;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -23,12 +23,12 @@ import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.meal.Meals;
+import fr.project.ideerepas.database.Meals;
 
-public class AddMeal extends Activity {
+public class AddMealLayout extends Activity {
 
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
-	private static String TAG = AddMeal.class.getName();
+	private static String TAG = AddMealLayout.class.getName();
 	private Meals func;
 	private Uri photo=null;
 	private ImageView imgView;
@@ -150,7 +150,7 @@ public class AddMeal extends Activity {
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
 
 				finish();
-				Intent intent = new Intent(getApplicationContext(), ListMeal.class);
+				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
 				startActivity(intent);
 			}
 		})
