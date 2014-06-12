@@ -13,15 +13,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
-import android.widget.TableRow.LayoutParams;
-import android.widget.TextView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.database.Meals;
 
@@ -50,16 +46,13 @@ public class AddMealLayout extends Activity {
 	@Override
 	public void onResume() {
 		super.onResume();
-		imgView = (ImageView) findViewById(R.id.picture);
-		if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
-		else imgView.setImageURI(photo);
+		setPicture();
 	}
 
 	/**
 	 * Called when user click in the button to add a picture.
-	 * @param view Button to add a picture.
 	 */
-	public void addPicture(View view) {
+	public void addPicture() {
 		// Create a file for a photo.
 		photo = Uri.fromFile(createImageFile());
 
@@ -72,6 +65,31 @@ public class AddMealLayout extends Activity {
 		startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.actions_camera_save, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Take appropriate action for each action item click
+		switch (item.getItemId()) {
+		case R.id.action_camera:
+			addPicture();
+			return true;
+		case R.id.action_save:
+			addNew();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
 
 
 	/**
@@ -109,15 +127,25 @@ public class AddMealLayout extends Activity {
 
 		try {
 			// *** On la met dans l'ImageView.
-			if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
-			else imgView.setImageURI(photo);
+			setPicture();
 		}
 		catch(Exception e) {
 			Log.i(TAG, "onActivityResutl() "+ e.toString());
 		}
 	}
+	
+	private void setPicture() {
+		if( photo == null ) {
+			imgView.setImageResource(R.drawable.light_ic_unknow);
+		}
+		else {
+			File test = new File(photo.getPath());
+			if( test.exists() ) imgView.setImageURI(photo);
+			else imgView.setImageResource(R.drawable.light_ic_unknow);
+		}
+	}
 
-	public void addNew(View view) {
+	public void addNew() {
 		this.func = new Meals(getApplicationContext());
 
 		// Field verification.
@@ -143,9 +171,9 @@ public class AddMealLayout extends Activity {
 				String picture=null;
 
 				if( photo != null ) {
-					picture =  photo.getPath();
+					File test = new File(photo.getPath());
+					if( test.exists() ) picture =  photo.getPath();
 				}
-
 				func.add(name, picture, -1);
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
 
@@ -157,10 +185,7 @@ public class AddMealLayout extends Activity {
 
 		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				photo = null;
-				imgView = (ImageView) findViewById(R.id.picture);
-				if( photo == null ) imgView.setImageResource(R.drawable.interrogation);
-				else imgView.setImageURI(photo);
+				setPicture();
 			}
 		});
 

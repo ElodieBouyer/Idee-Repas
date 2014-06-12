@@ -16,7 +16,6 @@ import fr.project.ideerepas.database.IngredientMeal;
 
 public class IngredientLayout {
 
-	private static String TAG = IngredientLayout.class.getName();
 	private TableLayout tableIgd = null;
 	private Context context;
 	private IngredientMeal igdMeal;
@@ -57,7 +56,7 @@ public class IngredientLayout {
 				LayoutParams.WRAP_CONTENT));
 		name.setPadding(10, 10, 10, 10);
 
-		delete.setBackgroundResource(R.drawable.delete);
+		delete.setBackgroundResource(R.drawable.dark_ic_action_discard);
 		delete.setPadding(10, 5, 10, 10);
 
 

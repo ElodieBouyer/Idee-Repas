@@ -6,7 +6,9 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -17,8 +19,6 @@ import fr.project.ideerepas.database.Meals;
 
 public class ListMealLayout extends Activity {
 
-	private static String TAG = Start.class.getName();
-
 	private Meals m_list      = null;
 	private String[] pictures = null;
 	private String[] names    = null;
@@ -27,10 +27,8 @@ public class ListMealLayout extends Activity {
 	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
-		setContentView(R.layout.list_meal);
-		Log.i(TAG, "Activity ListMeal créée.");
 
-		// Activity title.
+		setContentView(R.layout.list_meal);
 		setTitle(getString(R.string.liste_repas));
 
 		if (this.m_list == null) {
@@ -51,14 +49,38 @@ public class ListMealLayout extends Activity {
 			}
 		}
 
+		TextView message = (TextView) findViewById(R.id.emptyText);
 		// If the list is empty.
 		if (names == null) {
-			TextView message = (TextView) findViewById(R.id.emptyText);
-			message.setText(getString(R.string.empty_meals));
+			message.setVisibility(View.VISIBLE);
 			return;
 		}
-
+		message.setVisibility(View.GONE);
 		setListView();
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.action_add, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Take appropriate action for each action item click
+		switch (item.getItemId()) {
+		case R.id.action_add:
+			Intent intent = new Intent(getApplicationContext(), AddMealLayout.class);
+			startActivity(intent);
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	private void setListView() {
@@ -74,15 +96,8 @@ public class ListMealLayout extends Activity {
 				intent.putExtra("meal", names[position]);
 				startActivity(intent);
 				m_list = null;
-				finish();
 			} 
 		});
-	}
-
-	public void add(View view) {
-		Intent intent = new Intent(getApplicationContext(), AddMealLayout.class);
-		startActivity(intent);
-		finish();
 	}
 
 }

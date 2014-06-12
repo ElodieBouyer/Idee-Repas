@@ -3,42 +3,28 @@
     android:id="@+id/list"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/background" >
+    android:orientation="vertical" >
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:layout_weight="1"
-        android:src="@drawable/picture"
-        android:background="@color/bandeauColor" />
 
     <TextView
         android:id="@+id/emptyText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp" >
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/empty_meals"
+        android:visibility="gone" 
+        style="@style/emptyText">
     </TextView>
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="top"
-        android:layout_weight="1"
+        android:layout_marginTop="10dp"
         android:scrollbars="vertical">
     </ListView>
 
-    <Button
-        android:id="@+id/buttonAdd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="15dp"
-        android:layout_weight="1"
-        android:onClick="add"
-        android:text="@string/add_meal" >
-    </Button>
 
 </LinearLayout>

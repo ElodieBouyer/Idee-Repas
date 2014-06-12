@@ -14,7 +14,7 @@ public class TABLEINGREDIENTMEAL {
 	public static final String CREATE_TABLE_INGREDIENTMEAL = 
 			"CREATE TABLE " + TAB_INGREDIENTMEAL + " (" 
 					+ COL_ID_MEAL      + " INTEGER NOT NULL, " 
-					+ COL_ID_MEAL      + " INTEGER NOT NULL, "
-					+ "FOREIGN KEY("   + COL_ID_MEAL       + ")" + "REFERENCES" + TABLEMEAL.TAB_MEALS             + "(" + TABLEMEAL.COL_ID        + ")," 
-					+ "FOREIGN KEY("   + COL_ID_INGREDIENT + ")" + "REFERENCES" + TABLEINGREDIENT.TAB_INGREDIENTS + "(" + TABLEINGREDIENT.COL_ID  + "));";
+					+ COL_ID_INGREDIENT      + " INTEGER NOT NULL, "
+					+ "FOREIGN KEY("   + COL_ID_MEAL       + ")" + " REFERENCES " + TABLEMEAL.TAB_MEALS             + "(" + TABLEMEAL.COL_ID        + ")," 
+					+ "FOREIGN KEY("   + COL_ID_INGREDIENT + ")" + " REFERENCES " + TABLEINGREDIENT.TAB_INGREDIENTS + "(" + TABLEINGREDIENT.COL_ID  + "));";
 }

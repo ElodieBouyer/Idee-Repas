@@ -6,8 +6,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -16,16 +17,15 @@ import fr.project.ideerepas.database.Meals;
 
 public class MealLayout extends Activity {
 
-	private static String TAG = MealLayout.class.getName();
 	private Meals m_list      = null;
 	private TextView name;
 	private ImageView picture;
 
+	@Override
 	public void onCreate(Bundle bundle) {
 		super.onCreate(bundle);
 		setContentView(R.layout.meal);
-
-		Log.i(TAG, "Activity meal créée.");
+		setTitle(R.string.meal);
 
 		Bundle extra = getIntent().getExtras();
 
@@ -52,45 +52,61 @@ public class MealLayout extends Activity {
 
 	}
 
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu items for use in the action bar
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.actions_edit_delete, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	/**
+	 * On selecting action bar icons
+	 * */
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// Take appropriate action for each action item click
+		switch (item.getItemId()) {
+		case R.id.action_modif:
+			Intent intent = new Intent(getApplicationContext(), ModifMeal.class);
+			intent.putExtra("meal", getIntent().getExtras().getString("meal"));
+			startActivity(intent);
+			finish();
+			return true;
+		case R.id.action_delete:
+			if( m_list == null) {
+				return true;
+			}
+
+			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+			builder.setMessage(R.string.popup_deleting_meal)
+
+			.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+					m_list.delete(name.getText().toString());
+					Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
+					startActivity(intent);
+					finish();
+				}
+			})
+
+			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int id) {
+
+				}
+			});
+
+			builder.show();
+		default:
+			return super.onOptionsItemSelected(item);
+		}
+	}
+
 	private void setIngredient() {
 		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
 		IngredientLayout igd = new IngredientLayout(getApplicationContext(), name.getText().toString(), false);
 		tableIgd.addView(igd.getTableLayout());
 	}
-
-	public void modifMeal(View view) {
-		Intent intent = new Intent(getApplicationContext(), ModifMeal.class);
-		intent.putExtra("meal", getIntent().getExtras().getString("meal"));
-		startActivity(intent);
-		finish();
-	}
-
-	public void deleteMeal(View view) {
-		if( m_list == null) {
-			return;
-		}
-
-		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-		builder.setMessage(R.string.popup_deleting_meal)
-
-		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				m_list.delete(name.getText().toString());
-				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
-				startActivity(intent);
-				finish();
-			}
-		})
-
-		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-
-			}
-		});
-
-		builder.show();
-	}
-
 
 }

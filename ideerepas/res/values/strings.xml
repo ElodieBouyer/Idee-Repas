@@ -3,11 +3,13 @@
 
     <string name="app_name">          Idée Repas </string>
     <string name="liste_repas">       Mes Repas          </string>
+    <string name="meal">              Mon repas          </string>
     <string name="liste_menu">        Mes menus          </string>
     <string name="liste_course">      Ma liste de course </string>
     <string name="quitter">           Quitter            </string>
     
-    <string name="empty_meals">       Vous n\'avez pas encore de repas. </string>
+    <string name="empty_meals">       Vous n\'avez pas encore de repas, \n  Ajoutez en !</string>
+    
     <string name="empty_ingredient">  Ce repas n\'a pas d\'ingredient.    </string>
     
     <string name="add_meal">          Ajouter un repas </string>
@@ -20,9 +22,11 @@
     
     <string name="name_meal">         Nom du repas :        </string>
     <string name="name_ingredient">   Nouvel ingredient : </string>
+    <string name="meal_picture">      Photo du repas :</string>
     
     
     <string name="popup_adding_meal">   Voulez-vous ajouter ce repas ? </string>
+    <string name="popup_save_meal">     Enregistrer ? </string>
     <string name="popup_adding_menu">   Voulez-vous ajouter ce menu ?  </string>
     <string name="popup_deleting_meal"> Voulez-vous supprimer ce repas ? </string>
     
