@@ -44,6 +44,7 @@ public class Ingredients {
 					null, null, null, null, null);
 
 			if( c.getCount() == 0) {
+				close();
 				return -1;
 			}
 			
@@ -60,6 +61,33 @@ public class Ingredients {
 		return -1;
 	}
 	
+	public String getName(int id) {
+		try {
+			open();
+			Cursor c = this.db.query(
+					TABLEINGREDIENT.TAB_INGREDIENTS,           // Table name.
+					TABLEINGREDIENT.ALL_COLUMNS,               // Columns.
+					TABLEINGREDIENT.COL_ID + " = " + id,
+					null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				close();
+				return null;
+			}
+			
+			c.moveToFirst();
+			String name = c.getString(TABLEINGREDIENT.NUM_COL_NAME);
+
+			close();
+			return name;
+
+		}
+		catch(Exception e) {
+			Log.i("Ingredients.getNames", e.toString());
+		}
+		return null;
+	}
+	
 	/**
 	 * Get all ingredients name.
 	 * @return ingredients list name.
@@ -74,6 +102,7 @@ public class Ingredients {
 					null,null, null, null, null, null);
 
 			if( c.getCount() == 0) {
+				close();
 				return null;
 			}
 			String names[] = new String[c.getCount()];
@@ -95,24 +124,44 @@ public class Ingredients {
 		return null;
 	}
 
+	private Boolean exist(String name) {
+		open();
+		Cursor c = this.db.query(
+				TABLEINGREDIENT.TAB_INGREDIENTS,           // Table name.
+				TABLEINGREDIENT.ALL_COLUMNS,               // Columns.
+				TABLEINGREDIENT.COL_NAME + " LIKE \"" + name + "\"",
+				null, null, null, null, null);
 
+		if( c.getCount() == 0) {
+			close();
+			return false;
+		}
+		close();
+		return true;
+	}
+	
+	
 	/**
 	 * Add a new ingredient in the database.
 	 */
-	public void add(String name) {
+	public long add(String name) {
 
 		try {
+			
+			if( exist(name) ) return getID(name);
 			open();
 			ContentValues values = new ContentValues();
 
 			values.put(TABLEINGREDIENT.COL_NAME, name);
 
-			this.db.insert(TABLEINGREDIENT.TAB_INGREDIENTS, null,values);
+			long id = this.db.insert(TABLEINGREDIENT.TAB_INGREDIENTS, null,values);
 			close();
+			return id;
 		}
 		catch(Exception e) {
 			Log.i("Ingredients.add", e.toString());
 		}
+		return -1;
 	}
 
 

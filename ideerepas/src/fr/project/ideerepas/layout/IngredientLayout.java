@@ -4,8 +4,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.view.Gravity;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -19,13 +17,11 @@ public class IngredientLayout {
 	private TableLayout tableIgd = null;
 	private Context context;
 	private IngredientMeal igdMeal;
-	private Button adding = null;
-	private EditText edit = null;
 
 	public IngredientLayout(Context context, String mealName, Boolean add) {
-		this.context = context;
-		this.igdMeal = new IngredientMeal(context);
-
+		this.context  = context;
+		this.igdMeal  = new IngredientMeal(context);
+		this.tableIgd = new TableLayout(context);
 
 		List<String> names = igdMeal.getIngredient(mealName);
 		if( names != null) {
@@ -33,16 +29,16 @@ public class IngredientLayout {
 				addIngredient(name);
 			}
 		}
-		else addEmpty();
-		if( add ) {
-			adding = new Button(context);
-			edit = new EditText(context);
-			addButton();
+		else {
+			if( !add) addEmpty();
 		}
 	}
 
+	public void newIngredient(String igdName) {
+		addIngredient(igdName);
+	}
+	
 	private void addIngredient(String igdName) {
-		if( tableIgd == null ) tableIgd = new TableLayout(context);
 		TableRow    row    = new TableRow(context);
 		TextView    name   = new TextView(context);
 		ImageButton delete = new ImageButton(context);
@@ -52,6 +48,7 @@ public class IngredientLayout {
 				LayoutParams.MATCH_PARENT));
 
 		name.setText(igdName);
+		name.setTextAppearance(context, R.style.layoutText);
 		name.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT));
 		name.setPadding(10, 10, 10, 10);
@@ -67,7 +64,6 @@ public class IngredientLayout {
 	}
 
 	private void addEmpty() {
-		if( tableIgd == null ) tableIgd = new TableLayout(context);
 		TableRow    row    = new TableRow(context);
 		TextView    name   = new TextView(context);
 
@@ -76,6 +72,7 @@ public class IngredientLayout {
 				LayoutParams.MATCH_PARENT));
 
 		name.setText(R.string.empty_ingredient);
+		name.setTextAppearance(context, R.style.emptyText);
 		name.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT));
 		name.setPadding(10, 5, 10, 10);
@@ -84,37 +81,7 @@ public class IngredientLayout {
 		tableIgd.addView(row);
 	}
 
-	private void addButton() {
-		if( tableIgd == null ) tableIgd = new TableLayout(context);
-		TableRow row    = new TableRow(context);
-
-		row.setGravity(Gravity.CENTER);
-		row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
-				LayoutParams.MATCH_PARENT));
-
-		edit.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
-		edit.setFocusable(true);
-
-		adding.setText(R.string.add);
-		adding.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
-				LayoutParams.MATCH_PARENT));
-
-		row.addView(edit);
-		row.addView(adding);
-
-		tableIgd.addView(row);
-	}
-
 	public TableLayout getTableLayout() {
 		return tableIgd;
-	}
-
-	public Button getButtonAdd() {
-		return adding;
-	}
-
-	public EditText getEditView() {
-		return edit;
 	}
 }

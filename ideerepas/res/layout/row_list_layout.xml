@@ -17,7 +17,8 @@
         android:id="@+id/label"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        style="@style/layoutText">
+        style="@style/layoutText"
+        android:gravity="center">
     </TextView>
  
 </LinearLayout>

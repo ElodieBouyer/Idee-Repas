@@ -9,37 +9,59 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="10dp"
-            android:text="@string/name_meal" />
-
-        <EditText
-            android:id="@+id/name_modif"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:inputType="textShortMessage"
-            android:maxLength="100" />
+            android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/picture_modif"
+            <TextView
+                android:id="@+id/mealNameLabel"
+                style="@style/layoutLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:text="@string/name_meal" >
+            </TextView>
+
+            <EditText
+                android:id="@+id/name_modif"
+                style="@style/layoutText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:inputType="textPersonName"
+                android:maxLength="100" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
+            android:layout_height="match_parent"
             android:layout_margin="10dp"
-            android:src="@drawable/light_ic_unknow" />
+            android:orientation="horizontal" >
+
+            <TextView
+                style="@style/layoutLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:text="@string/meal_picture" />
+
+            <ImageView
+                android:id="@+id/picture_modif"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginLeft="5dp"
+                android:onClick="editPicture"
+                android:src="@drawable/light_ic_unknow" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/ingredient"
+            style="@style/layoutLabel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:text="@string/ingredients" />
 
         <LinearLayout
@@ -51,6 +73,30 @@
             android:orientation="vertical" >
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:orientation="horizontal"
+            android:gravity="center" >
+
+            <EditText
+                android:id="@+id/newIngredient"
+                style="@style/layoutText"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:inputType="textPersonName"
+                android:maxLength="100" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:src="@drawable/light_ic_action_new"
+                android:onClick="addIngredient" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

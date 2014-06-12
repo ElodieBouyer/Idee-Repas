@@ -13,10 +13,12 @@ public class IngredientMeal {
 	private DataBase database;
 	private SQLiteDatabase db;
 	private Ingredients igdDatabase;
+	private Meals mealDatabase;
 
 	public IngredientMeal(Context context) {
-		this.database    = new DataBase(context);
-		this.igdDatabase = new Ingredients(context);
+		this.database     = new DataBase(context);
+		this.igdDatabase  = new Ingredients(context);
+		this.mealDatabase = new Meals(context); 
 	}
 
 	/**
@@ -37,32 +39,34 @@ public class IngredientMeal {
 
 	public List<String> getIngredient(String mealName) {
 		List<String> igdList = new ArrayList<String>();
+		Log.i("getIngredient", "A la recherche de "+mealName);
 		try {
 			// Opening to the database.
 			open();
 
 			// Find the meal ID.
-			int idMeal = igdDatabase.getID(mealName);
+			int idMeal = mealDatabase.getId(mealName);
 			if( idMeal == -1 ) {
 				close();
 				return null;
 			}
+			Log.i("getIngredient", "ID+ "+idMeal);
 
-			String [] cols = {TABLEINGREDIENTMEAL.COL_ID_MEAL,TABLEINGREDIENTMEAL.COL_ID_INGREDIENT,TABLEINGREDIENT.COL_NAME};
 			// Find ingredients.
 			Cursor c = this.db.query(
 					TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL + " " + TABLEINGREDIENT.TAB_INGREDIENTS,
-					cols,
+					TABLEINGREDIENTMEAL.ALL_COLUMNS,
 					TABLEINGREDIENTMEAL.COL_ID_MEAL + " = " + idMeal,
 					null, null, null, null, null);
 
 			if( c.getCount() == 0) {
+				close();
 				return null;
 			}
 
 			c.moveToFirst();
 			while (c.isAfterLast() == false) {
-				igdList.add(c.getString(2));
+				igdList.add(igdDatabase.getName(c.getInt(TABLEINGREDIENTMEAL.NUM_COL_ID_INGREDIENT)));
 				c.moveToNext();
 			}
 
@@ -81,6 +85,7 @@ public class IngredientMeal {
 	 */
 	public void add(int idMeal, int idIngredient) {
 
+		Log.i("IngredientMeal.add", "add");
 		try {
 			open();
 			ContentValues values = new ContentValues();
@@ -89,6 +94,7 @@ public class IngredientMeal {
 			values.put(TABLEINGREDIENTMEAL.COL_ID_MEAL, idMeal);
 
 			this.db.insert(TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL, null,values);
+			Log.i("IngredientMeal.add", "Insertion");
 			close();
 		}
 		catch(Exception e) {

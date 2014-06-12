@@ -74,38 +74,44 @@ public class MealLayout extends Activity {
 			finish();
 			return true;
 		case R.id.action_delete:
-			if( m_list == null) {
-				return true;
-			}
-
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
-
-			builder.setMessage(R.string.popup_deleting_meal)
-
-			.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					m_list.delete(name.getText().toString());
-					Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
-					startActivity(intent);
-					finish();
-				}
-			})
-
-			.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-
-				}
-			});
-
-			builder.show();
+			deleteMeal();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
+	}
+	
+	private void deleteMeal() {
+		if( m_list == null) {
+			return;
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+		builder.setMessage(R.string.popup_deleting_meal)
+
+		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				m_list.delete(name.getText().toString());
+				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
+				startActivity(intent);
+				finish();
+			}
+		})
+
+		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+
+			}
+		});
+
+		builder.show();
 	}
 
 	private void setIngredient() {
 		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
 		IngredientLayout igd = new IngredientLayout(getApplicationContext(), name.getText().toString(), false);
+		tableIgd.removeAllViews();
 		tableIgd.addView(igd.getTableLayout());
 	}
 

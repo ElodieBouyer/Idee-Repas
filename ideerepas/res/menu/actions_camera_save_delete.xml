@@ -12,11 +12,6 @@
         android:showAsAction="ifRoom"
         android:title="@string/modif"/>
     <item
-        android:id="@+id/action_add"
-        android:icon="@drawable/dark_ic_action_new"
-        android:showAsAction="ifRoom"
-        android:title="@string/add"/>
-    <item
         android:id="@+id/action_save"
         android:icon="@drawable/dark_ic_action_save"
         android:showAsAction="ifRoom"

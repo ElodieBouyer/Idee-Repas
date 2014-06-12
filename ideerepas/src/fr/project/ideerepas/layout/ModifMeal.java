@@ -2,7 +2,9 @@ package fr.project.ideerepas.layout;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -16,11 +18,12 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import fr.project.ideerepas.R;
+import fr.project.ideerepas.database.IngredientMeal;
+import fr.project.ideerepas.database.Ingredients;
 import fr.project.ideerepas.database.Meals;
 
 public class ModifMeal extends Activity {
@@ -32,7 +35,8 @@ public class ModifMeal extends Activity {
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private int mealID;
 	private IngredientLayout igd;
-
+	private List<String> igdList = null;
+	Ingredients igdDatabase = null;
 
 	@Override
 	public void onCreate(Bundle bundle) {
@@ -70,7 +74,7 @@ public class ModifMeal extends Activity {
 			else picture.setImageResource(R.drawable.light_ic_unknow);
 		}
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -81,7 +85,7 @@ public class ModifMeal extends Activity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu items for use in the action bar
 		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.actions_camera_add_save_delete, menu);
+		inflater.inflate(R.menu.actions_camera_save_delete, menu);
 		return super.onCreateOptionsMenu(menu);
 	}
 
@@ -101,8 +105,6 @@ public class ModifMeal extends Activity {
 		case R.id.action_save:
 			saveMeal();
 			return true;
-		case R.id.action_add:
-			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -118,6 +120,10 @@ public class ModifMeal extends Activity {
 
 		// start the image capture Intent
 		startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
+	}
+	
+	public void editPicture(View view) {
+		editPicture();
 	}
 
 	private void deleteMeal() {
@@ -151,20 +157,6 @@ public class ModifMeal extends Activity {
 		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
 		igd = new IngredientLayout(getApplicationContext(), name.getText().toString(), true);
 		tableIgd.addView(igd.getTableLayout());
-
-		Button adding = igd.getButtonAdd();
-		adding.setOnClickListener(new Button.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				EditText edit = igd.getEditView();
-				if( edit != null && !edit.getText().toString().isEmpty()) {
-					// TODO : Ajouter l'ingredient et recharger la vue.
-				}
-			}
-
-
-		});
 	}
 
 	private void saveMeal() {
@@ -175,24 +167,29 @@ public class ModifMeal extends Activity {
 			return;
 		}
 
-		
-		
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		builder.setMessage(R.string.popup_save_meal)
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				
+
 				String pcr=null;
-				
+
 				if( photo != null ) {
 					File test = new File(photo.getPath());
 					if( test.exists() ) pcr =  photo.getPath();
 				}
-				// TODO : Prendre en compte l'ingredient ajouté.
-
+				
 				m_list.update(mealID, name.getText().toString(), pcr, -1);
-
+				
+				if( igdDatabase != null ){
+					IngredientMeal igdMeal = new IngredientMeal(getApplicationContext());
+				
+					for(String n : igdList) {
+						igdMeal.add(mealID, igdDatabase.getID(n));
+					}
+				}
+				
 				finish();
 				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
 				startActivity(intent);
@@ -201,7 +198,7 @@ public class ModifMeal extends Activity {
 
 		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				
+
 			}
 		});
 
@@ -249,5 +246,23 @@ public class ModifMeal extends Activity {
 				"IMG_"+ timeStamp + ".jpg");
 
 		return image;
+	}
+	
+	
+	public void addIngredient(View v) {
+		EditText igdEdit   = (EditText) findViewById(R.id.newIngredient);
+		String igdName = igdEdit.getText().toString();
+		
+		if( igdName.isEmpty()) return ;
+		if( igdList == null ) igdList = new ArrayList<String>();
+		
+		igdDatabase = new Ingredients(getApplicationContext());
+		igdDatabase.add(igdName);
+		igdList.add(igdName);
+		igd.newIngredient(igdName);
+		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
+		tableIgd.removeAllViews();
+		tableIgd.addView(igd.getTableLayout());
+		igdEdit.setText("");
 	}
 }
