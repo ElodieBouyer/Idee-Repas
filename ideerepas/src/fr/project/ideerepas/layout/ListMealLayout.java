@@ -75,7 +75,7 @@ public class ListMealLayout extends Activity {
 		// Take appropriate action for each action item click
 		switch (item.getItemId()) {
 		case R.id.action_add:
-			Intent intent = new Intent(getApplicationContext(), AddMealLayout.class);
+			Intent intent = new Intent(getApplicationContext(), AddMealActivity.class);
 			startActivity(intent);
 			return true;
 		default:

@@ -25,14 +25,14 @@ public class IngredientMeal {
 	 * Opens the database in writable, 
 	 * and put its content into db.
 	 */
-	public void open() {
+	private void open() {
 		this.db = this.database.getWritableDatabase();
 	}
 
 	/**
 	 * Close access to the database db.
 	 */
-	public void close() {
+	private void close() {
 		this.db.close();
 	}
 
@@ -79,6 +79,37 @@ public class IngredientMeal {
 		}
 		return null;
 	}
+	
+	public Boolean contain(int mealName, String igdMeal ) {
+		return contain(mealName, igdDatabase.getID(igdMeal));
+	}
+	
+	public Boolean contain(String mealName, String igdMeal ) {
+		return contain(mealDatabase.getId(mealName), igdDatabase.getID(igdMeal));
+	}
+
+	private Boolean contain(int idMeal, int idIngredient) {
+		Log.i("IngredientMeal.contain", "contain");
+		try {
+			open();
+			Cursor c = this.db.query(
+					TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL,
+					TABLEINGREDIENTMEAL.ALL_COLUMNS,
+					TABLEINGREDIENTMEAL.COL_ID_MEAL       + " = " + idMeal + " AND " + 
+					TABLEINGREDIENTMEAL.COL_ID_INGREDIENT + " = " + idIngredient ,
+					null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				close();
+				return false;
+			}
+			close();
+		}
+		catch(Exception e) {
+			Log.i("IngredientMeal.add", e.toString());
+		}
+		return true;
+	}
 
 	/**
 	 * Add a new ingredient in the database.
@@ -87,6 +118,8 @@ public class IngredientMeal {
 
 		Log.i("IngredientMeal.add", "add");
 		try {
+			if( contain(idMeal, idIngredient) ) return;
+			
 			open();
 			ContentValues values = new ContentValues();
 
@@ -105,6 +138,8 @@ public class IngredientMeal {
 
 	public void delete(int idMeal, int idIngredient) {
 		try {
+			
+			if( !contain(idMeal, idIngredient)) return;
 			open();
 			this.db.delete(TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL, 
 					TABLEINGREDIENTMEAL.COL_ID_INGREDIENT + " = " + idIngredient + 

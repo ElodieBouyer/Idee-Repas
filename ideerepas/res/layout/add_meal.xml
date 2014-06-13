@@ -42,7 +42,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:src="@drawable/light_ic_unknow" />
+            android:src="@drawable/light_ic_unknow"
+            android:onClick="addPicture" />
     </LinearLayout>
 
 </ScrollView>

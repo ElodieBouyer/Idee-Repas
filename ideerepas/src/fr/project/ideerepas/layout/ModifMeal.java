@@ -21,14 +21,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.database.IngredientMeal;
-import fr.project.ideerepas.database.Ingredients;
-import fr.project.ideerepas.database.Meals;
+import fr.project.ideerepas.controller.DatabaseController;
 
 public class ModifMeal extends Activity {
 
-	private Meals m_list      = null;
 	private EditText name;
 	private ImageView picture;
 	private Uri photo=null;
@@ -36,7 +34,7 @@ public class ModifMeal extends Activity {
 	private int mealID;
 	private IngredientLayout igd;
 	private List<String> igdList = null;
-	Ingredients igdDatabase = null;
+
 
 	@Override
 	public void onCreate(Bundle bundle) {
@@ -54,9 +52,8 @@ public class ModifMeal extends Activity {
 		name    = (EditText)  findViewById(R.id.name_modif);
 		picture = (ImageView) findViewById(R.id.picture_modif);
 
-		m_list = new Meals(getApplicationContext());
-		photo  = m_list.getPicture(extra.getString("meal"));
-		mealID = m_list.getId(extra.getString("meal")); 
+		photo  = DatabaseController.getInstanceMeals(getApplicationContext()).getPicture(extra.getString("meal"));
+		mealID = DatabaseController.getInstanceMeals(getApplicationContext()).getId(extra.getString("meal")); 
 
 		setPicture();
 
@@ -121,23 +118,19 @@ public class ModifMeal extends Activity {
 		// start the image capture Intent
 		startActivityForResult(intent, REQUEST_IMAGE_CAPTURE);
 	}
-	
+
 	public void editPicture(View view) {
 		editPicture();
 	}
 
 	private void deleteMeal() {
-		if( m_list == null) {
-			return;
-		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		builder.setMessage(R.string.popup_deleting_meal)
-
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				m_list.delete(name.getText().toString());
+				DatabaseController.getInstanceMeals(getApplicationContext()).delete(name.getText().toString());
 				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
 				startActivity(intent);
 				finish();
@@ -163,7 +156,7 @@ public class ModifMeal extends Activity {
 
 		// Field verification.
 		if (name.getText().toString().isEmpty()) {
-			name.setError(this.getResources().getString(R.string.error_name));
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -179,17 +172,14 @@ public class ModifMeal extends Activity {
 					File test = new File(photo.getPath());
 					if( test.exists() ) pcr =  photo.getPath();
 				}
-				
-				m_list.update(mealID, name.getText().toString(), pcr, -1);
-				
-				if( igdDatabase != null ){
-					IngredientMeal igdMeal = new IngredientMeal(getApplicationContext());
-				
-					for(String n : igdList) {
-						igdMeal.add(mealID, igdDatabase.getID(n));
-					}
+
+				DatabaseController.getInstanceMeals(getApplicationContext()).update(mealID, name.getText().toString(), pcr, -1);
+
+				for(String n : igdList) {
+					DatabaseController.getInstanceIngredientMeal(getApplicationContext())
+					.add(mealID, DatabaseController.getInstanceIngredient(getApplicationContext()).getID(n));
 				}
-				
+
 				finish();
 				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
 				startActivity(intent);
@@ -247,17 +237,23 @@ public class ModifMeal extends Activity {
 
 		return image;
 	}
-	
-	
+
+
 	public void addIngredient(View v) {
 		EditText igdEdit   = (EditText) findViewById(R.id.newIngredient);
 		String igdName = igdEdit.getText().toString();
-		
+
 		if( igdName.isEmpty()) return ;
 		if( igdList == null ) igdList = new ArrayList<String>();
-		
-		igdDatabase = new Ingredients(getApplicationContext());
-		igdDatabase.add(igdName);
+
+		if( (!igdList.isEmpty() && igdList.contains(igdName) ) || 
+				DatabaseController.getInstanceIngredientMeal(getApplicationContext()).contain(mealID, igdName)) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_igd, Toast.LENGTH_SHORT).show();
+			igdEdit.setText("");
+			return;
+		}
+
+		DatabaseController.getInstanceIngredient(getApplicationContext()).add(igdName);
 		igdList.add(igdName);
 		igd.newIngredient(igdName);
 		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 

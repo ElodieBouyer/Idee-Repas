@@ -37,7 +37,7 @@
 
         <!-- Adding form activity. -->
         <activity
-            android:name="fr.project.ideerepas.layout.AddMealLayout"
+            android:name="fr.project.ideerepas.layout.AddMealActivity"
             android:parentActivityName="fr.project.ideerepas.layout.ListMealLayout" />
 
         <!-- Meal detail -->

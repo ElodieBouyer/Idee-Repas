@@ -29,12 +29,14 @@
     <string name="popup_save_meal">     Enregistrer ? </string>
     <string name="popup_adding_menu">   Voulez-vous ajouter ce menu ?  </string>
     <string name="popup_deleting_meal"> Voulez-vous supprimer ce repas ? </string>
+    <string name="popup_bad_igd">       Ce repas contient déjà cet ingredient.</string>
+    <string name="popup_bad_meal_name"> Vous devez entrer un nom. </string>
     
     <string name="ok">                OK          </string>
     <string name="cancel">            Annuler     </string>
     <string name="delete">            Supprimer   </string>
     
-     <string name="error_name">       Vous devez entrer un nom. </string>
+     
      
      <string name="modif">         Modifier           </string>
      <string name="modif_picture"> Modifier l\'image  </string>

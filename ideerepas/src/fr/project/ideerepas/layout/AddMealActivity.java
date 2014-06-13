@@ -16,16 +16,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.database.Meals;
+import fr.project.ideerepas.controller.DatabaseController;
 
-public class AddMealLayout extends Activity {
+public class AddMealActivity extends Activity {
 
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
-	private static String TAG = AddMealLayout.class.getName();
-	private Meals func;
+	private static String TAG = AddMealActivity.class.getName();
 	private Uri photo=null;
 	private ImageView imgView;
 
@@ -47,6 +48,14 @@ public class AddMealLayout extends Activity {
 	public void onResume() {
 		super.onResume();
 		setPicture();
+	}
+
+	/**
+	 * Called when user click in the picture.
+	 * @param v
+	 */
+	public void addPicture(View v) {
+		addPicture();
 	}
 
 	/**
@@ -133,7 +142,7 @@ public class AddMealLayout extends Activity {
 			Log.i(TAG, "onActivityResutl() "+ e.toString());
 		}
 	}
-	
+
 	private void setPicture() {
 		if( photo == null ) {
 			imgView.setImageResource(R.drawable.light_ic_unknow);
@@ -146,15 +155,11 @@ public class AddMealLayout extends Activity {
 	}
 
 	public void addNew() {
-		this.func = new Meals(getApplicationContext());
-
 		// Field verification.
 		EditText editName = (EditText) findViewById(R.id.name_edit);
 
-
 		if (editName.getText().toString().isEmpty()) {
-			editName.setError(this.getResources().getString(R.string.error_name));
-			func = null;
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
 			return;
 		}
 
@@ -174,7 +179,8 @@ public class AddMealLayout extends Activity {
 					File test = new File(photo.getPath());
 					if( test.exists() ) picture =  photo.getPath();
 				}
-				func.add(name, picture, -1);
+				DatabaseController.getInstanceMeals(getApplicationContext())
+				.add(name, picture, -1);
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
 
 				finish();
