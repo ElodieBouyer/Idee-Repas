@@ -2,9 +2,7 @@ package fr.project.ideerepas.layout;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,8 +31,6 @@ public class ModifMeal extends Activity {
 	private static final int REQUEST_IMAGE_CAPTURE = 1;
 	private int mealID;
 	private IngredientLayout igd;
-	private List<String> igdList = null;
-
 
 	@Override
 	public void onCreate(Bundle bundle) {
@@ -174,11 +170,8 @@ public class ModifMeal extends Activity {
 				}
 
 				DatabaseController.getInstanceMeals(getApplicationContext()).update(mealID, name.getText().toString(), pcr, -1);
-
-				for(String n : igdList) {
-					DatabaseController.getInstanceIngredientMeal(getApplicationContext())
-					.add(mealID, DatabaseController.getInstanceIngredient(getApplicationContext()).getID(n));
-				}
+				igd.addInDatabase(mealID);
+				igd.deleteInDatabase(mealID);
 
 				finish();
 				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
@@ -243,18 +236,20 @@ public class ModifMeal extends Activity {
 		EditText igdEdit   = (EditText) findViewById(R.id.newIngredient);
 		String igdName = igdEdit.getText().toString();
 
-		if( igdName.isEmpty()) return ;
-		if( igdList == null ) igdList = new ArrayList<String>();
+		if( igdName.isEmpty()) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
+			igdEdit.setText("");
+			return ;
+		}
 
-		if( (!igdList.isEmpty() && igdList.contains(igdName) ) || 
-				DatabaseController.getInstanceIngredientMeal(getApplicationContext()).contain(mealID, igdName)) {
+		if( !igd.getIngredientList().isEmpty() && igd.getIngredientList().contains(igdName) ) {
 			Toast.makeText(getApplicationContext(), R.string.popup_bad_igd, Toast.LENGTH_SHORT).show();
 			igdEdit.setText("");
 			return;
 		}
 
 		DatabaseController.getInstanceIngredient(getApplicationContext()).add(igdName);
-		igdList.add(igdName);
+		igd.getIngredientList().add(igdName);
 		igd.newIngredient(igdName);
 		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
 		tableIgd.removeAllViews();

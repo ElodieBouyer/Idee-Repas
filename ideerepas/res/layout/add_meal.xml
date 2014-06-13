@@ -42,8 +42,42 @@
             android:layout_height="100dp"
             android:layout_gravity="center"
             android:layout_margin="15dp"
-            android:src="@drawable/light_ic_unknow"
-            android:onClick="addPicture" />
+            android:onClick="addPicture"
+            android:src="@drawable/light_ic_unknow" />
+
+        <LinearLayout
+            android:id="@+id/list_ingredient"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:orientation="vertical" >
+        </LinearLayout>
+        
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <EditText
+                android:id="@+id/newIngredient"
+                style="@style/layoutText"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="2dp"
+                android:inputType="textPersonName"
+                android:maxLength="100" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:onClick="addIngredient"
+                android:src="@drawable/light_ic_action_new" />
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>

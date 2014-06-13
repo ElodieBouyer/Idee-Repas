@@ -31,6 +31,7 @@
     <string name="popup_deleting_meal"> Voulez-vous supprimer ce repas ? </string>
     <string name="popup_bad_igd">       Ce repas contient déjà cet ingredient.</string>
     <string name="popup_bad_meal_name"> Vous devez entrer un nom. </string>
+    <string name="popup_bad_meal">      Vous disposez déjà d\'un repas portant ce nom. </string>
     
     <string name="ok">                OK          </string>
     <string name="cancel">            Annuler     </string>

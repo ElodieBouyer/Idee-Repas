@@ -22,7 +22,7 @@
     <application
         android:icon="@drawable/dark_ic_app"
         android:label="@string/app_name"
-        android:theme="@android:style/Theme.DeviceDefault.Light.DarkActionBar"
+        android:theme="@style/appStyle"
         android:uiOptions="splitActionBarWhenNarrow" >
 
         <!-- Meals List activity. -->

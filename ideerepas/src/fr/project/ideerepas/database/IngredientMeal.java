@@ -119,7 +119,7 @@ public class IngredientMeal {
 		Log.i("IngredientMeal.add", "add");
 		try {
 			if( contain(idMeal, idIngredient) ) return;
-			
+			Log.i(getClass().getName(), "Ajout de "+idMeal + " et " + idIngredient);
 			open();
 			ContentValues values = new ContentValues();
 
@@ -134,6 +134,10 @@ public class IngredientMeal {
 			Log.i("IngredientMeal.add", e.toString());
 		}
 	}
+	
+	public void delete(String meal, String igd) {
+		delete(mealDatabase.getId(meal), igdDatabase.getID(igd));
+	}
 
 
 	public void delete(int idMeal, int idIngredient) {
@@ -141,9 +145,11 @@ public class IngredientMeal {
 			
 			if( !contain(idMeal, idIngredient)) return;
 			open();
-			this.db.delete(TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL, 
-					TABLEINGREDIENTMEAL.COL_ID_INGREDIENT + " = " + idIngredient + 
+
+			int nb = this.db.delete(TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL, 
+					TABLEINGREDIENTMEAL.COL_ID_INGREDIENT + " = " + idIngredient + " AND " +
 					TABLEINGREDIENTMEAL.COL_ID_MEAL       + " = " + idMeal , null);
+			Log.i("contain", "nb sup="+nb);
 			close();
 		}
 		catch(Exception e) {

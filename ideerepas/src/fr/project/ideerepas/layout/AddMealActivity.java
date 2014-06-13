@@ -2,7 +2,9 @@ package fr.project.ideerepas.layout;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.controller.DatabaseController;
@@ -29,7 +32,8 @@ public class AddMealActivity extends Activity {
 	private static String TAG = AddMealActivity.class.getName();
 	private Uri photo=null;
 	private ImageView imgView;
-
+	private IngredientLayout igd;
+	private List<String> igdList = null;
 	/**
 	 * Called when the activity launched.
 	 */
@@ -42,12 +46,20 @@ public class AddMealActivity extends Activity {
 		setTitle(getString(R.string.new_meal));
 
 		imgView  = (ImageView) findViewById(R.id.picture);
+
+		setIngredient();
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
 		setPicture();
+	}
+
+	private void setIngredient() {
+		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
+		igd = new IngredientLayout(getApplicationContext(), null, true);
+		tableIgd.addView(igd.getTableLayout());
 	}
 
 	/**
@@ -157,9 +169,15 @@ public class AddMealActivity extends Activity {
 	public void addNew() {
 		// Field verification.
 		EditText editName = (EditText) findViewById(R.id.name_edit);
+		String name = editName.getText().toString();
 
-		if (editName.getText().toString().isEmpty()) {
+		if (name.isEmpty()) {
 			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		if( DatabaseController.getInstanceMeals(getApplicationContext()).exist(name) ) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal, Toast.LENGTH_SHORT).show();
+			editName.setText("");
 			return;
 		}
 
@@ -167,7 +185,6 @@ public class AddMealActivity extends Activity {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
 		builder.setMessage(R.string.popup_adding_meal)
-
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				EditText editName = (EditText) findViewById(R.id.name_edit);
@@ -179,9 +196,14 @@ public class AddMealActivity extends Activity {
 					File test = new File(photo.getPath());
 					if( test.exists() ) picture =  photo.getPath();
 				}
-				DatabaseController.getInstanceMeals(getApplicationContext())
+				int idMeal = DatabaseController.getInstanceMeals(getApplicationContext())
 				.add(name, picture, -1);
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
+
+				for(String n : igdList) {
+					DatabaseController.getInstanceIngredientMeal(getApplicationContext())
+					.add(idMeal, DatabaseController.getInstanceIngredient(getApplicationContext()).getID(n));
+				}
 
 				finish();
 				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
@@ -196,6 +218,28 @@ public class AddMealActivity extends Activity {
 		});
 
 		builder.show();
+	}
+
+	public void addIngredient(View v) {
+		EditText igdEdit   = (EditText) findViewById(R.id.newIngredient);
+		String igdName = igdEdit.getText().toString();
+
+		if( igdName.isEmpty()) return ;
+		if( igdList == null ) igdList = new ArrayList<String>();
+
+		if( !igdList.isEmpty() && igdList.contains(igdName)) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_igd, Toast.LENGTH_SHORT).show();
+			igdEdit.setText("");
+			return;
+		}
+
+		DatabaseController.getInstanceIngredient(getApplicationContext()).add(igdName);
+		igdList.add(igdName);
+		igd.newIngredient(igdName);
+		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
+		tableIgd.removeAllViews();
+		tableIgd.addView(igd.getTableLayout());
+		igdEdit.setText("");
 	}
 
 }

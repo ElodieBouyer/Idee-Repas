@@ -1,15 +1,20 @@
 package fr.project.ideerepas.layout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
 import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
+import android.widget.Toast;
 import fr.project.ideerepas.R;
+import fr.project.ideerepas.controller.DatabaseController;
 import fr.project.ideerepas.database.IngredientMeal;
 
 public class IngredientLayout {
@@ -17,16 +22,23 @@ public class IngredientLayout {
 	private TableLayout tableIgd = null;
 	private Context context;
 	private IngredientMeal igdMeal;
+	private List<String> igdList;
+	private List<String> igdDelete;
+	private String mealName;
 
 	public IngredientLayout(Context context, String mealName, Boolean add) {
-		this.context  = context;
-		this.igdMeal  = new IngredientMeal(context);
-		this.tableIgd = new TableLayout(context);
+		this.context   = context;
+		this.igdMeal   = new IngredientMeal(context);
+		this.tableIgd  = new TableLayout(context);
+		this.igdList   = new ArrayList<String>();
+		this.igdDelete = new ArrayList<String>();
+		this.mealName  = mealName;
 
+		if(mealName == null) return ;
 		List<String> names = igdMeal.getIngredient(mealName);
 		if( names != null) {
 			for( String name : names) {
-				addIngredient(name);
+				addIngredient(name, add);
 			}
 		}
 		else {
@@ -35,30 +47,48 @@ public class IngredientLayout {
 	}
 
 	public void newIngredient(String igdName) {
-		addIngredient(igdName);
+		addIngredient(igdName, true);
 	}
-	
-	private void addIngredient(String igdName) {
+
+	private void addIngredient(String igdName, boolean modeAdd) {
+		igdList.add(igdName);
 		TableRow    row    = new TableRow(context);
 		TextView    name   = new TextView(context);
-		ImageButton delete = new ImageButton(context);
 
 		row.setGravity(Gravity.CENTER);
 		row.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,
 				LayoutParams.MATCH_PARENT));
 
+		name.setEnabled(false);
+		name.setFocusable(false);
+		name.setBackgroundResource(R.drawable.edit_style);
 		name.setText(igdName);
 		name.setTextAppearance(context, R.style.layoutText);
 		name.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT,
 				LayoutParams.WRAP_CONTENT));
 		name.setPadding(10, 10, 10, 10);
 
-		delete.setBackgroundResource(R.drawable.dark_ic_action_discard);
-		delete.setPadding(10, 5, 10, 10);
-
-
 		row.addView(name);
-		row.addView(delete);
+
+		if( modeAdd ) {
+			ImageButton delete = new ImageButton(context);
+
+			delete.setBackgroundResource(R.drawable.light_ic_action_discard);
+			delete.setPadding(30, 5, 10, 10);
+			delete.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					TableRow r = (TableRow) v.getParent();
+					TextView e = (TextView) r.getVirtualChildAt(0);
+					igdList.remove(e.getText().toString());
+					igdDelete.add(e.getText().toString());
+					tableIgd.removeView(r);
+					Toast.makeText(context, "Ligne supprimée", Toast.LENGTH_SHORT).show();
+				}
+			});
+
+			row.addView(delete);
+		}
 
 		tableIgd.addView(row);
 	}
@@ -83,5 +113,24 @@ public class IngredientLayout {
 
 	public TableLayout getTableLayout() {
 		return tableIgd;
+	}
+
+	public List<String> getIngredientList() {
+		return igdList;
+	}
+	
+	
+	public void addInDatabase(int mealId) {
+		for(String n : igdList ) {
+			int idIgd  = DatabaseController.getInstanceIngredient(context).getID(n);
+			DatabaseController.getInstanceIngredientMeal(context).add(mealId, idIgd);
+		}
+	}
+	
+	public void deleteInDatabase(int mealId) {
+		for(String n : igdDelete ) {
+			int idIgd  = DatabaseController.getInstanceIngredient(context).getID(n);
+			DatabaseController.getInstanceIngredientMeal(context).delete(mealId, idIgd);
+		}
 	}
 }

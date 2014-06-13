@@ -41,8 +41,31 @@ public class Meals {
 		this.db.close();
 	}
 
+	public boolean exist(String name) {
+		try {
+			open();
+			Cursor c = this.db.query(
+					TABLEMEAL.TAB_MEALS,                  // Table name.
+					TABLEMEAL.ALL_COLUMNS,                // Columns.
+					TABLEMEAL.COL_NAME + " LIKE \"" + name + "\"", // Selection.
+					null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				close();
+				return false;
+			}
+		}
+		catch(Exception e) {
+			Log.i(TAG+"add", e.toString());
+		}
+		close();
+		return true;
+	}
+
 	public Uri getPicture(String name) {
 		try {
+			if( !exist(name)) return null;
+			
 			open();
 			Cursor c = this.db.query(
 					TABLEMEAL.TAB_MEALS,                  // Table name.
@@ -66,9 +89,10 @@ public class Meals {
 		}
 		return null;
 	}
-	
+
 	public int getId(String name) {
 		try {
+			if( !exist(name)) return -1;
 			open();
 			Cursor c = this.db.query(
 					TABLEMEAL.TAB_MEALS,                  // Table name.
@@ -82,7 +106,7 @@ public class Meals {
 
 			c.moveToFirst();
 			int id = c.getInt(TABLEMEAL.NUM_COL_ID);
-			
+
 			close();
 			return id;
 
@@ -165,9 +189,10 @@ public class Meals {
 	/**
 	 * Add a new meal in the database.
 	 */
-	public void add(String name, String picture, int recipe) {
+	public int add(String name, String picture, int recipe) {
 
 		try {
+			if(exist(name)) return -1;
 			open();
 			ContentValues values = new ContentValues();
 
@@ -175,12 +200,14 @@ public class Meals {
 			values.put(TABLEMEAL.COL_PICTURE, picture);
 			values.put(TABLEMEAL.COL_RECIPE_ID, recipe);
 
-			this.db.insert(TABLEMEAL.TAB_MEALS, null,values);
+			int id = (int) this.db.insert(TABLEMEAL.TAB_MEALS, null,values);
 			close();
+			return id;
 		}
 		catch(Exception e) {
 			Log.i(TAG+"add", e.toString());
 		}
+		return -1;
 	}
 
 	public void update(int id, String name, String picture, int recipe) {
@@ -201,7 +228,7 @@ public class Meals {
 			Log.i(TAG+"update", e.toString());
 		}
 	}
-	
+
 	public void delete(String name) {
 		try {
 			if( getPicture(name) != null ) {
@@ -210,7 +237,7 @@ public class Meals {
 					file.delete();
 				}
 			}
-			
+			if( !exist(name)) return;
 			open();
 			int nbModif = this.db.delete(TABLEMEAL.TAB_MEALS, 
 					TABLEMEAL.COL_NAME + " LIKE \"" + name + "\"" , null);
