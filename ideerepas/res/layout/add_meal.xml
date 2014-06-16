@@ -45,6 +45,15 @@
             android:onClick="addPicture"
             android:src="@drawable/light_ic_unknow" />
 
+        <TextView
+            android:id="@+id/ingredient"
+            style="@style/layoutText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:text="@string/ingredients" />
+        
         <LinearLayout
             android:id="@+id/list_ingredient"
             android:layout_width="match_parent"

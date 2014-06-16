@@ -8,7 +8,6 @@
         android:id="@+id/icon"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="6dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp">
     </ImageView>
@@ -17,6 +16,7 @@
         android:id="@+id/label"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginRight="10dp"
         style="@style/layoutText"
         android:gravity="center">
     </TextView>

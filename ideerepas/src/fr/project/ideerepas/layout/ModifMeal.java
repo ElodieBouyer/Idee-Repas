@@ -197,9 +197,7 @@ public class ModifMeal extends Activity {
 		super.onActivityResult(requestCode,requestCode,data);
 
 		try {
-			// *** On la met dans l'ImageView.
-			if( photo != null ) picture.setImageURI(photo);
-			else picture.setImageResource(R.drawable.dark_ic_action_discard);
+			setPicture();
 		}
 		catch(Exception e) {
 

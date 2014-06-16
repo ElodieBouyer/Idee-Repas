@@ -200,10 +200,8 @@ public class AddMealActivity extends Activity {
 				.add(name, picture, -1);
 				Log.i(TAG, "Ajout de "+name+" dans la base de données.");
 
-				for(String n : igdList) {
-					DatabaseController.getInstanceIngredientMeal(getApplicationContext())
-					.add(idMeal, DatabaseController.getInstanceIngredient(getApplicationContext()).getID(n));
-				}
+				igd.addInDatabase(idMeal);
+				igd.deleteInDatabase(idMeal);
 
 				finish();
 				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
@@ -224,17 +222,20 @@ public class AddMealActivity extends Activity {
 		EditText igdEdit   = (EditText) findViewById(R.id.newIngredient);
 		String igdName = igdEdit.getText().toString();
 
-		if( igdName.isEmpty()) return ;
-		if( igdList == null ) igdList = new ArrayList<String>();
+		if( igdName.isEmpty()) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
+			igdEdit.setText("");
+			return ;
+		}
 
-		if( !igdList.isEmpty() && igdList.contains(igdName)) {
+		if( !igd.getIngredientList().isEmpty() && igd.getIngredientList().contains(igdName) ) {
 			Toast.makeText(getApplicationContext(), R.string.popup_bad_igd, Toast.LENGTH_SHORT).show();
 			igdEdit.setText("");
 			return;
 		}
 
 		DatabaseController.getInstanceIngredient(getApplicationContext()).add(igdName);
-		igdList.add(igdName);
+		igd.getIngredientList().add(igdName);
 		igd.newIngredient(igdName);
 		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
 		tableIgd.removeAllViews();
