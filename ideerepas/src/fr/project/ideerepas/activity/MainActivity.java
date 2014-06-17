@@ -31,6 +31,7 @@ import fr.project.ideerepas.R;
 import fr.project.ideerepas.adapter.TabsPagerAdapter;
 import fr.project.ideerepas.controller.DatabaseController;
 import fr.project.ideerepas.fragment.AddMealFragment;
+import fr.project.ideerepas.fragment.MealFragment;
 import fr.project.ideerepas.fragment.MealListFragment;
 
 /**
@@ -40,8 +41,9 @@ import fr.project.ideerepas.fragment.MealListFragment;
 public class MainActivity extends FragmentActivity implements TabListener {
 
 	private final int MENU = 0;
-	private final int MEAL = 1;
+	private final int MEAL_LIST = 1;
 	private final int ADD  = 2;
+	private final int MEAL = 3;
 
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
@@ -102,12 +104,16 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		case MENU:
 			break;
 
-		case MEAL:
+		case MEAL_LIST:
 			inflater.inflate(R.menu.action_add, m);
 			break;
 
 		case ADD:
 			inflater.inflate(R.menu.actions_back_camera_save, m);
+			break;
+			
+		case MEAL:
+			inflater.inflate(R.menu.actions_back_edit_delete,m);
 		default:
 			break;
 		}
@@ -126,11 +132,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		switch (item.getItemId()) {
 
 		case R.id.action_back:
-			currentFragment = new MealListFragment();
-			transaction.replace(R.id.fragment_container, currentFragment);
-			transaction.commit();
-			position = MEAL;
-			onCreateOptionsMenu(menu);
+			returnInMealList();
 			return true;
 
 		case R.id.action_add:
@@ -148,6 +150,13 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		case R.id.action_save:
 			addNew();
 			return true;
+			
+		case R.id.action_delete:
+			deleteMeal();
+			return true;
+			
+		case R.id.action_modif:
+			return true;
 
 		default:
 			return super.onOptionsItemSelected(item);
@@ -161,16 +170,20 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	@Override
 	public void onTabSelected(Tab tab, FragmentTransaction ft) {
 		viewPager.setCurrentItem(tab.getPosition());
-		
+
 		if(  tab.getPosition() == MENU ) {
 			position = MENU;
 		}
 		else if( currentFragment.getClass().getName().equals(MealListFragment.class.getName()))  {
-			position = MEAL;
+			position = MEAL_LIST;
 			ft.replace(R.id.fragment_container,currentFragment);
 		}
 		else if( currentFragment.getClass().getName().equals(AddMealFragment.class.getName()))  {
 			position = ADD;
+			ft.replace(R.id.fragment_container,currentFragment);
+		}
+		else if( currentFragment.getClass().getName().equals(MealFragment.class.getName())) {
+			position = MEAL;
 			ft.replace(R.id.fragment_container,currentFragment);
 		}
 
@@ -180,6 +193,15 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
 		menu.clear();
+	}
+
+	public void clickOnList(String meal) {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		currentFragment = new MealFragment(meal);
+		transaction.replace(R.id.fragment_container, currentFragment);
+		transaction.commit();
+		position = MEAL;
+		onCreateOptionsMenu(menu);
 	}
 
 	/**
@@ -205,6 +227,42 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		startActivityForResult(intent, 1);
 	}
 
+	/**
+	 * To add an ingredient to a meal.
+	 * @param v
+	 */
+	public void addIngredient(View v) {
+		EditText igdEdit   = (EditText) findViewById(R.id.newIngredient);
+		String igdName = igdEdit.getText().toString();
+		IngredientLayout igd = null;
+
+		switch(position) {
+		case ADD:
+			igd = ((AddMealFragment) currentFragment).getIngredientLayout();
+		}
+
+		if( igdName.isEmpty()) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
+			igdEdit.setText("");
+			return ;
+		}
+
+		if( !igd.getIngredientList().isEmpty() && igd.getIngredientList().contains(igdName) ) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_igd, Toast.LENGTH_SHORT).show();
+			igdEdit.setText("");
+			return;
+		}
+
+		DatabaseController.getInstanceIngredient(getApplicationContext()).add(igdName);
+		igd.getIngredientList().add(igdName);
+		igd.newIngredient(igdName);
+		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
+		tableIgd.removeAllViews();
+		tableIgd.addView(igd.getTableLayout());
+		igdEdit.setText("");
+	}
+	
+	
 	/**
 	 * Called to prepare picture.
 	 * @return The picture as a file format.
@@ -271,10 +329,11 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		}
 	}
 
+	
 	/**
 	 * To save the new meal.
 	 */
-	public void addNew() {
+	private void addNew() {
 		// Field verification.
 		EditText editName = (EditText) findViewById(R.id.name_edit);
 		String name = editName.getText().toString();
@@ -315,6 +374,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 				igd.addInDatabase(idMeal);
 				igd.deleteInDatabase(idMeal);
+				
+				returnInMealList();
 			}
 		})
 
@@ -327,39 +388,32 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		builder.show();
 	}
 
-	/**
-	 * To add an ingredient to a meal.
-	 * @param v
-	 */
-	public void addIngredient(View v) {
-		EditText igdEdit   = (EditText) findViewById(R.id.newIngredient);
-		String igdName = igdEdit.getText().toString();
-		IngredientLayout igd = null;
-
-		switch(position) {
-		case ADD:
-			igd = ((AddMealFragment) currentFragment).getIngredientLayout();
-		}
-
-		if( igdName.isEmpty()) {
-			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
-			igdEdit.setText("");
-			return ;
-		}
-
-		if( !igd.getIngredientList().isEmpty() && igd.getIngredientList().contains(igdName) ) {
-			Toast.makeText(getApplicationContext(), R.string.popup_bad_igd, Toast.LENGTH_SHORT).show();
-			igdEdit.setText("");
-			return;
-		}
-
-		DatabaseController.getInstanceIngredient(getApplicationContext()).add(igdName);
-		igd.getIngredientList().add(igdName);
-		igd.newIngredient(igdName);
-		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
-		tableIgd.removeAllViews();
-		tableIgd.addView(igd.getTableLayout());
-		igdEdit.setText("");
+	private void returnInMealList() {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		currentFragment = new MealListFragment();
+		transaction.replace(R.id.fragment_container, currentFragment);
+		transaction.commit();
+		position = MEAL_LIST;
+		onCreateOptionsMenu(menu);
 	}
+	
+	private void deleteMeal() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		
+		builder.setMessage(R.string.popup_deleting_meal);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				((MealFragment) currentFragment).deleteMeal();
+				returnInMealList();
+			}
+		});
+		builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
 
+			}
+		});
+
+		builder.show();
+	}
+	
 }

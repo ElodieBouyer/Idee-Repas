@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +14,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.activity.MealLayout;
+import fr.project.ideerepas.activity.MainActivity;
 import fr.project.ideerepas.adapter.ListRowAdapter;
 import fr.project.ideerepas.database.Meals;
 
@@ -30,7 +30,7 @@ public class MealListFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View mealView = inflater.inflate(R.layout.list_meal, container, false);
-
+		Log.i("BOUH", "créee");
 		if (this.m_list == null) {
 			this.m_list = new Meals(getActivity().getApplicationContext());
 		}
@@ -64,16 +64,20 @@ public class MealListFragment extends Fragment {
 		ListRowAdapter adapter = new ListRowAdapter(getActivity().getApplicationContext(), names, pictures);
 		lview = (ListView) mealView.findViewById(R.id.listView);
 		lview.setAdapter(adapter);
-
 		lview.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				Intent intent = new Intent(getActivity().getApplicationContext(), MealLayout.class);
-				intent.putExtra("meal", names[position]);
-				startActivity(intent);
-				m_list = null;
-			} 
+				( (MainActivity) getActivity()).clickOnList(names[position]);
+			}
 		});
+	}
+
+	public ListView getListView() {
+		return lview;
+	}
+	
+	public String getNameAt(int position) {
+		return names[position];
 	}
 
 }

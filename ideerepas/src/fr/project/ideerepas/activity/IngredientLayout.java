@@ -24,7 +24,6 @@ public class IngredientLayout {
 	private IngredientMeal igdMeal;
 	private List<String> igdList;
 	private List<String> igdDelete;
-	private String mealName;
 
 	public IngredientLayout(Context context, String mealName, Boolean add) {
 		this.context   = context;
@@ -32,7 +31,6 @@ public class IngredientLayout {
 		this.tableIgd  = new TableLayout(context);
 		this.igdList   = new ArrayList<String>();
 		this.igdDelete = new ArrayList<String>();
-		this.mealName  = mealName;
 
 		if(mealName == null) return ;
 		List<String> names = igdMeal.getIngredient(mealName);
@@ -118,15 +116,15 @@ public class IngredientLayout {
 	public List<String> getIngredientList() {
 		return igdList;
 	}
-	
-	
+
+
 	public void addInDatabase(int mealId) {
 		for(String n : igdList ) {
 			int idIgd  = DatabaseController.getInstanceIngredient(context).getID(n);
 			DatabaseController.getInstanceIngredientMeal(context).add(mealId, idIgd);
 		}
 	}
-	
+
 	public void deleteInDatabase(int mealId) {
 		for(String n : igdDelete ) {
 			int idIgd  = DatabaseController.getInstanceIngredient(context).getID(n);
