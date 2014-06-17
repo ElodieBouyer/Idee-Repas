@@ -5,16 +5,15 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-
     <TextView
         android:id="@+id/emptyText"
+        style="@style/emptyText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:gravity="center"
         android:text="@string/empty_meals"
-        android:visibility="gone" 
-        style="@style/emptyText">
+        android:visibility="gone" >
     </TextView>
 
     <ListView
@@ -23,8 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_marginTop="10dp"
-        android:scrollbars="vertical">
+        android:scrollbars="vertical" >
     </ListView>
-
 
 </LinearLayout>

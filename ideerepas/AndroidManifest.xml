@@ -26,8 +26,7 @@
         android:uiOptions="splitActionBarWhenNarrow" >
 
         <!-- Meals List activity. -->
-        <activity
-            android:name="fr.project.ideerepas.layout.ListMealLayout">
+        <activity android:name="fr.project.ideerepas.activity.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -35,20 +34,24 @@
             </intent-filter>
         </activity>
 
+        <!-- Meals List activity. -->
+        <activity android:name="fr.project.ideerepas.activity.ListMealActivity" >
+        </activity>
+
         <!-- Adding form activity. -->
         <activity
-            android:name="fr.project.ideerepas.layout.AddMealActivity"
-            android:parentActivityName="fr.project.ideerepas.layout.ListMealLayout" />
+            android:name="fr.project.ideerepas.activity.AddMealActivity"
+            android:parentActivityName="fr.project.ideerepas.activity.ListMealActivity" />
 
         <!-- Meal detail -->
         <activity
-            android:name="fr.project.ideerepas.layout.MealLayout"
-            android:parentActivityName="fr.project.ideerepas.layout.ListMealLayout" />
+            android:name="fr.project.ideerepas.activity.MealLayout"
+            android:parentActivityName="fr.project.ideerepas.activity.ListMealActivity" />
 
         <!-- Meal modif -->
         <activity
-            android:name="fr.project.ideerepas.layout.ModifMeal"
-            android:parentActivityName="fr.project.ideerepas.layout.ListMealLayout" />
+            android:name="fr.project.ideerepas.activity.ModifMeal"
+            android:parentActivityName="fr.project.ideerepas.activity.ListMealActivity" />
     </application>
 
 </manifest>

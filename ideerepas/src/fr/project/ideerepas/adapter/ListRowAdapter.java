@@ -1,4 +1,4 @@
-package fr.project.ideerepas.layout;
+package fr.project.ideerepas.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
 
-public class ListRow extends ArrayAdapter<String> {
+public class ListRowAdapter extends ArrayAdapter<String> {
 
 	private Uri[] picture;
 
@@ -65,7 +65,7 @@ public class ListRow extends ArrayAdapter<String> {
 		img.setImageBitmap(bitmap);
 	}
 
-	public ListRow(Context context, String[] names, String[] pictures)  {
+	public ListRowAdapter(Context context, String[] names, String[] pictures)  {
 		super(context, R.layout.row_list_layout, names);
 
 		this.picture = new Uri[pictures.length];

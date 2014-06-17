@@ -1,4 +1,4 @@
-package fr.project.ideerepas.layout;
+package fr.project.ideerepas.activity;
 
 import java.util.ArrayList;
 import java.util.List;

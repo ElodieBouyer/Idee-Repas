@@ -1,4 +1,4 @@
-package fr.project.ideerepas.layout;
+package fr.project.ideerepas.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -93,8 +93,8 @@ public class MealLayout extends Activity {
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				m_list.delete(name.getText().toString());
-				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
-				startActivity(intent);
+				//Intent intent = new Intent(getApplicationContext(), ListMealActivity.class);
+				//startActivity(intent);
 				finish();
 			}
 		})

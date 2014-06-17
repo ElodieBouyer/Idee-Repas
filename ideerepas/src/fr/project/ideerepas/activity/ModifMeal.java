@@ -1,4 +1,4 @@
-package fr.project.ideerepas.layout;
+package fr.project.ideerepas.activity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -127,8 +127,8 @@ public class ModifMeal extends Activity {
 		.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				DatabaseController.getInstanceMeals(getApplicationContext()).delete(name.getText().toString());
-				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
-				startActivity(intent);
+				//Intent intent = new Intent(getApplicationContext(), ListMealActivity.class);
+				//startActivity(intent);
 				finish();
 			}
 		})
@@ -174,8 +174,8 @@ public class ModifMeal extends Activity {
 				igd.deleteInDatabase(mealID);
 
 				finish();
-				Intent intent = new Intent(getApplicationContext(), ListMealLayout.class);
-				startActivity(intent);
+				//Intent intent = new Intent(getApplicationContext(), ListMealActivity.class);
+				//startActivity(intent);
 			}
 		})
 
