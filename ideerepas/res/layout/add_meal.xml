@@ -37,7 +37,7 @@
             android:text="@string/meal_picture" />
 
         <ImageView
-            android:id="@+id/picture"
+            android:id="@+id/mealPicture"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_gravity="center"

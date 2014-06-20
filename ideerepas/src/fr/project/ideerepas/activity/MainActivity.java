@@ -26,11 +26,12 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.adapter.TabsPagerAdapter;
-import fr.project.ideerepas.controller.DatabaseController;
 import fr.project.ideerepas.fragment.AddMealFragment;
+import fr.project.ideerepas.fragment.EditMealFragment;
 import fr.project.ideerepas.fragment.MealFragment;
 import fr.project.ideerepas.fragment.MealListFragment;
 
@@ -44,6 +45,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	private final int MEAL_LIST = 1;
 	private final int ADD  = 2;
 	private final int MEAL = 3;
+	private final int EDIT = 4;
 
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
@@ -111,9 +113,14 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		case ADD:
 			inflater.inflate(R.menu.actions_back_camera_save, m);
 			break;
-			
+
 		case MEAL:
 			inflater.inflate(R.menu.actions_back_edit_delete,m);
+			break;
+
+		case EDIT:
+			inflater.inflate(R.menu.actions_back_camera_save_delete, m);
+			break;
 		default:
 			break;
 		}
@@ -150,14 +157,28 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		case R.id.action_save:
 			addNew();
 			return true;
-			
+
 		case R.id.action_delete:
 			deleteMeal();
 			return true;
-			
+
 		case R.id.action_modif:
+			String name = ((MealFragment) currentFragment).getName();
+			currentFragment = new EditMealFragment(name);
+			transaction.replace(R.id.fragment_container, currentFragment);
+			transaction.commit();
+			position = EDIT;
+			onCreateOptionsMenu(menu);
 			return true;
 
+		case R.id.action_update:
+			updateMeal();
+			return true;
+
+		case R.id.action_back_meal:
+			String nameMeal = ((EditMealFragment) currentFragment).getName();
+			clickOnList(nameMeal);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -184,6 +205,10 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		}
 		else if( currentFragment.getClass().getName().equals(MealFragment.class.getName())) {
 			position = MEAL;
+			ft.replace(R.id.fragment_container,currentFragment);
+		}
+		else if( currentFragment.getClass().getName().equals(EditMealFragment.class.getName())) {
+			position = EDIT;
 			ft.replace(R.id.fragment_container,currentFragment);
 		}
 
@@ -239,6 +264,10 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		switch(position) {
 		case ADD:
 			igd = ((AddMealFragment) currentFragment).getIngredientLayout();
+			break;
+
+		case EDIT:
+			igd = ((EditMealFragment) currentFragment).getIngredientLayout();
 		}
 
 		if( igdName.isEmpty()) {
@@ -252,8 +281,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 			igdEdit.setText("");
 			return;
 		}
-
-		DatabaseController.getInstanceIngredient(getApplicationContext()).add(igdName);
+		igd.getIngredientDatabase().add(igdName);
 		igd.getIngredientList().add(igdName);
 		igd.newIngredient(igdName);
 		LinearLayout tableIgd  = (LinearLayout) findViewById(R.id.list_ingredient); 
@@ -261,8 +289,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		tableIgd.addView(igd.getTableLayout());
 		igdEdit.setText("");
 	}
-	
-	
+
+
 	/**
 	 * Called to prepare picture.
 	 * @return The picture as a file format.
@@ -309,15 +337,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	private void setPicture() {
 		ImageView img = null;
 
-		switch (position) {
-		case ADD:
-			img = (ImageView) findViewById(R.id.picture);
-			Log.i("MainActivity", "La normalement ca met à jour...");
-			break;
+		img = (ImageView) findViewById(R.id.mealPicture);
 
-		default:
-			break;
-		}
 		if( img == null ) return;
 		if( photo == null ) {
 			img.setImageResource(R.drawable.light_ic_unknow);
@@ -329,7 +350,46 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		}
 	}
 
-	
+	private void updateMeal() {
+		// Field verification.
+		if (((EditMealFragment) currentFragment).getName().isEmpty()) {
+			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
+			return;
+		}
+
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage(R.string.popup_save_meal);
+		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+
+				String pcr=null;
+				String nameMeal = ((EditMealFragment) currentFragment).getName();
+				int idMeal = ((EditMealFragment) currentFragment).getIdMeal();
+				photo = ((EditMealFragment) currentFragment).getMealsDatabase().getPicture(nameMeal);
+				TextView newName = (TextView) findViewById(R.id.mealName);
+
+				if( photo != null ) {
+					File test = new File(photo.getPath());
+					if( test.exists() ) pcr =  photo.getPath();
+				}
+
+				((EditMealFragment) currentFragment).getMealsDatabase().update(
+						idMeal, newName.getText().toString(), pcr, -1);
+				((EditMealFragment) currentFragment).getIngredientLayout().addInDatabase(idMeal);
+				((EditMealFragment) currentFragment).getIngredientLayout().deleteInDatabase(idMeal);
+				returnInMealList();
+			}
+		})
+
+		.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+
+			}
+		});
+
+		builder.show();
+	}
+
 	/**
 	 * To save the new meal.
 	 */
@@ -337,12 +397,13 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		// Field verification.
 		EditText editName = (EditText) findViewById(R.id.name_edit);
 		String name = editName.getText().toString();
+		IngredientLayout igd = ((AddMealFragment) currentFragment).getIngredientLayout(); 
 
 		if (name.isEmpty()) {
 			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal_name, Toast.LENGTH_SHORT).show();
 			return;
 		}
-		if( DatabaseController.getInstanceMeals(getApplicationContext()).exist(name) ) {
+		if( igd.getMealsDatabase().exist(name) ) {
 			Toast.makeText(getApplicationContext(), R.string.popup_bad_meal, Toast.LENGTH_SHORT).show();
 			editName.setText("");
 			return;
@@ -369,12 +430,11 @@ public class MainActivity extends FragmentActivity implements TabListener {
 					File test = new File(photo.getPath());
 					if( test.exists() ) picture =  photo.getPath();
 				}
-				int idMeal = DatabaseController.getInstanceMeals(getApplicationContext())
-						.add(name, picture, -1);
+				int idMeal = igd.getMealsDatabase().add(name, picture, -1);
 
 				igd.addInDatabase(idMeal);
 				igd.deleteInDatabase(idMeal);
-				
+
 				returnInMealList();
 			}
 		})
@@ -396,14 +456,22 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		position = MEAL_LIST;
 		onCreateOptionsMenu(menu);
 	}
-	
+
 	private void deleteMeal() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		
+
 		builder.setMessage(R.string.popup_deleting_meal);
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				((MealFragment) currentFragment).deleteMeal();
+				switch(position) {
+				case MEAL:
+					((MealFragment) currentFragment).deleteMeal();
+					break;
+				case EDIT:
+					((EditMealFragment) currentFragment).deleteMeal();
+					break;
+				}
+
 				returnInMealList();
 			}
 		});
@@ -415,5 +483,5 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 		builder.show();
 	}
-	
+
 }

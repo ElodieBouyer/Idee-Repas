@@ -25,7 +25,7 @@
             </TextView>
 
             <EditText
-                android:id="@+id/name_modif"
+                android:id="@+id/mealName"
                 style="@style/layoutText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,11 +48,11 @@
                 android:text="@string/meal_picture" />
 
             <ImageView
-                android:id="@+id/picture_modif"
+                android:id="@+id/mealPicture"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_marginLeft="5dp"
-                android:onClick="editPicture"
+                android:onClick="addPicture"
                 android:src="@drawable/light_ic_unknow" />
         </LinearLayout>
 

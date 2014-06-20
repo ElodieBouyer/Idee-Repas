@@ -14,23 +14,28 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.controller.DatabaseController;
 import fr.project.ideerepas.database.IngredientMeal;
+import fr.project.ideerepas.database.Ingredients;
+import fr.project.ideerepas.database.Meals;
 
 public class IngredientLayout {
 
 	private TableLayout tableIgd = null;
 	private Context context;
 	private IngredientMeal igdMeal;
+	private Ingredients igdDatabase;
+	private Meals mealsDatabase;
 	private List<String> igdList;
 	private List<String> igdDelete;
 
 	public IngredientLayout(Context context, String mealName, Boolean add) {
-		this.context   = context;
-		this.igdMeal   = new IngredientMeal(context);
-		this.tableIgd  = new TableLayout(context);
-		this.igdList   = new ArrayList<String>();
-		this.igdDelete = new ArrayList<String>();
+		this.context     = context;
+		this.igdMeal     = new IngredientMeal(context);
+		this.igdDatabase = new Ingredients(context);
+		this.tableIgd    = new TableLayout(context);
+		this.mealsDatabase = new Meals(context);
+		this.igdList     = new ArrayList<String>();
+		this.igdDelete   = new ArrayList<String>();
 
 		if(mealName == null) return ;
 		List<String> names = igdMeal.getIngredient(mealName);
@@ -81,7 +86,7 @@ public class IngredientLayout {
 					igdList.remove(e.getText().toString());
 					igdDelete.add(e.getText().toString());
 					tableIgd.removeView(r);
-					Toast.makeText(context, "Ligne supprimée", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "Ingredient supprimé", Toast.LENGTH_SHORT).show();
 				}
 			});
 
@@ -120,15 +125,23 @@ public class IngredientLayout {
 
 	public void addInDatabase(int mealId) {
 		for(String n : igdList ) {
-			int idIgd  = DatabaseController.getInstanceIngredient(context).getID(n);
-			DatabaseController.getInstanceIngredientMeal(context).add(mealId, idIgd);
+			int idIgd  = igdDatabase.getID(n);
+			igdMeal.add(mealId, idIgd);
 		}
 	}
 
 	public void deleteInDatabase(int mealId) {
 		for(String n : igdDelete ) {
-			int idIgd  = DatabaseController.getInstanceIngredient(context).getID(n);
-			DatabaseController.getInstanceIngredientMeal(context).delete(mealId, idIgd);
+			int idIgd  = igdDatabase.getID(n);
+			igdMeal.delete(mealId, idIgd);
 		}
+	}
+
+	public Ingredients getIngredientDatabase() {
+		return igdDatabase;
+	}
+
+	public Meals getMealsDatabase() {
+		return mealsDatabase;
 	}
 }

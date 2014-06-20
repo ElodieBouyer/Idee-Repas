@@ -66,4 +66,8 @@ public class MealFragment extends Fragment {
 	public void deleteMeal() {
 		m_list.delete(name);
 	}
+	
+	public String getName() {
+		return name;
+	}
 }
