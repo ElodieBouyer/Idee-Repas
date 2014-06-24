@@ -34,24 +34,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Meals List activity. -->
-        <activity android:name="fr.project.ideerepas.activity.ListMealActivity" >
-        </activity>
-
-        <!-- Adding form activity. -->
-        <activity
-            android:name="fr.project.ideerepas.activity.AddMealActivity"
-            android:parentActivityName="fr.project.ideerepas.activity.ListMealActivity" />
-
-        <!-- Meal detail -->
-        <activity
-            android:name="fr.project.ideerepas.activity.MealLayout"
-            android:parentActivityName="fr.project.ideerepas.activity.ListMealActivity" />
-
-        <!-- Meal modif -->
-        <activity
-            android:name="fr.project.ideerepas.activity.ModifMeal"
-            android:parentActivityName="fr.project.ideerepas.activity.ListMealActivity" />
     </application>
 
 </manifest>

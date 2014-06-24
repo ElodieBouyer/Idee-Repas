@@ -5,7 +5,6 @@ import java.util.Map;
 
 import android.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +29,6 @@ public class MealListFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View mealView = inflater.inflate(R.layout.list_meal, container, false);
-		Log.i("BOUH", "créee");
 		if (this.m_list == null) {
 			this.m_list = new Meals(getActivity().getApplicationContext());
 		}
@@ -75,7 +73,7 @@ public class MealListFragment extends Fragment {
 	public ListView getListView() {
 		return lview;
 	}
-	
+
 	public String getNameAt(int position) {
 		return names[position];
 	}

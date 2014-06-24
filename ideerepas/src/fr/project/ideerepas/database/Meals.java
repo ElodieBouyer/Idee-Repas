@@ -116,6 +116,37 @@ public class Meals {
 		}
 		return -1;
 	}
+	
+	public int [] getIds() {
+		try {
+			open();
+			Cursor c = this.db.query(
+					TABLEMEAL.TAB_MEALS,                  // Table name.
+					TABLEMEAL.ALL_COLUMNS,                // Columns.
+					null, null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				return null;
+			}
+			int[] ids = new int [c.getCount()];
+			int i = 0;
+			
+			c.moveToFirst();
+			while (c.isAfterLast() == false) {
+				ids[i] = c.getInt(TABLEMEAL.NUM_COL_ID);
+				c.moveToNext();
+				i++;
+			}
+
+			close();
+			return ids;
+
+		}
+		catch(Exception e) {
+			Log.i(TAG+"add", e.toString());
+		}
+		return null;
+	}
 
 	/**
 	 * Get all meals name.

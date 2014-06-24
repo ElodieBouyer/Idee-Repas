@@ -34,6 +34,7 @@ import fr.project.ideerepas.fragment.AddMealFragment;
 import fr.project.ideerepas.fragment.EditMealFragment;
 import fr.project.ideerepas.fragment.MealFragment;
 import fr.project.ideerepas.fragment.MealListFragment;
+import fr.project.ideerepas.fragment.MenuFragment;
 
 /**
  * @author elodie.bouyer@hotmail.fr
@@ -50,7 +51,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
 	private ActionBar actionBar;
-	private int position = 0;
+	private int position = MENU;
 	private Menu menu = null;
 	private Fragment currentFragment = new MealListFragment();
 	private Uri photo=null;
@@ -99,15 +100,19 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu m) {
+		if( m == null ) return false;
+		
 		MenuInflater inflater = getMenuInflater();
-		if( m != null ) m.clear();
-		Log.i("POSITION", " " + position);
+		m.clear();
+
 		switch (position) {
-		case MENU:
+		case MENU:	
+			inflater.inflate(R.menu.action_generate_delete, m);
 			break;
 
 		case MEAL_LIST:
 			inflater.inflate(R.menu.action_add, m);
+
 			break;
 
 		case ADD:
@@ -179,6 +184,11 @@ public class MainActivity extends FragmentActivity implements TabListener {
 			String nameMeal = ((EditMealFragment) currentFragment).getName();
 			clickOnList(nameMeal);
 			return true;
+			
+		case R.id.action_generate:
+			generate();
+			return true;
+
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -483,5 +493,36 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 		builder.show();
 	}
+	
+	private void generate() {
+		( (MenuFragment) mAdapter.getItem(MENU)).generateMenu();
+	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

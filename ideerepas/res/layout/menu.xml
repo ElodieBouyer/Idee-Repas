@@ -4,10 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
+    <ListView
+        android:id="@+id/menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Menu" />
+        android:layout_gravity="top"
+        android:layout_marginTop="10dp"
+        android:scrollbars="vertical" >
+    </ListView>
 
 </RelativeLayout>

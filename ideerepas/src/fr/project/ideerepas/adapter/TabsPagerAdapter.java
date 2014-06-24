@@ -8,6 +8,9 @@ import fr.project.ideerepas.fragment.MenuFragment;
 
 public class TabsPagerAdapter extends FragmentPagerAdapter {
 
+	private MenuFragment menuFragent = null;
+	private ContainerFragment containerFragment = null;
+
 	public TabsPagerAdapter(FragmentManager fm) {
 		super(fm);
 	}
@@ -17,9 +20,15 @@ public class TabsPagerAdapter extends FragmentPagerAdapter {
 
 		switch (index) {
 		case 0:
-			return new MenuFragment();
+			if( menuFragent == null) {
+				menuFragent =  new MenuFragment();
+			}
+			return menuFragent;
 		case 1:
-			return new ContainerFragment();	
+			if( containerFragment == null) {
+				containerFragment = new ContainerFragment();
+			}
+			return containerFragment;
 		}
 		return null;
 	}
