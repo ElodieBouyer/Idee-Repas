@@ -23,7 +23,7 @@ public class ListRowAdapter extends ArrayAdapter<String> {
 		LayoutInflater inflater = (LayoutInflater)
 				getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-		View rowView = inflater.inflate(R.layout.row_list_layout, parent, false);
+		View rowView = inflater.inflate(R.layout.row_list_meal, parent, false);
 
 		TextView textView = (TextView) rowView.findViewById(R.id.label);
 		ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
@@ -66,7 +66,7 @@ public class ListRowAdapter extends ArrayAdapter<String> {
 	}
 
 	public ListRowAdapter(Context context, String[] names, String[] pictures)  {
-		super(context, R.layout.row_list_layout, names);
+		super(context, R.layout.row_list_meal, names);
 
 		this.picture = new Uri[pictures.length];
 		int i = 0;

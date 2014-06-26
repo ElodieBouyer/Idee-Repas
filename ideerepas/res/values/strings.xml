@@ -6,7 +6,9 @@
     <string name="meal">              Mon repas          </string>
     <string name="liste_menu">        Mon menu           </string>
     <string name="liste_course">      Ma liste de course </string>
-    <string name="quitter">           Quitter            </string>
+    <string name="midi">               ○ Midi : </string>
+    <string name="soir">               ○ Soir : </string>
+    <string name="frequence">          ○ Fréquence :</string>
     
     <string name="empty_meals">       Vous n\'avez pas encore de repas, \n  Ajoutez en !</string>
     

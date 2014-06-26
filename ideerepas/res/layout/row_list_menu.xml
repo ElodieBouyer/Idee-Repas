@@ -2,19 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="5dp"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/date_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/dateBackground"
         android:orientation="horizontal" >
 
         <TextView
             android:id="@+id/date_text"
+            style="@style/menuList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/layoutText"
             android:layout_marginLeft="10dp" />
     </LinearLayout>
 
@@ -22,10 +25,20 @@
         android:id="@+id/firstMeal_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal" >
 
         <TextView
+            style="@style/menuLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/midi" />
+
+        <TextView
             android:id="@+id/firstMeal_text"
+            style="@style/menuText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -34,10 +47,20 @@
         android:id="@+id/secondMeal_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
         android:orientation="horizontal" >
 
         <TextView
+            style="@style/menuLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:text="@string/soir" />
+
+        <TextView
             android:id="@+id/secondMeal_text"
+            style="@style/menuText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
     </LinearLayout>
