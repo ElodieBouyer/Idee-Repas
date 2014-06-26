@@ -24,6 +24,8 @@ public class MenuFragment extends Fragment {
 	private Meals mealsDatabase = null;
 	private static int NB_DAYS = 7;
 	private View rootView;
+	private String []firstMealList = new String[NB_DAYS];
+	private String []seconMealList = new String[NB_DAYS];
 	private static String []MONTHS = {
 		"Janvier", 
 		"Fevrier", 
@@ -36,34 +38,47 @@ public class MenuFragment extends Fragment {
 		"Septembre",
 		"Octobre",
 		"Novembre",
-		"Decembre"};
+	"Decembre"};
 
+	/**
+	 * Called when the menu fragment displayed.
+	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-
+		
+		// Get the layout to display.
 		rootView = inflater.inflate(R.layout.menu, container, false);
-
+		
+		// Get the current menu.
+		if( menuDatabase  == null ) menuDatabase  = new Menus(getActivity().getApplicationContext());
+		if( mealsDatabase == null ) mealsDatabase = new Meals(getActivity().getApplicationContext());
+		firstMealList = menuDatabase.getFirstMealList();
+		seconMealList = menuDatabase.getSecondMealList();
+		
+		// Update the list view with the database.
 		setListView(rootView);
-
+		
+		// Return the view.
 		return rootView;
 	}
 
-	public ListView getListView() {
-		return lview;
-	}
-
+	/**
+	 * Called when the user want a new menu.
+	 */
 	public void generateMenu() {
-		if( menuDatabase  == null ) menuDatabase  = new Menus(getActivity().getApplicationContext());
-		if( mealsDatabase == null ) mealsDatabase = new Meals(getActivity().getApplicationContext());
 
 		int [] listID = mealsDatabase.getIds();
 		if( listID == null ) {
-			return; // L'utilisateur n'a pas de repas.
+			return; // The user hasn't meals.
 		}
+
+		// Delete the current menu.
+		menuDatabase.deleteCourrentMenu();
 		
-		// TODO : Supprimer le menu enregistré dans la base.
-		
+		firstMealList = new String [NB_DAYS];
+		seconMealList = new String[NB_DAYS];
+
 		for(int i = 0 ; i < NB_DAYS ; i++) {
 			Random rand = new Random();
 			int meal1 = 0;
@@ -72,25 +87,31 @@ public class MenuFragment extends Fragment {
 			while(meal1 == meal2) {
 				meal1 = rand.nextInt(listID.length);
 				meal2 = rand.nextInt(listID.length);
+				firstMealList[i] = mealsDatabase.getName(meal1);
+				seconMealList[i] = mealsDatabase.getName(meal2);
 			}
 			Log.i("BOUH", "Repas n°"+listID[meal1]+" et n°" + listID[meal2]);
 			addMeal(i, meal1, meal2);
 		}
-		
-		// TODO : Mettre à jour l'affichage.
 		setListView(rootView);
 	}
 
-	
+
+	/**
+	 * To add two meal of the database (for one day).
+	 * @param day Day of the week (0 to monday, 6 to sunday).
+	 * @param id1 First meal id.
+	 * @param id2 Second meal id.
+	 */
 	private void addMeal(int day, int id1, int id2) {
-		// TODO : Ajouter le menu dans la base.
+		menuDatabase.addMenu(id1, id2, day);
 	}
-	
+
 	private void setListView(View menuView) {
 
 		ListMenuAdapter adapter = new ListMenuAdapter(
-				getActivity().getApplicationContext(), 
-				getDays());
+				getActivity().getApplicationContext(), getDays(), firstMealList, seconMealList);
+		
 		lview = (ListView) menuView.findViewById(R.id.menu);
 		lview.setAdapter(adapter);	
 		lview.setOnItemClickListener(new OnItemClickListener() {
@@ -148,14 +169,6 @@ public class MenuFragment extends Fragment {
 		}
 		return days;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
 }

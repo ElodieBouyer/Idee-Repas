@@ -182,6 +182,36 @@ public class Meals {
 		}
 		return null;
 	}
+	
+	
+	/**
+	 * Get a meal name with a id.
+	 * @return Meal name.
+	 */
+	public String getName(int id) {
+
+		try {
+			open();
+			Cursor c = this.db.query(
+					TABLEMEAL.TAB_MEALS,                
+					TABLEMEAL.ALL_COLUMNS,               
+					TABLEMEAL.COL_ID + " = " + id ,null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				return null;
+			}
+
+			c.moveToFirst();
+			String n = c.getString(TABLEMEAL.NUM_COL_NAME);
+			close();
+			return n;
+
+		}
+		catch(Exception e) {
+			Log.i(TAG+"add", e.toString());
+		}
+		return null;
+	}
 
 	/**
 	 * Get all couple name and picture.
@@ -219,6 +249,10 @@ public class Meals {
 
 	/**
 	 * Add a new meal in the database.
+	 * @param name New name of the meal.
+	 * @param picture New picture of the meal.
+	 * @param recipe New recipe id of the meal.
+	 * @return The meal id.
 	 */
 	public int add(String name, String picture, int recipe) {
 
@@ -241,6 +275,13 @@ public class Meals {
 		return -1;
 	}
 
+	/**
+	 * Update a meal.
+	 * @param id Id of the meal to change.
+	 * @param name New name of the meal.
+	 * @param picture New picture of the meal.
+	 * @param recipe New recipe id of the meal.
+	 */
 	public void update(int id, String name, String picture, int recipe) {
 		try {
 			open();
@@ -260,6 +301,10 @@ public class Meals {
 		}
 	}
 
+	/**
+	 * Delete a meal with its name.
+	 * @param name Name of the meal.
+	 */
 	public void delete(String name) {
 		try {
 			if( getPicture(name) != null ) {

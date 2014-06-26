@@ -10,8 +10,13 @@ import fr.project.ideerepas.R;
 
 public class ListMenuAdapter extends ArrayAdapter<String> {
 
-	public ListMenuAdapter(Context context, String [] days) {
+	private String [] firstMealList;
+	private String [] secondMealList;
+	
+	public ListMenuAdapter(Context context, String [] days, String [] firstMeal, String []secondMeal) {
 		super(context, R.layout.row_list_menu, days);
+		firstMealList  = firstMeal;
+		secondMealList = secondMeal;
 	}
 
 	@Override
@@ -28,6 +33,8 @@ public class ListMenuAdapter extends ArrayAdapter<String> {
 		TextView secondMeal = (TextView) rowView.findViewById(R.id.secondMeal_text);
 
 		date.setText(getItem(position));
+		if( firstMealList  != null ) firstMeal.setText(firstMealList[position]);
+		if( secondMealList != null ) secondMeal.setText(secondMealList[position]);
 
 		return rowView;
 	}
