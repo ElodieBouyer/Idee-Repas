@@ -12,6 +12,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -19,11 +20,11 @@ import android.provider.MediaStore;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -44,6 +45,9 @@ import fr.project.ideerepas.fragment.MenuFragment;
  */
 public class MainActivity extends FragmentActivity implements TabListener {
 
+	private final int PICTURE_TAKEN_FROM_CAMERA = 0;
+	private final int PICTURE_TAKEN_FROM_GALLERY = 1;
+
 	private final int MENU = 0;
 	private final int MEAL_LIST = 1;
 	private final int ADD  = 2;
@@ -62,21 +66,21 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		setContentView(R.layout.tabs_layout);
-	
+
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
-		
+
 		actionBarTab = getActionBar();
 		actionBarTab.setDisplayShowHomeEnabled(false);
 		actionBarTab.setDisplayShowTitleEnabled(false);
 		actionBarTab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		
+
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
-		       
+
 
 		String[] tabs = { 
 				getApplicationContext().getResources().getString(R.string.liste_menu),
@@ -163,7 +167,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 			return true;
 
 		case R.id.action_camera:
-			addPicture();
+			openPictureDialog();
 			return true;
 
 		case R.id.action_save:
@@ -237,21 +241,66 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		menu.clear();
 	}
 
-	public void clickOnList(String meal) {
-		FragmentTransaction transaction = getFragmentManager().beginTransaction();
-		currentFragment = new MealFragment(meal);
-		transaction.replace(R.id.fragment_container, currentFragment);
-		transaction.commit();
-		position = MEAL;
-		onCreateOptionsMenu(menu);
+
+	/**
+	 * Called when the user finished to take his picture.
+	 */
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode,requestCode,data);
+
+		switch(requestCode){
+
+		case PICTURE_TAKEN_FROM_CAMERA:             
+			setPicture();
+			break;
+			
+		case PICTURE_TAKEN_FROM_GALLERY:                
+			
+			String[] filePathColumn = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getContentResolver().query(data.getData(), filePathColumn, null, null, null); 
+            cursor.moveToFirst();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
+			
+            photo = Uri.parse(filePath);
+			setPicture();
+			break;          
+		}
+		
 	}
+
+
 
 	/**
 	 * Called when user click in the picture.
 	 * @param v
 	 */
 	public void addPicture(View v) {
-		addPicture();
+		openPictureDialog();
+	}
+
+	private void openPictureDialog() {
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		LayoutInflater inflater = getLayoutInflater();
+
+		builder.setTitle(R.string.dialog_title);
+		builder.setView(inflater.inflate(R.layout.dialog_picture, null));
+
+		builder.setPositiveButton(R.string.dialog_gallery, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				gallery();
+			}
+		});
+
+		builder.setNegativeButton(R.string.dialog_take_picture, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
+				addPicture();
+			}
+		});
+
+		builder.show();
 	}
 
 	/**
@@ -266,7 +315,45 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		intent.putExtra(MediaStore.EXTRA_OUTPUT, photo);
 
 		// start the image capture Intent
-		startActivityForResult(intent, 1);
+		startActivityForResult(intent, PICTURE_TAKEN_FROM_CAMERA);
+	}
+
+	public void gallery() {
+		Intent gallerypickerIntent = new Intent(Intent.ACTION_PICK);
+		gallerypickerIntent.setType("image/*");
+		startActivityForResult(gallerypickerIntent, PICTURE_TAKEN_FROM_GALLERY);
+	}
+
+	/**
+	 * Update the ImageView.
+	 */
+	private void setPicture() {
+		ImageView img = (ImageView) findViewById(R.id.mealPicture);
+
+		if( img == null ) return;
+		if( photo == null ) {
+			img.setImageResource(R.drawable.light_ic_unknow);
+			Log.i("IdeeRepas.MainActivity.setPicture()", "L'url de la photo est nulle.");
+		}
+		else {
+			File test = new File(photo.getPath());
+			Log.i("IdeeRepas.MainActivity.setPicture()", "Path de la photo = " + photo.getPath());
+			if( test.exists() ) img.setImageURI(photo);
+			else {
+				Log.i("IdeeRepas.MainActivity.setPicture()", "La photo n'existe pas.");
+				img.setImageResource(R.drawable.light_ic_unknow);
+			}
+		}
+	}
+	
+	
+	public void clickOnList(String meal) {
+		FragmentTransaction transaction = getFragmentManager().beginTransaction();
+		currentFragment = new MealFragment(meal);
+		transaction.replace(R.id.fragment_container, currentFragment);
+		transaction.commit();
+		position = MEAL;
+		onCreateOptionsMenu(menu);
 	}
 
 	/**
@@ -330,41 +417,6 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				"IMG_"+ timeStamp + ".jpg");
 
 		return image;
-	}
-
-	/**
-	 * Called when the user finished to take his picture.
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode,requestCode,data);
-
-		try {
-			// *** On la met dans l'ImageView.
-			setPicture();
-		}
-		catch(Exception e) {
-			Log.i("MainActivity", "onActivityResutl() "+ e.toString());
-		}
-	}
-
-	/**
-	 * Update the ImageView.
-	 */
-	private void setPicture() {
-		ImageView img = null;
-
-		img = (ImageView) findViewById(R.id.mealPicture);
-
-		if( img == null ) return;
-		if( photo == null ) {
-			img.setImageResource(R.drawable.light_ic_unknow);
-		}
-		else {
-			File test = new File(photo.getPath());
-			if( test.exists() ) img.setImageURI(photo);
-			else img.setImageResource(R.drawable.light_ic_unknow);
-		}
 	}
 
 	private void updateMeal() {
@@ -447,7 +499,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				}
 				RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioFrequence);
 				int frequency = 0;
-				
+
 				switch (radioGroup.getCheckedRadioButtonId()) {
 				case R.id.rare:
 					frequency = 0;

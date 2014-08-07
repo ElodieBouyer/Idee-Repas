@@ -18,13 +18,11 @@
     <string name="add_picture">       Nouvelle image  </string>
     <string name="new_meal">          Nouveau repas    </string>
     <string name="new_ingredient">    Nouvel ingredient     </string>
-    
     <string name="name_meal">         Nom du repas          </string>
     <string name="name_ingredient">   Nouvel ingredient     </string>
     <string name="meal_picture">      Photo du repas        </string>
     <string name="frequenceLabel">    Fréquence             </string>
     <string name="ingredients">       Liste des ingredients </string>
-    
     <string name="popup_adding_meal">   Voulez-vous ajouter ce repas ? </string>
     <string name="popup_save_meal">     Enregistrer ? </string>
     <string name="popup_adding_menu">   Voulez-vous ajouter ce menu ?  </string>
@@ -40,7 +38,6 @@
     <string name="modif_picture"> Modifier l\'image  </string>
     <string name="save">          Enregistrer        </string>
     <string name="saves">         Repas enregistré"        </string>
-    
     <string name="monday">     Lundi    </string>
     <string name="tuesday">    Mardi    </string>
     <string name="wednesday">  Mercredi </string>
@@ -48,10 +45,12 @@
     <string name="friday">     Vendredi </string>
     <string name="saturday">   Samedi   </string>
     <string name="sunday">     Dimanche </string>
-    
     <string name="rarely">       Rare          </string>
     <string name="occasionally"> Occasionnelle </string>
     <string name="regularly">    Régulière     </string>
     <string name="often">        Souvent           </string>
+    <string name="dialog_title">   Continuer avec </string>
+    <string name="dialog_gallery"> Galerie        </string>
+    <string name="dialog_take_picture"> Prendre une photo </string>
 
 </resources>
