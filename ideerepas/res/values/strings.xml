@@ -10,6 +10,7 @@
     <string name="soir">               ○ Soir : </string>
     <string name="frequence">          ○ Fréquence :</string>
     <string name="empty_meals">       Vous n\'avez pas encore de repas, \n  Ajoutez en !</string>
+    <string name="empty_meals2">      Il faut ajoutez des repas avant de pouvoir générer un menu !</string>
     <string name="empty_ingredient">  Ce repas n\'a pas d\'ingredient.    </string>
     <string name="add_meal">          Ajouter un repas </string>
     <string name="add_ingredient">    Ajouter un ingredient  </string>

@@ -5,6 +5,17 @@
     android:background="@color/background"
     android:orientation="vertical" >
 
+    <TextView
+        android:id="@+id/emptyText"
+        style="@style/emptyText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:text="@string/empty_meals2"
+        android:visibility="gone" >
+    </TextView>
+
     <ListView
         android:id="@+id/menu"
         android:layout_width="match_parent"

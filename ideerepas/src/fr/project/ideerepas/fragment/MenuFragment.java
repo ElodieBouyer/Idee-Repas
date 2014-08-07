@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import fr.project.ideerepas.R;
@@ -19,13 +20,7 @@ import fr.project.ideerepas.database.Menus;
 
 public class MenuFragment extends Fragment {
 
-	private ListView lview;
-	private Menus menuDatabase  = null;
-	private Meals mealsDatabase = null;
 	private static int NB_DAYS = 7;
-	private View rootView;
-	private String []firstMealList = new String[NB_DAYS];
-	private String []seconMealList = new String[NB_DAYS];
 	private static String []MONTHS = {
 		"Janvier", 
 		"Fevrier", 
@@ -40,24 +35,40 @@ public class MenuFragment extends Fragment {
 		"Novembre",
 	"Decembre"};
 
+	private ListView lview;
+	private View rootView;
+
+	private Menus menuDatabase  = null;
+	private Meals mealsDatabase = null;
+
+	private String []firstMealList = new String[NB_DAYS];
+	private String []seconMealList = new String[NB_DAYS];
+	private int [] listMealId;
+
+
 	/**
 	 * Called when the menu fragment displayed.
 	 */
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		
+
 		// Get the layout to display.
 		rootView = inflater.inflate(R.layout.menu, container, false);
-		
+
 		// Get the current menu.
 		if( menuDatabase  == null ) menuDatabase  = new Menus(getActivity().getApplicationContext());
 		if( mealsDatabase == null ) mealsDatabase = new Meals(getActivity().getApplicationContext());
 		firstMealList = menuDatabase.getFirstMealList();
 		seconMealList = menuDatabase.getSecondMealList();
-		
-		// Update the list view with the database.
-		setListView(rootView);
+		listMealId = mealsDatabase.getIds();
+
+		TextView message = (TextView) rootView.findViewById(R.id.emptyText);
+		if( listMealId != null && listMealId.length > 0) {
+			message.setVisibility(View.GONE);
+			setListView(rootView);
+		}
+		else message.setVisibility(View.VISIBLE);
 		
 		// Return the view.
 		return rootView;
@@ -68,14 +79,13 @@ public class MenuFragment extends Fragment {
 	 */
 	public void generateMenu() {
 
-		int [] listID = mealsDatabase.getIds();
-		if( listID == null || listID.length < 3) {
+		if( listMealId == null || listMealId.length < 1) {
 			return; // The user hasn't meals.
 		}
 
 		// Delete the current menu.
 		menuDatabase.deleteCourrentMenu();
-		
+
 		firstMealList = new String [NB_DAYS];
 		seconMealList = new String[NB_DAYS];
 
@@ -85,12 +95,12 @@ public class MenuFragment extends Fragment {
 			int meal2 = 0;
 
 			while(meal1 == meal2) {
-				meal1 = rand.nextInt(listID.length);
-				meal2 = rand.nextInt(listID.length);
+				meal1 = rand.nextInt(listMealId.length);
+				meal2 = rand.nextInt(listMealId.length);
 				firstMealList[i] = mealsDatabase.getName(meal1);
 				seconMealList[i] = mealsDatabase.getName(meal2);
 			}
-			Log.i("BOUH", "Repas n°"+listID[meal1]+" et n°" + listID[meal2]);
+			Log.i("BOUH", "Repas n°"+listMealId[meal1]+" et n°" + listMealId[meal2]);
 			addMeal(i, meal1, meal2);
 		}
 		setListView(rootView);
@@ -111,7 +121,7 @@ public class MenuFragment extends Fragment {
 
 		ListMenuAdapter adapter = new ListMenuAdapter(
 				getActivity().getApplicationContext(), getDays(), firstMealList, seconMealList);
-		
+
 		lview = (ListView) menuView.findViewById(R.id.menu);
 		lview.setAdapter(adapter);	
 		lview.setOnItemClickListener(new OnItemClickListener() {
