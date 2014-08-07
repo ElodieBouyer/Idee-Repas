@@ -19,6 +19,7 @@ public class MealFragment extends Fragment {
 	private String name;
 	private Meals m_list = null;
 
+
 	public MealFragment(String meal) {
 		name = meal;
 	}
@@ -29,7 +30,7 @@ public class MealFragment extends Fragment {
 
 		View mealView = inflater.inflate(R.layout.meal, container, false);
 		m_list = new Meals(getActivity().getApplicationContext());
-		
+
 		// Meal name.
 		TextView n = (TextView) mealView.findViewById(R.id.mealName);
 		n.setText(name);
@@ -45,12 +46,11 @@ public class MealFragment extends Fragment {
 			picture.setImageURI(pathPicture);
 		}
 		// ***
-		
+
 		setIngredient(mealView);
 
 		return mealView;
 	}
-
 
 	private void setIngredient(View v) {
 		LinearLayout tableIgd  = (LinearLayout) v.findViewById(R.id.list_ingredient); 
@@ -62,11 +62,11 @@ public class MealFragment extends Fragment {
 	public IngredientLayout getIngredientLayout() {
 		return igd;
 	}
-	
+
 	public void deleteMeal() {
 		m_list.delete(name);
 	}
-	
+
 	public String getName() {
 		return name;
 	}

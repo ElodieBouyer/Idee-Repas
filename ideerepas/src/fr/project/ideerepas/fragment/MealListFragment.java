@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.activity.MainActivity;
-import fr.project.ideerepas.adapter.ListRowAdapter;
+import fr.project.ideerepas.adapter.ListMealAdapter;
 import fr.project.ideerepas.database.Meals;
 
 public class MealListFragment extends Fragment {
@@ -22,6 +22,7 @@ public class MealListFragment extends Fragment {
 	private Meals m_list      = null;
 	private String[] pictures = null;
 	private String[] names    = null;
+	private int[] frequency   = null;
 	private ListView lview;
 
 	@Override
@@ -46,7 +47,8 @@ public class MealListFragment extends Fragment {
 				i++;
 			}
 		}
-
+		frequency = m_list.getFrequency();
+		
 		TextView message = (TextView) mealView.findViewById(R.id.emptyText);
 		// If the list is empty.
 		if (names != null) {
@@ -59,7 +61,8 @@ public class MealListFragment extends Fragment {
 	}
 
 	private void setListView(View mealView) {
-		ListRowAdapter adapter = new ListRowAdapter(getActivity().getApplicationContext(), names, pictures);
+		ListMealAdapter adapter = 
+				new ListMealAdapter(getActivity().getApplicationContext(), names, pictures, frequency);
 		lview = (ListView) mealView.findViewById(R.id.listView);
 		lview.setAdapter(adapter);
 		lview.setOnItemClickListener(new OnItemClickListener() {

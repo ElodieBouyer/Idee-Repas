@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DataBase extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME    = "ideerepas.db";
-	private static final int    DATABASE_VERSION = 1;
+	private static final int    DATABASE_VERSION = 2;
 
 	public DataBase(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -24,10 +24,10 @@ public class DataBase extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		db.execSQL("DROP TABLE IF EXISTS " + TABLEINGREDIENTMEAL.CREATE_TABLE_INGREDIENTMEAL);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLEINGREDIENTMEAL.TAB_INGREDIENTMEAL);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLEMEAL.TAB_MEALS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLEMENUS.TAB_MENU);
-		db.execSQL("DROP TABLE IF EXISTS " + TABLEINGREDIENT.CREATE_TABLE_INGREDIENTS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLEINGREDIENT.TAB_INGREDIENTS);
 	    onCreate(db);
 	}
 

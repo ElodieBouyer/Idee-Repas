@@ -23,9 +23,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.project.ideerepas.R;
@@ -50,7 +52,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 	private ViewPager viewPager;
 	private TabsPagerAdapter mAdapter;
-	private ActionBar actionBar;
+	private ActionBar actionBarTab;
 	private int position = MENU;
 	private Menu menu = null;
 	private Fragment currentFragment = new MealListFragment();
@@ -60,16 +62,21 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
 		setContentView(R.layout.tabs_layout);
-
+	
 		// Initilization
 		viewPager = (ViewPager) findViewById(R.id.pager);
-		actionBar = getActionBar();
+		
+		actionBarTab = getActionBar();
+		actionBarTab.setDisplayShowHomeEnabled(false);
+		actionBarTab.setDisplayShowTitleEnabled(false);
+		actionBarTab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+		
 		mAdapter = new TabsPagerAdapter(getSupportFragmentManager());
 
 		viewPager.setAdapter(mAdapter);
-		actionBar.setHomeButtonEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);       
+		       
 
 		String[] tabs = { 
 				getApplicationContext().getResources().getString(R.string.liste_menu),
@@ -77,7 +84,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 		// Adding Tabs
 		for (String tab_name : tabs) {
-			actionBar.addTab(actionBar.newTab().setText(tab_name)
+			actionBarTab.addTab(actionBarTab.newTab().setText(tab_name)
 					.setTabListener(this));
 		}
 
@@ -85,7 +92,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 			@Override
 			public void onPageSelected(int position) {
-				actionBar.setSelectedNavigationItem(position);
+				actionBarTab.setSelectedNavigationItem(position);
 			}
 
 			@Override
@@ -101,7 +108,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	@Override
 	public boolean onCreateOptionsMenu(Menu m) {
 		if( m == null ) return false;
-		
+
 		MenuInflater inflater = getMenuInflater();
 		m.clear();
 
@@ -184,7 +191,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 			String nameMeal = ((EditMealFragment) currentFragment).getName();
 			clickOnList(nameMeal);
 			return true;
-			
+
 		case R.id.action_generate:
 			generate();
 			return true;
@@ -384,7 +391,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				}
 
 				((EditMealFragment) currentFragment).getMealsDatabase().update(
-						idMeal, newName.getText().toString(), pcr, -1);
+						idMeal, newName.getText().toString(), pcr, -1, 0);
 				((EditMealFragment) currentFragment).getIngredientLayout().addInDatabase(idMeal);
 				((EditMealFragment) currentFragment).getIngredientLayout().deleteInDatabase(idMeal);
 				returnInMealList();
@@ -428,10 +435,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				EditText editName = (EditText) findViewById(R.id.name_edit);
 				IngredientLayout igd = null;
 
-				switch(position) {
-				case ADD:
-					igd = ((AddMealFragment) currentFragment).getIngredientLayout();
-				}
+
+				igd = ((AddMealFragment) currentFragment).getIngredientLayout();
 
 				String name = editName.getText().toString();
 				String picture=null;
@@ -440,7 +445,27 @@ public class MainActivity extends FragmentActivity implements TabListener {
 					File test = new File(photo.getPath());
 					if( test.exists() ) picture =  photo.getPath();
 				}
-				int idMeal = igd.getMealsDatabase().add(name, picture, -1);
+				RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioFrequence);
+				int frequency = 0;
+				
+				switch (radioGroup.getCheckedRadioButtonId()) {
+				case R.id.rare:
+					frequency = 0;
+					break;
+				case R.id.occasionnellement:
+					frequency = 1;
+					break;
+				case R.id.regulierement:
+					frequency = 2;
+					break;
+				case R.id.souvent:
+					frequency = 3;
+					break;
+				default:
+					break;
+				}
+				Log.i("BOUH", "Frenquency = " + frequency);
+				int idMeal = igd.getMealsDatabase().add(name, picture, -1, frequency);
 
 				igd.addInDatabase(idMeal);
 				igd.deleteInDatabase(idMeal);
@@ -493,36 +518,36 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 		builder.show();
 	}
-	
+
 	private void generate() {
 		( (MenuFragment) mAdapter.getItem(MENU)).generateMenu();
 	}
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

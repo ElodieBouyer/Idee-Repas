@@ -16,6 +16,7 @@ public class Meals {
 	private static String TAG = Meals.class.getName();
 	private DataBase database;
 	private SQLiteDatabase db;
+	private int [] frequency = null;
 
 	/**
 	 * Meals Constructor.
@@ -41,13 +42,18 @@ public class Meals {
 		this.db.close();
 	}
 
+	/**
+	 * Check up if a meal exist or not.
+	 * @param name Name of the meal to check.
+	 * @return true or false.
+	 */
 	public boolean exist(String name) {
 		try {
 			open();
 			Cursor c = this.db.query(
-					TABLEMEAL.TAB_MEALS,                  // Table name.
-					TABLEMEAL.ALL_COLUMNS,                // Columns.
-					TABLEMEAL.COL_NAME + " LIKE \"" + name + "\"", // Selection.
+					TABLEMEAL.TAB_MEALS,                  
+					TABLEMEAL.ALL_COLUMNS,              
+					TABLEMEAL.COL_NAME + " LIKE \"" + name + "\"",
 					null, null, null, null, null);
 
 			if( c.getCount() == 0) {
@@ -62,10 +68,15 @@ public class Meals {
 		return true;
 	}
 
+	/**
+	 * Get the picture url of a meal.
+	 * @param name Name of the meal.
+	 * @return Url picture.
+	 */
 	public Uri getPicture(String name) {
 		try {
 			if( !exist(name)) return null;
-			
+
 			open();
 			Cursor c = this.db.query(
 					TABLEMEAL.TAB_MEALS,                  // Table name.
@@ -90,6 +101,11 @@ public class Meals {
 		return null;
 	}
 
+	/**
+	 * Get the meal id.
+	 * @param name Name of the meal.
+	 * @return Meal id.
+	 */
 	public int getId(String name) {
 		try {
 			if( !exist(name)) return -1;
@@ -116,7 +132,11 @@ public class Meals {
 		}
 		return -1;
 	}
-	
+
+	/**
+	 * Get all meal's id.
+	 * @return Id list.
+	 */
 	public int [] getIds() {
 		try {
 			open();
@@ -130,7 +150,7 @@ public class Meals {
 			}
 			int[] ids = new int [c.getCount()];
 			int i = 0;
-			
+
 			c.moveToFirst();
 			while (c.isAfterLast() == false) {
 				ids[i] = c.getInt(TABLEMEAL.NUM_COL_ID);
@@ -149,7 +169,7 @@ public class Meals {
 	}
 
 	/**
-	 * Get all meals name.
+	 * Get all meals's name.
 	 * @return Meals list name.
 	 */
 	public String[] getNames() {
@@ -182,8 +202,8 @@ public class Meals {
 		}
 		return null;
 	}
-	
-	
+
+
 	/**
 	 * Get a meal name with a id.
 	 * @return Meal name.
@@ -214,7 +234,7 @@ public class Meals {
 	}
 
 	/**
-	 * Get all couple name and picture.
+	 * Get all couple name/picture.
 	 * @return Meals list picture.
 	 */
 	public Map<String,String> getCoupleNamePicture() {
@@ -232,9 +252,12 @@ public class Meals {
 				return null;
 			}
 
+			frequency = new int[c.getCount()];
+			
 			c.moveToFirst();
-			while (c.isAfterLast() == false) {
+			for(int i = 0; c.isAfterLast() == false ; i++) {
 				rows.put(c.getString(TABLEMEAL.NUM_COL_NAME), c.getString(TABLEMEAL.NUM_COL_PICTURE));
+				frequency[i] = c.getInt(TABLEMEAL.NUM_COL_FREQUENCY);
 				c.moveToNext();
 			}
 			close();
@@ -246,15 +269,20 @@ public class Meals {
 		}
 		return null;
 	}
+	
+	public int[] getFrequency() {
+		return frequency;
+	}
 
 	/**
 	 * Add a new meal in the database.
 	 * @param name New name of the meal.
 	 * @param picture New picture of the meal.
 	 * @param recipe New recipe id of the meal.
+	 * @param frequency Frequency of the meal.
 	 * @return The meal id.
 	 */
-	public int add(String name, String picture, int recipe) {
+	public int add(String name, String picture, int recipe, int frequency) {
 
 		try {
 			if(exist(name)) return -1;
@@ -264,6 +292,7 @@ public class Meals {
 			values.put(TABLEMEAL.COL_NAME, name);
 			values.put(TABLEMEAL.COL_PICTURE, picture);
 			values.put(TABLEMEAL.COL_RECIPE_ID, recipe);
+			values.put(TABLEMEAL.COL_FREQUENCY, frequency);
 
 			int id = (int) this.db.insert(TABLEMEAL.TAB_MEALS, null,values);
 			close();
@@ -280,9 +309,10 @@ public class Meals {
 	 * @param id Id of the meal to change.
 	 * @param name New name of the meal.
 	 * @param picture New picture of the meal.
+	 * @param frequency Frequency of the meal.
 	 * @param recipe New recipe id of the meal.
 	 */
-	public void update(int id, String name, String picture, int recipe) {
+	public void update(int id, String name, String picture, int recipe, int frequency) {
 		try {
 			open();
 			ContentValues values = new ContentValues();
@@ -290,6 +320,7 @@ public class Meals {
 			values.put(TABLEMEAL.COL_NAME, name);
 			values.put(TABLEMEAL.COL_PICTURE, picture);
 			values.put(TABLEMEAL.COL_RECIPE_ID, recipe);
+			values.put(TABLEMEAL.COL_FREQUENCY, frequency);
 
 			int nbModif = this.db.update(TABLEMEAL.TAB_MEALS, values, 
 					TABLEMEAL.COL_ID + " = " + id , null);

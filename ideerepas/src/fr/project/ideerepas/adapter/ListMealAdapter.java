@@ -12,9 +12,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
 
-public class ListRowAdapter extends ArrayAdapter<String> {
+public class ListMealAdapter extends ArrayAdapter<String> {
 
 	private Uri[] picture;
+	private int[] frequency;
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -25,10 +26,31 @@ public class ListRowAdapter extends ArrayAdapter<String> {
 
 		View rowView = inflater.inflate(R.layout.row_list_meal, parent, false);
 
-		TextView textView = (TextView) rowView.findViewById(R.id.label);
-		ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+		TextView nameMealView  = (TextView)  rowView.findViewById(R.id.label);
+		ImageView imageView    = (ImageView) rowView.findViewById(R.id.icon);
+		TextView frequencyView = (TextView)  rowView.findViewById(R.id.frenquency);
 
-		textView.setText(getItem(position));
+		nameMealView.setText(getItem(position));
+
+		if( frequency == null ) return rowView;
+
+		switch (frequency[position]) {
+		case 0:
+			frequencyView.setText(R.string.rarely);
+			break;
+		case 1:
+			frequencyView.setText(R.string.occasionally);
+			break;
+		case 2:
+			frequencyView.setText(R.string.regularly);
+			break;
+		case 3 :
+			frequencyView.setText(R.string.often);
+			break;
+		default:
+			frequencyView.setText(R.string.rarely);
+			break;
+		}
 
 		if( picture[position] == null ) {
 			imageView.setImageResource(R.drawable.light_ic_unknow);
@@ -65,10 +87,11 @@ public class ListRowAdapter extends ArrayAdapter<String> {
 		img.setImageBitmap(bitmap);
 	}
 
-	public ListRowAdapter(Context context, String[] names, String[] pictures)  {
+	public ListMealAdapter(Context context, String[] names, String[] pictures, int[] freq)  {
 		super(context, R.layout.row_list_meal, names);
 
-		this.picture = new Uri[pictures.length];
+		this.picture   = new Uri[pictures.length];
+		this.frequency = freq;
 		int i = 0;
 
 		for(String path : pictures) {

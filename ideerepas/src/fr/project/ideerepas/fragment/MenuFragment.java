@@ -69,7 +69,7 @@ public class MenuFragment extends Fragment {
 	public void generateMenu() {
 
 		int [] listID = mealsDatabase.getIds();
-		if( listID == null ) {
+		if( listID == null || listID.length < 3) {
 			return; // The user hasn't meals.
 		}
 

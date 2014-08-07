@@ -47,5 +47,10 @@
     <string name="friday">     Vendredi </string>
     <string name="saturday">   Samedi   </string>
     <string name="sunday">     Dimanche </string>
+    
+    <string name="rarely">       Rare          </string>
+    <string name="occasionally"> Occasionnelle </string>
+    <string name="regularly">    Régulière     </string>
+    <string name="often">        Souvent           </string>
 
 </resources>

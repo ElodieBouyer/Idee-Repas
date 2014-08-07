@@ -8,14 +8,16 @@ public class TABLEMEAL {
 	public static final String COL_NAME      = "MEAL_NAME";
 	public static final String COL_PICTURE   = "MEAL_PICTURE";
 	public static final String COL_RECIPE_ID = "MEAL_RECIPE_ID";
+	public static final String COL_FREQUENCY = "MEAL_FREQUENCY";
 	
 	public static final int NUM_COL_ID        = 0; 
 	public static final int NUM_COL_NAME      = 1;
 	public static final int NUM_COL_PICTURE   = 2;
 	public static final int NUM_COL_RECIPE_ID = 3;
+	public static final int NUM_COL_FREQUENCY = 4;
 	
 	public static final String[] ALL_COLUMNS = {
-		COL_ID, COL_NAME, COL_PICTURE, COL_RECIPE_ID
+		COL_ID, COL_NAME, COL_PICTURE, COL_RECIPE_ID, COL_FREQUENCY
 	};
 
 	public static final String CREATE_TABLE_MEALS = 
@@ -23,5 +25,6 @@ public class TABLEMEAL {
 					+ COL_ID        + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
 					+ COL_NAME      + " TEXT NOT NULL UNIQUE, " 
 					+ COL_PICTURE   + " TEXT," 
-					+ COL_RECIPE_ID + " INTEGER);";
+					+ COL_RECIPE_ID + " INTEGER,"
+				    + COL_FREQUENCY + " INTEGER);";
 }
