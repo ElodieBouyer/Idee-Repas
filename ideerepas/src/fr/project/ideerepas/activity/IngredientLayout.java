@@ -14,7 +14,7 @@ import android.widget.TableRow.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import fr.project.ideerepas.R;
-import fr.project.ideerepas.database.IngredientMeal;
+import fr.project.ideerepas.database.IngredientMealDatabase;
 import fr.project.ideerepas.database.IngredientsDatabase;
 import fr.project.ideerepas.database.MealsDatabase;
 
@@ -22,7 +22,7 @@ public class IngredientLayout {
 
 	private TableLayout tableIgd = null;
 	private Context context;
-	private IngredientMeal igdMeal;
+	private IngredientMealDatabase igdMeal;
 	private IngredientsDatabase igdDatabase;
 	private MealsDatabase mealsDatabase;
 	private List<String> igdList;
@@ -30,7 +30,7 @@ public class IngredientLayout {
 
 	public IngredientLayout(Context context, String mealName, Boolean add) {
 		this.context     = context;
-		this.igdMeal     = new IngredientMeal(context);
+		this.igdMeal     = new IngredientMealDatabase(context);
 		this.igdDatabase = new IngredientsDatabase(context);
 		this.tableIgd    = new TableLayout(context);
 		this.mealsDatabase = new MealsDatabase(context);

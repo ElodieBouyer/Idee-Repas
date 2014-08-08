@@ -17,31 +17,31 @@ import fr.project.ideerepas.database.MealsDatabase;
 
 public class EditMealFragment extends Fragment {
 
-	private String name;
+	private String mName;
 	private MealsDatabase mealsDatabase = null;
 	private IngredientLayout igd;
 	private int idMeal;
 
 	public EditMealFragment(String meal) {
-		name = meal;
+		mName = meal;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View editView = inflater.inflate(R.layout.modif_meal, container, false);
+		View editView = inflater.inflate(R.layout.fragment_edit_meal, container, false);
 		mealsDatabase = new MealsDatabase(getActivity().getApplicationContext());
-		idMeal = mealsDatabase.getId(name);
+		idMeal = mealsDatabase.getId(mName);
 
-		// Set meal name.
-		EditText nameMeal = (EditText)  editView.findViewById(R.id.mealName);
-		nameMeal.setText(name);
+		// Set meal mName.
+		EditText mNameMeal = (EditText)  editView.findViewById(R.id.name);
+		mNameMeal.setText(mName);
 		// ***
 
 		// Set picture.
-		ImageView picture = (ImageView) editView.findViewById(R.id.mealPicture);
-		Uri photo = mealsDatabase.getPicture(name);
+		ImageView picture = (ImageView) editView.findViewById(R.id.picture);
+		Uri photo = mealsDatabase.getPicture(mName);
 		if( photo == null ) {
 			picture.setImageResource(R.drawable.light_ic_unknow);
 		}
@@ -54,7 +54,7 @@ public class EditMealFragment extends Fragment {
 
 		// Set Ingredient.
 		LinearLayout tableIgd  = (LinearLayout) editView.findViewById(R.id.list_ingredient); 
-		igd = new IngredientLayout(getActivity().getApplicationContext(), name, true);
+		igd = new IngredientLayout(getActivity().getApplicationContext(), mName, true);
 		tableIgd.addView(igd.getTableLayout());
 		// ***
 
@@ -62,11 +62,11 @@ public class EditMealFragment extends Fragment {
 	}
 
 	public String getName() {
-		return name;
+		return mName;
 	}
 
 	public void deleteMeal() {
-		mealsDatabase.delete(name);
+		mealsDatabase.delete(mName);
 	}
 
 	public IngredientLayout getIngredientLayout() {

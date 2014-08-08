@@ -436,7 +436,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 				String pcr=null;
 				int idMeal = ((EditMealFragment) currentFragment).getIdMeal();
-				TextView newName = (TextView) findViewById(R.id.mealName);
+				TextView newName = (TextView) findViewById(R.id.name);
 
 				if( photo != null ) {
 					File test = new File(photo.getPath());

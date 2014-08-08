@@ -9,13 +9,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class IngredientMeal {
+public class IngredientMealDatabase {
 	private DataBase database;
 	private SQLiteDatabase db;
 	private IngredientsDatabase igdDatabase;
 	private MealsDatabase mealDatabase;
 
-	public IngredientMeal(Context context) {
+	public IngredientMealDatabase(Context context) {
 		this.database     = new DataBase(context);
 		this.igdDatabase  = new IngredientsDatabase(context);
 		this.mealDatabase = new MealsDatabase(context); 

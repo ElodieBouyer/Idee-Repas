@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import fr.project.ideerepas.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -133,7 +132,7 @@ public class MealsDatabase {
 		}
 		return -1;
 	}
-	
+
 	/**
 	 * Get the meal frequency.
 	 * @param name Name of the meal.
@@ -286,7 +285,7 @@ public class MealsDatabase {
 			}
 
 			frequency = new int[c.getCount()];
-			
+
 			c.moveToFirst();
 			for(int i = 0; c.isAfterLast() == false ; i++) {
 				rows.put(c.getString(TABLEMEAL.NUM_COL_NAME), c.getString(TABLEMEAL.NUM_COL_PICTURE));
@@ -302,7 +301,7 @@ public class MealsDatabase {
 		}
 		return null;
 	}
-	
+
 	public int[] getFrequency() {
 		return frequency;
 	}
