@@ -28,7 +28,7 @@ public class MealListFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View mealView = inflater.inflate(R.layout.list_meal, container, false);
+		View mealView = inflater.inflate(R.layout.fragment_list_meal, container, false);
 		if (this.m_list == null) {
 			this.m_list = new MealsDatabase(getActivity().getApplicationContext());
 		}

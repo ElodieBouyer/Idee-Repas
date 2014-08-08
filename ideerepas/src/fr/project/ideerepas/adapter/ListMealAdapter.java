@@ -28,9 +28,9 @@ public class ListMealAdapter extends ArrayAdapter<String> {
 
 		View rowView = inflater.inflate(R.layout.row_list_meal, parent, false);
 
-		TextView nameMealView  = (TextView)  rowView.findViewById(R.id.label);
-		ImageView imageView    = (ImageView) rowView.findViewById(R.id.icon);
-		TextView frequencyView = (TextView)  rowView.findViewById(R.id.frenquency);
+		TextView nameMealView  = (TextView)  rowView.findViewById(R.id.name);
+		ImageView imageView    = (ImageView) rowView.findViewById(R.id.picture);
+		TextView frequencyView = (TextView)  rowView.findViewById(R.id.frequency);
 
 		nameMealView.setText(getItem(position));
 
@@ -41,10 +41,10 @@ public class ListMealAdapter extends ArrayAdapter<String> {
 			frequencyView.setText(R.string.often);
 			break;
 		case 1:
-			frequencyView.setText(R.string.occasionally);
+			frequencyView.setText(R.string.regularly);
 			break;
 		case 2:
-			frequencyView.setText(R.string.regularly);
+			frequencyView.setText(R.string.occasionally);
 			break;
 		case 3 :
 			frequencyView.setText(R.string.rarely);

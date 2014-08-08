@@ -71,11 +71,11 @@ public class MealFragment extends Fragment {
 			case 0:
 				frequencyView.setText(getString(R.string.often));
 				break;
-			case 1: 
-				frequencyView.setText(getString(R.string.occasionally));
-				break;
-			case 2:
+			case 1:
 				frequencyView.setText(getString(R.string.regularly));
+				break;
+			case 2: 
+				frequencyView.setText(getString(R.string.occasionally));
 				break;
 			case 3:
 				frequencyView.setText(getString(R.string.rarely));

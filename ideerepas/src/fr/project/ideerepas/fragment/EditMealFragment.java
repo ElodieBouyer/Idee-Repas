@@ -73,10 +73,10 @@ public class EditMealFragment extends Fragment {
 			btn = (RadioButton) editView.findViewById(R.id.souvent);
 			break;
 		case 1:
-			btn = (RadioButton) editView.findViewById(R.id.occasionnellement);
+			btn = (RadioButton) editView.findViewById(R.id.regulierement);
 			break;
 		case 2:
-			btn = (RadioButton) editView.findViewById(R.id.regulierement);
+			btn = (RadioButton) editView.findViewById(R.id.occasionnellement);
 			break;
 		case 3:
 			btn = (RadioButton) editView.findViewById(R.id.rare);
@@ -91,7 +91,7 @@ public class EditMealFragment extends Fragment {
 	public String getName() {
 		return mMealName;
 	}
-	
+
 	public String getMealPicturePath() {
 		return mMealPicturePath;
 	}
