@@ -11,11 +11,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
+import fr.project.ideerepas.database.MealsDatabase;
 
 public class ListMealAdapter extends ArrayAdapter<String> {
 
+	private MealsDatabase mealsDatabase = null;
+	
 	private Uri[] picture;
-	private int[] frequency;
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
@@ -32,11 +34,11 @@ public class ListMealAdapter extends ArrayAdapter<String> {
 
 		nameMealView.setText(getItem(position));
 
-		if( frequency == null ) return rowView;
+		int frequency = mealsDatabase.getFrequency(getItem(position));
 
-		switch (frequency[position]) {
+		switch (frequency) {
 		case 0:
-			frequencyView.setText(R.string.rarely);
+			frequencyView.setText(R.string.often);
 			break;
 		case 1:
 			frequencyView.setText(R.string.occasionally);
@@ -45,10 +47,10 @@ public class ListMealAdapter extends ArrayAdapter<String> {
 			frequencyView.setText(R.string.regularly);
 			break;
 		case 3 :
-			frequencyView.setText(R.string.often);
+			frequencyView.setText(R.string.rarely);
 			break;
 		default:
-			frequencyView.setText(R.string.rarely);
+			frequencyView.setText(R.string.frequency_empty);
 			break;
 		}
 
@@ -87,11 +89,11 @@ public class ListMealAdapter extends ArrayAdapter<String> {
 		img.setImageBitmap(bitmap);
 	}
 
-	public ListMealAdapter(Context context, String[] names, String[] pictures, int[] freq)  {
+	public ListMealAdapter(Context context, String[] names, String[] pictures)  {
 		super(context, R.layout.row_list_meal, names);
 
-		this.picture   = new Uri[pictures.length];
-		this.frequency = freq;
+		mealsDatabase = new MealsDatabase(context);
+		picture   = new Uri[pictures.length];
 		int i = 0;
 
 		for(String path : pictures) {

@@ -22,7 +22,6 @@ public class MealListFragment extends Fragment {
 	private MealsDatabase m_list      = null;
 	private String[] pictures = null;
 	private String[] names    = null;
-	private int[] frequency   = null;
 	private ListView lview;
 
 	@Override
@@ -47,7 +46,6 @@ public class MealListFragment extends Fragment {
 				i++;
 			}
 		}
-		frequency = m_list.getFrequency();
 		
 		TextView message = (TextView) mealView.findViewById(R.id.emptyText);
 		// If the list is empty.
@@ -62,7 +60,7 @@ public class MealListFragment extends Fragment {
 
 	private void setListView(View mealView) {
 		ListMealAdapter adapter = 
-				new ListMealAdapter(getActivity().getApplicationContext(), names, pictures, frequency);
+				new ListMealAdapter(getActivity().getApplicationContext(), names, pictures);
 		lview = (ListView) mealView.findViewById(R.id.listView);
 		lview.setAdapter(adapter);
 		lview.setOnItemClickListener(new OnItemClickListener() {

@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -256,7 +257,6 @@ public class MainActivity extends FragmentActivity implements TabListener {
 			break;
 			
 		case PICTURE_TAKEN_FROM_GALLERY:                
-			
 			String[] filePathColumn = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(data.getData(), filePathColumn, null, null, null); 
             cursor.moveToFirst();
@@ -264,13 +264,13 @@ public class MainActivity extends FragmentActivity implements TabListener {
             String filePath = cursor.getString(columnIndex);
             cursor.close();
 			
+            Log.i("IdeeRepas.MainActivity.onActivityResult()", "Photo choisie = " + filePath);
             photo = Uri.parse(filePath);
 			setPicture();
 			break;          
 		}
 		
 	}
-
 
 
 	/**
@@ -319,6 +319,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	}
 
 	public void gallery() {
+		Log.i("IdeeRepas.MainActivity.gallery()", "Ouverture de la galerie photo.");
 		Intent gallerypickerIntent = new Intent(Intent.ACTION_PICK);
 		gallerypickerIntent.setType("image/*");
 		startActivityForResult(gallerypickerIntent, PICTURE_TAKEN_FROM_GALLERY);
@@ -328,7 +329,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	 * Update the ImageView.
 	 */
 	private void setPicture() {
-		ImageView img = (ImageView) findViewById(R.id.mealPicture);
+		ImageView img = (ImageView) findViewById(R.id.picture);
 
 		if( img == null ) return;
 		if( photo == null ) {
@@ -434,17 +435,31 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 
-				String pcr=null;
-				int idMeal = ((EditMealFragment) currentFragment).getIdMeal();
+				// Meal id.
+				int idMeal = ((EditMealFragment) currentFragment).getMealId();
+				// ***
+				
+				// Meal name.
 				TextView newName = (TextView) findViewById(R.id.name);
 
-				if( photo != null ) {
+				// Meal picture.
+				String pcr=null;
+				if( photo != null ) { // Picture changed.
 					File test = new File(photo.getPath());
 					if( test.exists() ) pcr =  photo.getPath();
 				}
-
+				else { // Same picture.
+					pcr = ((EditMealFragment) currentFragment).getMealPicturePath();
+				}
+				// ***
+				
+				int frequency = 0;
+				if( ((RadioButton) findViewById(R.id.occasionnellement)).isChecked() ) frequency = 1;
+				else if( ((RadioButton) findViewById(R.id.regulierement)).isChecked() ) frequency = 2;
+				else if( ((RadioButton) findViewById(R.id.rare)).isChecked() ) frequency = 3;
+				
 				((EditMealFragment) currentFragment).getMealsDatabase().update(
-						idMeal, newName.getText().toString(), pcr, -1, 0);
+						idMeal, newName.getText().toString(), pcr, -1, frequency);
 				((EditMealFragment) currentFragment).getIngredientLayout().addInDatabase(idMeal);
 				((EditMealFragment) currentFragment).getIngredientLayout().deleteInDatabase(idMeal);
 				returnInMealList();
