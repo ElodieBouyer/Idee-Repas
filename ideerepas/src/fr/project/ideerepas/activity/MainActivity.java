@@ -419,6 +419,9 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		return image;
 	}
 
+	/**
+	 * Called when the user want to save its update.
+	 */
 	private void updateMeal() {
 		// Field verification.
 		if (((EditMealFragment) currentFragment).getName().isEmpty()) {
@@ -432,9 +435,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 			public void onClick(DialogInterface dialog, int id) {
 
 				String pcr=null;
-				String nameMeal = ((EditMealFragment) currentFragment).getName();
 				int idMeal = ((EditMealFragment) currentFragment).getIdMeal();
-				photo = ((EditMealFragment) currentFragment).getMealsDatabase().getPicture(nameMeal);
 				TextView newName = (TextView) findViewById(R.id.mealName);
 
 				if( photo != null ) {
@@ -447,6 +448,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				((EditMealFragment) currentFragment).getIngredientLayout().addInDatabase(idMeal);
 				((EditMealFragment) currentFragment).getIngredientLayout().deleteInDatabase(idMeal);
 				returnInMealList();
+				photo = null;
 			}
 		})
 
@@ -460,7 +462,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 	}
 
 	/**
-	 * To save the new meal.
+	 * Called when the user want to save its new meal.
 	 */
 	private void addNew() {
 		// Field verification.
