@@ -22,6 +22,7 @@
     <string name="name_ingredient">   Nouvel ingredient     </string>
     <string name="meal_picture">      Photo du repas        </string>
     <string name="frequenceLabel">    Fréquence             </string>
+    <string name="frequency_empty">   Inconnue </string>
     <string name="ingredients">       Liste des ingredients </string>
     <string name="popup_adding_meal">   Voulez-vous ajouter ce repas ? </string>
     <string name="popup_save_meal">     Enregistrer ? </string>

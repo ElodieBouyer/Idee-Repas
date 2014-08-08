@@ -15,8 +15,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.adapter.ListMenuAdapter;
-import fr.project.ideerepas.database.Meals;
-import fr.project.ideerepas.database.Menus;
+import fr.project.ideerepas.database.MealsDatabase;
+import fr.project.ideerepas.database.MenusDatabase;
 
 public class MenuFragment extends Fragment {
 
@@ -38,8 +38,8 @@ public class MenuFragment extends Fragment {
 	private ListView lview;
 	private View rootView;
 
-	private Menus menuDatabase  = null;
-	private Meals mealsDatabase = null;
+	private MenusDatabase menuDatabase  = null;
+	private MealsDatabase mealsDatabase = null;
 
 	private String []firstMealList = new String[NB_DAYS];
 	private String []seconMealList = new String[NB_DAYS];
@@ -57,8 +57,8 @@ public class MenuFragment extends Fragment {
 		rootView = inflater.inflate(R.layout.menu, container, false);
 
 		// Get the current menu.
-		if( menuDatabase  == null ) menuDatabase  = new Menus(getActivity().getApplicationContext());
-		if( mealsDatabase == null ) mealsDatabase = new Meals(getActivity().getApplicationContext());
+		if( menuDatabase  == null ) menuDatabase  = new MenusDatabase(getActivity().getApplicationContext());
+		if( mealsDatabase == null ) mealsDatabase = new MealsDatabase(getActivity().getApplicationContext());
 		firstMealList = menuDatabase.getFirstMealList();
 		seconMealList = menuDatabase.getSecondMealList();
 		listMealId = mealsDatabase.getIds();

@@ -12,13 +12,13 @@ import android.util.Log;
 public class IngredientMeal {
 	private DataBase database;
 	private SQLiteDatabase db;
-	private Ingredients igdDatabase;
-	private Meals mealDatabase;
+	private IngredientsDatabase igdDatabase;
+	private MealsDatabase mealDatabase;
 
 	public IngredientMeal(Context context) {
 		this.database     = new DataBase(context);
-		this.igdDatabase  = new Ingredients(context);
-		this.mealDatabase = new Meals(context); 
+		this.igdDatabase  = new IngredientsDatabase(context);
+		this.mealDatabase = new MealsDatabase(context); 
 	}
 
 	/**

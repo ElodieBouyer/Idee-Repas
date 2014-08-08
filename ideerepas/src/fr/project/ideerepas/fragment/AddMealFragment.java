@@ -17,7 +17,7 @@ public class AddMealFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View addMealView = inflater.inflate(R.layout.add_meal, container, false);
+		View addMealView = inflater.inflate(R.layout.fragment_add_meal, container, false);
 		setIngredient(addMealView);;
 
 		return addMealView;

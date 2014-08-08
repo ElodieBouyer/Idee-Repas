@@ -11,36 +11,36 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.activity.IngredientLayout;
-import fr.project.ideerepas.database.Meals;
+import fr.project.ideerepas.database.MealsDatabase;
 
 public class MealFragment extends Fragment {
 
 	private IngredientLayout igd;
-	private String name;
-	private Meals m_list = null;
+	private String mName;
+	private MealsDatabase mealsDatabase = null;
 
 
 	public MealFragment(String meal) {
-		name = meal;
+		mName = meal;
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View mealView = inflater.inflate(R.layout.meal, container, false);
-		m_list = new Meals(getActivity().getApplicationContext());
+		View mealView = inflater.inflate(R.layout.fragment_meal, container, false);
+		mealsDatabase = new MealsDatabase(getActivity().getApplicationContext());
 
-		// Meal name.
-		TextView n = (TextView) mealView.findViewById(R.id.mealName);
-		n.setText(name);
+		// Meal mName.
+		TextView mNameMeal = (TextView) mealView.findViewById(R.id.name);
+		mNameMeal.setText(mName);
 		// ***
 
 		// Meal picture.
-		ImageView picture = (ImageView) mealView.findViewById(R.id.mealPicture);
+		ImageView picture = (ImageView) mealView.findViewById(R.id.picture);
 		Uri pathPicture = null;
-		if( m_list.getPicture(name) != null) {
-			pathPicture = m_list.getPicture(name);
+		if( mealsDatabase.getPicture(mName) != null) {
+			pathPicture = mealsDatabase.getPicture(mName);
 		}
 		if(pathPicture != null) {
 			picture.setImageURI(pathPicture);
@@ -48,15 +48,39 @@ public class MealFragment extends Fragment {
 		// ***
 
 		setIngredient(mealView);
+		setFrequency(mealView);
 
 		return mealView;
 	}
 
 	private void setIngredient(View v) {
 		LinearLayout tableIgd  = (LinearLayout) v.findViewById(R.id.list_ingredient); 
-		igd = new IngredientLayout(getActivity().getApplicationContext(), name, false);
+		igd = new IngredientLayout(getActivity().getApplicationContext(), mName, false);
 		tableIgd.removeAllViews();
 		tableIgd.addView(igd.getTableLayout());
+	}
+
+	private void setFrequency(View v) {
+		TextView frequencyView = (TextView) v.findViewById(R.id.frequency);
+		int numFrequency = mealsDatabase.getFrequency(mName); 
+
+		if( numFrequency < 0 ) frequencyView.setText(R.string.frequency_empty);
+		else {
+
+			switch(numFrequency) {
+			case 0:
+				frequencyView.setText(getString(R.string.often));
+				break;
+			case 1: 
+				frequencyView.setText(getString(R.string.occasionally));
+				break;
+			case 2:
+				frequencyView.setText(getString(R.string.regularly));
+				break;
+			case 3:
+				frequencyView.setText(getString(R.string.rarely));
+			}
+		}
 	}
 
 	public IngredientLayout getIngredientLayout() {
@@ -64,10 +88,10 @@ public class MealFragment extends Fragment {
 	}
 
 	public void deleteMeal() {
-		m_list.delete(name);
+		mealsDatabase.delete(mName);
 	}
 
 	public String getName() {
-		return name;
+		return mName;
 	}
 }

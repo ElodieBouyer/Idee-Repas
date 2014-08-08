@@ -15,11 +15,11 @@ import android.widget.TextView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.activity.MainActivity;
 import fr.project.ideerepas.adapter.ListMealAdapter;
-import fr.project.ideerepas.database.Meals;
+import fr.project.ideerepas.database.MealsDatabase;
 
 public class MealListFragment extends Fragment {
 
-	private Meals m_list      = null;
+	private MealsDatabase m_list      = null;
 	private String[] pictures = null;
 	private String[] names    = null;
 	private int[] frequency   = null;
@@ -31,7 +31,7 @@ public class MealListFragment extends Fragment {
 
 		View mealView = inflater.inflate(R.layout.list_meal, container, false);
 		if (this.m_list == null) {
-			this.m_list = new Meals(getActivity().getApplicationContext());
+			this.m_list = new MealsDatabase(getActivity().getApplicationContext());
 		}
 
 		Map<String,String> rows = new HashMap<String, String>();

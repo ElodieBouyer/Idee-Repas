@@ -9,12 +9,12 @@ import android.util.Log;
 /**
  * Created by elodie on 28/02/14.
  */
-public class Ingredients {
+public class IngredientsDatabase {
 
 	private DataBase database;
 	private SQLiteDatabase db;
 
-	public Ingredients(Context context) {
+	public IngredientsDatabase(Context context) {
 		this.database = new DataBase(context);
 	}
 

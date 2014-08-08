@@ -13,12 +13,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.activity.IngredientLayout;
-import fr.project.ideerepas.database.Meals;
+import fr.project.ideerepas.database.MealsDatabase;
 
 public class EditMealFragment extends Fragment {
 
 	private String name;
-	private Meals mealsDatabase = null;
+	private MealsDatabase mealsDatabase = null;
 	private IngredientLayout igd;
 	private int idMeal;
 
@@ -31,7 +31,7 @@ public class EditMealFragment extends Fragment {
 			Bundle savedInstanceState) {
 
 		View editView = inflater.inflate(R.layout.modif_meal, container, false);
-		mealsDatabase = new Meals(getActivity().getApplicationContext());
+		mealsDatabase = new MealsDatabase(getActivity().getApplicationContext());
 		idMeal = mealsDatabase.getId(name);
 
 		// Set meal name.
@@ -73,7 +73,7 @@ public class EditMealFragment extends Fragment {
 		return igd;
 	}
 
-	public Meals getMealsDatabase() {
+	public MealsDatabase getMealsDatabase() {
 		return mealsDatabase;
 	}
 

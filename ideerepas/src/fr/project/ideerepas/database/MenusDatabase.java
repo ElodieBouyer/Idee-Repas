@@ -6,18 +6,18 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-public class Menus {
+public class MenusDatabase {
 
 	private DataBase database;
 	private SQLiteDatabase db;
 	private static int NB_DAYS = 7;
 	private String []firstMealList = null;
 	private String []seconMealList = null;
-	private Meals mealsDatabase;
+	private MealsDatabase mealsDatabase;
 
-	public Menus(Context context) {
+	public MenusDatabase(Context context) {
 		this.database = new DataBase(context);
-		this.mealsDatabase = new Meals(context);
+		this.mealsDatabase = new MealsDatabase(context);
 	}
 
 	/**

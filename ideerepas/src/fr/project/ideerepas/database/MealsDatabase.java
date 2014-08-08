@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.project.ideerepas.R;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -11,9 +12,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.util.Log;
 
-public class Meals {
+public class MealsDatabase {
 
-	private static String TAG = Meals.class.getName();
+	private static String TAG = MealsDatabase.class.getName();
 	private DataBase database;
 	private SQLiteDatabase db;
 	private int [] frequency = null;
@@ -23,7 +24,7 @@ public class Meals {
 	 * Create database if not exist.
 	 * @param context
 	 */
-	public Meals(Context context) {
+	public MealsDatabase(Context context) {
 		this.database = new DataBase(context);
 	}
 
@@ -125,6 +126,38 @@ public class Meals {
 
 			close();
 			return id;
+
+		}
+		catch(Exception e) {
+			Log.i(TAG+"add", e.toString());
+		}
+		return -1;
+	}
+	
+	/**
+	 * Get the meal frequency.
+	 * @param name Name of the meal.
+	 * @return Meal frequency.
+	 */
+	public int getFrequency(String name) {
+		try {
+			if( !exist(name)) return -1;
+			open();
+			Cursor c = this.db.query(
+					TABLEMEAL.TAB_MEALS,                  // Table name.
+					TABLEMEAL.ALL_COLUMNS,                // Columns.
+					TABLEMEAL.COL_NAME + " LIKE \"" + name + "\"", // Selection.
+					null, null, null, null, null);
+
+			if( c.getCount() == 0) {
+				return -1;
+			}
+
+			c.moveToFirst();
+			int frequency = c.getInt(TABLEMEAL.NUM_COL_FREQUENCY);
+			close();
+
+			return frequency;
 
 		}
 		catch(Exception e) {

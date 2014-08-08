@@ -15,25 +15,25 @@ import android.widget.TextView;
 import android.widget.Toast;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.database.IngredientMeal;
-import fr.project.ideerepas.database.Ingredients;
-import fr.project.ideerepas.database.Meals;
+import fr.project.ideerepas.database.IngredientsDatabase;
+import fr.project.ideerepas.database.MealsDatabase;
 
 public class IngredientLayout {
 
 	private TableLayout tableIgd = null;
 	private Context context;
 	private IngredientMeal igdMeal;
-	private Ingredients igdDatabase;
-	private Meals mealsDatabase;
+	private IngredientsDatabase igdDatabase;
+	private MealsDatabase mealsDatabase;
 	private List<String> igdList;
 	private List<String> igdDelete;
 
 	public IngredientLayout(Context context, String mealName, Boolean add) {
 		this.context     = context;
 		this.igdMeal     = new IngredientMeal(context);
-		this.igdDatabase = new Ingredients(context);
+		this.igdDatabase = new IngredientsDatabase(context);
 		this.tableIgd    = new TableLayout(context);
-		this.mealsDatabase = new Meals(context);
+		this.mealsDatabase = new MealsDatabase(context);
 		this.igdList     = new ArrayList<String>();
 		this.igdDelete   = new ArrayList<String>();
 
@@ -137,11 +137,11 @@ public class IngredientLayout {
 		}
 	}
 
-	public Ingredients getIngredientDatabase() {
+	public IngredientsDatabase getIngredientDatabase() {
 		return igdDatabase;
 	}
 
-	public Meals getMealsDatabase() {
+	public MealsDatabase getMealsDatabase() {
 		return mealsDatabase;
 	}
 }
