@@ -7,7 +7,9 @@
     <string name="liste_menu">        Mon menu           </string>
     <string name="liste_course">      Ma liste de course </string>
     <string name="midi">               ○ Midi : </string>
+    <string name="noon"> Midi </string>
     <string name="soir">               ○ Soir : </string>
+    <string name="evening"> Soir </string>
     <string name="frequence">          ○ Fréquence :</string>
     <string name="empty_meals">       Vous n\'avez pas encore de repas, \n  Ajoutez en !</string>
     <string name="empty_meals2">      Il faut ajoutez des repas avant de pouvoir générer un menu !</string>
@@ -46,12 +48,14 @@
     <string name="friday">     Vendredi </string>
     <string name="saturday">   Samedi   </string>
     <string name="sunday">     Dimanche </string>
-    <string name="rarely">       Rare          </string>
-    <string name="occasionally"> Occasionnelle </string>
-    <string name="regularly">    Régulière     </string>
+    <string name="rarely">       Rarement          </string>
+    <string name="occasionally"> Occasionnellement </string>
+    <string name="regularly">    Régulièrement     </string>
     <string name="often">        Souvent           </string>
     <string name="dialog_title">   Continuer avec </string>
     <string name="dialog_gallery"> Galerie        </string>
     <string name="dialog_take_picture"> Prendre une photo </string>
+    <string name="predefine">    ○ Prédéfinie :</string>
+    <string name="personalize">  ○ Personnalisée : </string>
 
 </resources>

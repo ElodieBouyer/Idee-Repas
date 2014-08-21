@@ -68,7 +68,7 @@ public class EditMealFragment extends Fragment {
 		// Set frequency.
 		int frequency = mealsDatabase.getFrequency(mMealName);
 		RadioButton btn = null;
-		switch(frequency) {
+		/*switch(frequency) {
 		case 0:
 			btn = (RadioButton) editView.findViewById(R.id.souvent);
 			break;
@@ -82,8 +82,8 @@ public class EditMealFragment extends Fragment {
 			btn = (RadioButton) editView.findViewById(R.id.rare);
 			break;
 		}
-		btn.setChecked(true);
-		// ***
+		btn.setChecked(true);*/
+		// ****
 
 		return editView;
 	}

@@ -28,6 +28,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -239,7 +240,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 
 	@Override
 	public void onTabUnselected(Tab tab, FragmentTransaction ft) {
-		menu.clear();
+		if( menu != null) menu.clear();
 	}
 
 
@@ -255,21 +256,21 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		case PICTURE_TAKEN_FROM_CAMERA:             
 			setPicture();
 			break;
-			
+
 		case PICTURE_TAKEN_FROM_GALLERY:                
 			String[] filePathColumn = {MediaStore.Images.Media.DATA};
-            Cursor cursor = getContentResolver().query(data.getData(), filePathColumn, null, null, null); 
-            cursor.moveToFirst();
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String filePath = cursor.getString(columnIndex);
-            cursor.close();
-			
-            Log.i("IdeeRepas.MainActivity.onActivityResult()", "Photo choisie = " + filePath);
-            photo = Uri.parse(filePath);
+			Cursor cursor = getContentResolver().query(data.getData(), filePathColumn, null, null, null); 
+			cursor.moveToFirst();
+			int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+			String filePath = cursor.getString(columnIndex);
+			cursor.close();
+
+			Log.i("IdeeRepas.MainActivity.onActivityResult()", "Photo choisie = " + filePath);
+			photo = Uri.parse(filePath);
 			setPicture();
 			break;          
 		}
-		
+
 	}
 
 
@@ -346,8 +347,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
 			}
 		}
 	}
-	
-	
+
+
 	public void clickOnList(String meal) {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		currentFragment = new MealFragment(meal);
@@ -438,7 +439,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				// Meal id.
 				int idMeal = ((EditMealFragment) currentFragment).getMealId();
 				// ***
-				
+
 				// Meal name.
 				TextView newName = (TextView) findViewById(R.id.name);
 
@@ -452,14 +453,14 @@ public class MainActivity extends FragmentActivity implements TabListener {
 					pcr = ((EditMealFragment) currentFragment).getMealPicturePath();
 				}
 				// ***
-				
-				int frequency = 0;
+
+				/*int frequency = 0;
 				if( ((RadioButton) findViewById(R.id.occasionnellement)).isChecked() ) frequency = 1;
 				else if( ((RadioButton) findViewById(R.id.regulierement)).isChecked() ) frequency = 2;
 				else if( ((RadioButton) findViewById(R.id.rare)).isChecked() ) frequency = 3;
-				
+
 				((EditMealFragment) currentFragment).getMealsDatabase().update(
-						idMeal, newName.getText().toString(), pcr, -1, frequency);
+						idMeal, newName.getText().toString(), pcr, -1, frequency);*/
 				((EditMealFragment) currentFragment).getIngredientLayout().addInDatabase(idMeal);
 				((EditMealFragment) currentFragment).getIngredientLayout().deleteInDatabase(idMeal);
 				returnInMealList();
@@ -514,24 +515,19 @@ public class MainActivity extends FragmentActivity implements TabListener {
 					File test = new File(photo.getPath());
 					if( test.exists() ) picture =  photo.getPath();
 				}
-				RadioGroup radioGroup = (RadioGroup) findViewById(R.id.radioFrequence);
+				RadioGroup radioGroup = (RadioGroup) findViewById(R.id.frequency_layout);
 				int frequency = 0;
 
-				switch (radioGroup.getCheckedRadioButtonId()) {
-				case R.id.rare:
-					frequency = 0;
-					break;
-				case R.id.occasionnellement:
-					frequency = 1;
-					break;
-				case R.id.regulierement:
-					frequency = 2;
-					break;
-				case R.id.souvent:
-					frequency = 3;
-					break;
-				default:
-					break;
+				if( radioGroup.getCheckedRadioButtonId() == R.id.frequency_predefine_label) {
+					NumberPicker picker1 = (NumberPicker) findViewById(R.id.picker_frequency);
+					frequency = picker1.getValue();
+
+				}
+				else {
+					NumberPicker picker2 = (NumberPicker) findViewById(R.id.picker_days);
+					NumberPicker picker3 = (NumberPicker) findViewById(R.id.picker_dinner);
+					frequency = (picker2.getValue() + 4) * 10;
+					frequency += picker3.getValue() +1;
 				}
 				Log.i("BOUH", "Frenquency = " + frequency);
 				int idMeal = igd.getMealsDatabase().add(name, picture, -1, frequency);
@@ -592,31 +588,15 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		( (MenuFragment) mAdapter.getItem(MENU)).generateMenu();
 	}
 
+	public void frequencyPredefine(View v) {
+		if( position == ADD) {
+			((AddMealFragment) currentFragment).predefine();
+		}
+	}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	public void frequencyPersonalize(View v) {
+		if( position == ADD) {
+			((AddMealFragment) currentFragment).personalize();
+		}
+	}
 }

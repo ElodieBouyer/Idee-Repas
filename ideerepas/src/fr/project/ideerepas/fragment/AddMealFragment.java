@@ -8,18 +8,23 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.activity.IngredientLayout;
+import fr.project.ideerepas.view.FrequencyView;
 
 public class AddMealFragment extends Fragment {
 
 	private IngredientLayout igd;
+	private FrequencyView fqView;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
 		View addMealView = inflater.inflate(R.layout.fragment_add_meal, container, false);
-		setIngredient(addMealView);;
+		setIngredient(addMealView);
 
+		fqView = new FrequencyView();
+		fqView.updatePicker(addMealView, getActivity());
+		predefine();
 		return addMealView;
 	}
 
@@ -33,5 +38,12 @@ public class AddMealFragment extends Fragment {
 	public IngredientLayout getIngredientLayout() {
 		return igd;
 	}
+
+	public void personalize() {
+		if( fqView != null ) fqView.personalize();
+	}
 	
+	public void predefine() {
+		if( fqView != null ) fqView.predefine();
+	}
 }
