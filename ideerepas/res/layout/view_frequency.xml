@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frequency_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <LinearLayout
+        android:id="@+id/frequency_radio_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <RadioGroup
+            android:id="@+id/radioFrequence"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="50dp" >
+
+            <RadioButton
+                android:id="@+id/souvent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true" />
+
+            <RadioButton
+                android:id="@+id/occasionnellement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/regulierement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <RadioButton
+                android:id="@+id/rare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/frequency_picture_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="-55dp" >
+
+        <ImageView
+            android:id="@+id/souventPicure"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/often"
+            android:src="@drawable/souvent" />
+
+        <ImageView
+            android:id="@+id/occasionnellementPicure"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/occasionally"
+            android:src="@drawable/occasionnellement" />
+
+        <ImageView
+            android:id="@+id/regulierementPicure"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/regularly"
+            android:src="@drawable/regulierement" />
+
+        <ImageView
+            android:id="@+id/rarementPicure"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:layout_gravity="left"
+            android:layout_marginBottom="10dp"
+            android:contentDescription="@string/rarely"
+            android:src="@drawable/rarement" />
+    </LinearLayout>
+</LinearLayout>
