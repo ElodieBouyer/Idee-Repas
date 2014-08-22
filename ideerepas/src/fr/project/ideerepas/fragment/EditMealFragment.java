@@ -71,8 +71,8 @@ public class EditMealFragment extends Fragment {
 		int frequency = mealsDatabase.getFrequency(mMealName);
 
 		// Update picker.
-		FrequencyView frq = new FrequencyView();
-		frq.updatePicker(editView, getActivity());
+		FrequencyView frq = new FrequencyView(getActivity());
+		frq.updatePicker(editView);
 
 		// Update radio button.
 		RadioButton btn = null;

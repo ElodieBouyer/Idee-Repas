@@ -60,7 +60,7 @@ public class MealListFragment extends Fragment {
 
 	private void setListView(View mealView) {
 		ListMealAdapter adapter = 
-				new ListMealAdapter(getActivity().getApplicationContext(), names, pictures);
+				new ListMealAdapter(getActivity().getApplicationContext(), names, pictures, getActivity());
 		lview = (ListView) mealView.findViewById(R.id.listView);
 		lview.setAdapter(adapter);
 		lview.setOnItemClickListener(new OnItemClickListener() {

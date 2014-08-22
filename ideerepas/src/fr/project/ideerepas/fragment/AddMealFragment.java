@@ -22,8 +22,8 @@ public class AddMealFragment extends Fragment {
 		View addMealView = inflater.inflate(R.layout.fragment_add_meal, container, false);
 		setIngredient(addMealView);
 
-		fqView = new FrequencyView();
-		fqView.updatePicker(addMealView, getActivity());
+		fqView = new FrequencyView(getActivity());
+		fqView.updatePicker(addMealView);
 		predefine();
 		return addMealView;
 	}

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.activity.IngredientLayout;
 import fr.project.ideerepas.database.MealsDatabase;
+import fr.project.ideerepas.view.FrequencyView;
 
 public class MealFragment extends Fragment {
 
@@ -64,23 +65,8 @@ public class MealFragment extends Fragment {
 		TextView frequencyView = (TextView) v.findViewById(R.id.frequency);
 		int numFrequency = mealsDatabase.getFrequency(mName); 
 
-		if( numFrequency < 0 ) frequencyView.setText(R.string.frequency_empty);
-		else {
-
-			switch(numFrequency) {
-			case 0:
-				frequencyView.setText(getString(R.string.often));
-				break;
-			case 1:
-				frequencyView.setText(getString(R.string.regularly));
-				break;
-			case 2: 
-				frequencyView.setText(getString(R.string.occasionally));
-				break;
-			case 3:
-				frequencyView.setText(getString(R.string.rarely));
-			}
-		}
+		FrequencyView fqr = new FrequencyView(getActivity());
+		frequencyView.setText(fqr.getFrequency(numFrequency));
 	}
 
 	public IngredientLayout getIngredientLayout() {
