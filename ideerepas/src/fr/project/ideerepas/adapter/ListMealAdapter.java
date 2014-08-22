@@ -1,5 +1,7 @@
 package fr.project.ideerepas.adapter;
 
+import java.security.acl.Owner;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -34,8 +36,17 @@ public class ListMealAdapter extends ArrayAdapter<String> {
 
 		nameMealView.setText(getItem(position));
 
+		// Get frequency.
 		int frequency = mealsDatabase.getFrequency(getItem(position));
-
+		
+		String text;
+		
+		String evening = " ";
+		evening += rowView.getResources().getString(R.string.evening);
+		
+		String noon = " ";
+		noon += rowView.getResources().getString(R.string.noon);
+		
 		switch (frequency) {
 		case 0:
 			frequencyView.setText(R.string.often);
@@ -49,6 +60,88 @@ public class ListMealAdapter extends ArrayAdapter<String> {
 		case 3 :
 			frequencyView.setText(R.string.rarely);
 			break;
+
+		// Lundi midi.	
+		case 41:
+			text = rowView.getResources().getString(R.string.monday);
+			text += noon;
+			frequencyView.setText(text);
+			break;
+			
+		// Lundi soir.
+		case 42:
+			text = rowView.getResources().getString(R.string.monday);
+			text += evening;
+			frequencyView.setText(text);
+			break;
+			
+		// Mardi midi.
+		case 51:
+			text = rowView.getResources().getString(R.string.tuesday);
+			text += noon;
+			frequencyView.setText(text);
+			break;
+			
+		// Mardi soir.	
+		case 52:
+			text = rowView.getResources().getString(R.string.tuesday);
+			text += evening;
+			frequencyView.setText(text);
+			break;
+			
+		case 61:
+			text = rowView.getResources().getString(R.string.wednesday);
+			text += noon;
+			frequencyView.setText(text);
+			break;
+			
+		case 62:
+			text = rowView.getResources().getString(R.string.wednesday);
+			text += evening;
+			frequencyView.setText(text);
+			break;
+			
+		case 71:
+			text = rowView.getResources().getString(R.string.thursday);
+			text += noon;
+			frequencyView.setText(text);
+			break;
+		case 72:
+			text = rowView.getResources().getString(R.string.thursday);
+			text += evening;
+			frequencyView.setText(text);
+			break;
+		case 81:
+			text = rowView.getResources().getString(R.string.friday);
+			text += noon;
+			frequencyView.setText(text);
+			break;
+		case 82:
+			text = rowView.getResources().getString(R.string.friday);
+			text += evening;
+			frequencyView.setText(text);
+			break;
+		case 91:
+			text = rowView.getResources().getString(R.string.saturday);
+			text += noon;
+			frequencyView.setText(text);
+			break;
+		case 92:
+			text = rowView.getResources().getString(R.string.saturday);
+			text += evening;
+			frequencyView.setText(text);
+			break;
+		case 101:
+			text = rowView.getResources().getString(R.string.sunday);
+			text += noon;
+			frequencyView.setText(text);
+			break;
+		case 102:
+			text = rowView.getResources().getString(R.string.sunday);
+			text += evening;
+			frequencyView.setText(text);
+			break;
+			
 		default:
 			frequencyView.setText(R.string.frequency_empty);
 			break;
