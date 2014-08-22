@@ -15,6 +15,7 @@ import android.widget.RadioButton;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.activity.IngredientLayout;
 import fr.project.ideerepas.database.MealsDatabase;
+import fr.project.ideerepas.view.FrequencyView;
 
 public class EditMealFragment extends Fragment {
 
@@ -65,25 +66,26 @@ public class EditMealFragment extends Fragment {
 		tableIgd.addView(igd.getTableLayout());
 		// ***
 
-		// Set frequency.
+		// *** Set frequency. ***
+		// Get frequency in the database.
 		int frequency = mealsDatabase.getFrequency(mMealName);
+
+		// Update picker.
+		FrequencyView frq = new FrequencyView();
+		frq.updatePicker(editView, getActivity());
+
+		// Update radio button.
 		RadioButton btn = null;
-		/*switch(frequency) {
-		case 0:
-			btn = (RadioButton) editView.findViewById(R.id.souvent);
-			break;
-		case 1:
-			btn = (RadioButton) editView.findViewById(R.id.regulierement);
-			break;
-		case 2:
-			btn = (RadioButton) editView.findViewById(R.id.occasionnellement);
-			break;
-		case 3:
-			btn = (RadioButton) editView.findViewById(R.id.rare);
-			break;
+		if( frequency < 4 ) { // Predefine.
+			btn = (RadioButton) editView.findViewById(R.id.frequency_predefine_label);
+			frq.predefine();
 		}
-		btn.setChecked(true);*/
-		// ****
+		else { // Personalize.
+			btn = (RadioButton) editView.findViewById(R.id.frequency_perso_label);
+			frq.personalize();
+		}
+		btn.setChecked(true);
+		// ***
 
 		return editView;
 	}

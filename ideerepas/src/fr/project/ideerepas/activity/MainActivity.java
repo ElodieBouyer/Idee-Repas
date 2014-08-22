@@ -454,13 +454,10 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				}
 				// ***
 
-				/*int frequency = 0;
-				if( ((RadioButton) findViewById(R.id.occasionnellement)).isChecked() ) frequency = 1;
-				else if( ((RadioButton) findViewById(R.id.regulierement)).isChecked() ) frequency = 2;
-				else if( ((RadioButton) findViewById(R.id.rare)).isChecked() ) frequency = 3;
-
+				int frequency = getFrequencyChoose();
+			
 				((EditMealFragment) currentFragment).getMealsDatabase().update(
-						idMeal, newName.getText().toString(), pcr, -1, frequency);*/
+						idMeal, newName.getText().toString(), pcr, -1, frequency);
 				((EditMealFragment) currentFragment).getIngredientLayout().addInDatabase(idMeal);
 				((EditMealFragment) currentFragment).getIngredientLayout().deleteInDatabase(idMeal);
 				returnInMealList();
@@ -515,21 +512,8 @@ public class MainActivity extends FragmentActivity implements TabListener {
 					File test = new File(photo.getPath());
 					if( test.exists() ) picture =  photo.getPath();
 				}
-				RadioGroup radioGroup = (RadioGroup) findViewById(R.id.frequency_layout);
-				int frequency = 0;
-
-				if( radioGroup.getCheckedRadioButtonId() == R.id.frequency_predefine_label) {
-					NumberPicker picker1 = (NumberPicker) findViewById(R.id.picker_frequency);
-					frequency = picker1.getValue();
-
-				}
-				else {
-					NumberPicker picker2 = (NumberPicker) findViewById(R.id.picker_days);
-					NumberPicker picker3 = (NumberPicker) findViewById(R.id.picker_dinner);
-					frequency = (picker2.getValue() + 4) * 10;
-					frequency += picker3.getValue() +1;
-				}
-				Log.i("BOUH", "Frenquency = " + frequency);
+				int frequency = getFrequencyChoose();
+				
 				int idMeal = igd.getMealsDatabase().add(name, picture, -1, frequency);
 
 				igd.addInDatabase(idMeal);
@@ -548,6 +532,25 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		builder.show();
 	}
 
+	private int getFrequencyChoose() {
+		RadioGroup radioGroup = (RadioGroup) findViewById(R.id.frequency_layout);
+		int frequency = 0;
+
+		if( radioGroup.getCheckedRadioButtonId() == R.id.frequency_predefine_label) {
+			NumberPicker picker1 = (NumberPicker) findViewById(R.id.picker_frequency);
+			frequency = picker1.getValue();
+
+		}
+		else {
+			NumberPicker picker2 = (NumberPicker) findViewById(R.id.picker_days);
+			NumberPicker picker3 = (NumberPicker) findViewById(R.id.picker_dinner);
+			frequency = (picker2.getValue() + 4) * 10;
+			frequency += picker3.getValue() +1;
+		}
+		Log.i("IdeeRepas.MainActivity.getFrequencyChoose()", "Frenquency = " + frequency);
+		return frequency;
+	}
+	
 	private void returnInMealList() {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		currentFragment = new MealListFragment();

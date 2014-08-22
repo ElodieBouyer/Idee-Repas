@@ -72,7 +72,6 @@
             android:src="@drawable/light_ic_unknow" />
 
         <LinearLayout
-            android:id="@+id/frequency_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
