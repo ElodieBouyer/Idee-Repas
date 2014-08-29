@@ -25,6 +25,7 @@ public class EditMealFragment extends Fragment {
 	private String mMealName;
 	private int mMealId;
 	private String mMealPicturePath;
+	private FrequencyView fqView;
 
 	public EditMealFragment(String meal) {
 		mMealName = meal;
@@ -71,18 +72,18 @@ public class EditMealFragment extends Fragment {
 		int frequency = mealsDatabase.getFrequency(mMealName);
 
 		// Update picker.
-		FrequencyView frq = new FrequencyView(getActivity());
-		frq.updatePicker(editView);
+		fqView = new FrequencyView(getActivity());
+		fqView.updatePicker(editView);
 
 		// Update radio button.
 		RadioButton btn = null;
 		if( frequency < 4 ) { // Predefine.
 			btn = (RadioButton) editView.findViewById(R.id.frequency_predefine_label);
-			frq.predefine();
+			fqView.predefine();
 		}
 		else { // Personalize.
 			btn = (RadioButton) editView.findViewById(R.id.frequency_perso_label);
-			frq.personalize();
+			fqView.personalize();
 		}
 		btn.setChecked(true);
 		// ***
@@ -90,6 +91,14 @@ public class EditMealFragment extends Fragment {
 		return editView;
 	}
 
+	public void personalize() {
+		if( fqView != null ) fqView.personalize();
+	}
+	
+	public void predefine() {
+		if( fqView != null ) fqView.predefine();
+	}
+	
 	public String getName() {
 		return mMealName;
 	}

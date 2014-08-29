@@ -73,6 +73,13 @@ public class MenusDatabase {
 			Log.i("BOUH", "Error with add one menu." + e.toString());
 		}
 	}
+	
+	public void addMenu(String name1, String name2, int day) {
+		addMenu(mealsDatabase.getId(name1), 
+				mealsDatabase.getId(name2), 
+				day);
+	}
+	
 
 	/**
 	 * Get the first meal list.
@@ -145,5 +152,7 @@ public class MenusDatabase {
 		}
 		return seconMealList;
 	}
+
+
 
 }

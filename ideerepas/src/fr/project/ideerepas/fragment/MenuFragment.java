@@ -1,6 +1,9 @@
 package fr.project.ideerepas.fragment;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import android.os.Bundle;
@@ -9,10 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.TextView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.TextView;
 import fr.project.ideerepas.R;
 import fr.project.ideerepas.adapter.ListMenuAdapter;
 import fr.project.ideerepas.database.MealsDatabase;
@@ -43,7 +44,8 @@ public class MenuFragment extends Fragment {
 
 	private String []firstMealList = new String[NB_DAYS];
 	private String []seconMealList = new String[NB_DAYS];
-	private int [] listMealId;
+	private String [] listMealName;
+	private List<String> meals = new ArrayList<String>();
 
 
 	/**
@@ -61,15 +63,15 @@ public class MenuFragment extends Fragment {
 		if( mealsDatabase == null ) mealsDatabase = new MealsDatabase(getActivity().getApplicationContext());
 		firstMealList = menuDatabase.getFirstMealList();
 		seconMealList = menuDatabase.getSecondMealList();
-		listMealId = mealsDatabase.getIds();
+		listMealName = mealsDatabase.getNames();
 
 		TextView message = (TextView) rootView.findViewById(R.id.emptyText);
-		if( listMealId != null && listMealId.length > 0) {
+		if( listMealName != null && listMealName.length > 0) {
 			message.setVisibility(View.GONE);
 			setListView(rootView);
 		}
 		else message.setVisibility(View.VISIBLE);
-		
+
 		// Return the view.
 		return rootView;
 	}
@@ -79,33 +81,82 @@ public class MenuFragment extends Fragment {
 	 */
 	public void generateMenu() {
 
-		if( listMealId == null || listMealId.length < 1) {
+		if( listMealName == null || listMealName.length < 1) {
 			return; // The user hasn't meals.
 		}
 
 		// Delete the current menu.
 		menuDatabase.deleteCourrentMenu();
 
-		firstMealList = new String [NB_DAYS];
+		firstMealList = new String[NB_DAYS];
 		seconMealList = new String[NB_DAYS];
 
+		fillList();
+		
 		for(int i = 0 ; i < NB_DAYS ; i++) {
 			Random rand = new Random();
 			int meal1 = 0;
 			int meal2 = 0;
 
-			while(meal1 == meal2) {
-				meal1 = rand.nextInt(listMealId.length);
-				meal2 = rand.nextInt(listMealId.length);
-				firstMealList[i] = mealsDatabase.getName(meal1);
-				seconMealList[i] = mealsDatabase.getName(meal2);
+			while( meals.get(meal1).equals(meals.get(meal2)) ) {
+				meal1 = rand.nextInt(meals.size());
+				meal2 = rand.nextInt(meals.size());
+				Log.i("BOUH", meals.get(meal1) + " et " + meals.get(meal2));
 			}
-			Log.i("BOUH", "Repas n°"+listMealId[meal1]+" et n°" + listMealId[meal2]);
-			addMeal(i, meal1, meal2);
+			if( firstMealList[i] == null || firstMealList[i].isEmpty() ) firstMealList[i] = meals.get(meal1);
+			if( seconMealList[i] == null || seconMealList[i].isEmpty() ) seconMealList[i] = meals.get(meal2);
+
+			//Log.i("BOUH", "Repas n°"+firstMealList[i]+" et n°" + seconMealList[i]);
+			addMeal(i, firstMealList[i], seconMealList[i]);
 		}
 		setListView(rootView);
 	}
 
+	public int getNbMeals() {
+		if( listMealName == null || listMealName.length <= 0) return 0;
+		return listMealName.length;
+	}
+
+
+	private void fillList() {
+		for( String name : listMealName) {
+			int frequency = mealsDatabase.getFrequency(name);
+
+			if( frequency == 0 ) { // Often.
+				for(int i = 0 ; i < 20; i++) {
+					meals.add(name);
+				}
+			}
+			else if ( frequency == 1 ) { // Regularly.
+				for(int i = 0 ; i < 5; i++) {
+					meals.add(name);
+				}
+			}
+			else if ( frequency == 2 ) { // Occasionally.
+				for(int i = 0 ; i < 2; i++) {
+					meals.add(name);
+				}
+			}	
+			else if ( frequency == 3 ) { // Rarely.
+				meals.add(name);
+			}
+			else if( frequency%10 == 1) {// Noon.
+				firstMealList[frequency/10 -4] = name;
+			}
+			else if( frequency%10 == 2) {// Evenning.
+				seconMealList[frequency/10 -4] = name;
+			}
+
+		}
+		/*for(String n : meals) {
+			Log.i("Bouh", n);
+		}*/
+		
+		Collections.shuffle(meals); 
+		/*for(String n : meals) {
+			Log.i("Bouh", n);
+		}*/
+	}
 
 	/**
 	 * To add two meal of the database (for one day).
@@ -113,10 +164,14 @@ public class MenuFragment extends Fragment {
 	 * @param id1 First meal id.
 	 * @param id2 Second meal id.
 	 */
-	private void addMeal(int day, int id1, int id2) {
-		menuDatabase.addMenu(id1, id2, day);
+	private void addMeal(int day, String name1, String name2) {
+		menuDatabase.addMenu(name1, name2, day);
 	}
 
+	/**
+	 * Set the menu list.
+	 * @param menuView
+	 */
 	private void setListView(View menuView) {
 
 		ListMenuAdapter adapter = new ListMenuAdapter(
@@ -124,14 +179,13 @@ public class MenuFragment extends Fragment {
 
 		lview = (ListView) menuView.findViewById(R.id.menu);
 		lview.setAdapter(adapter);	
-		lview.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> adapter, View view, int position, long arg) {
-				//( (MainActivity) getActivity()).clickOnList(names[position]);
-			}
-		});
+		lview.setClickable(false);
 	}
 
+	/**
+	 * Get the week's date.
+	 * @return A date array.
+	 */
 	private String [] getDays() {
 
 		Calendar calendar = Calendar.getInstance(); 

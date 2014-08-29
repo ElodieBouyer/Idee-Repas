@@ -29,7 +29,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -396,6 +395,33 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		igdEdit.setText("");
 	}
 
+	/**
+	 * Called when the user check predefine frequency.
+	 * @param v
+	 */
+	public void frequencyPredefine(View v) {
+		if( position == ADD) {
+			((AddMealFragment) currentFragment).predefine();
+		}
+		else if ( position == EDIT ) {
+			((EditMealFragment) currentFragment).predefine();
+		}
+	}
+
+	/**
+	 * Called when the user check personalize frequency.
+	 * @param v
+	 */
+	public void frequencyPersonalize(View v) {
+		if( position == ADD) {
+			((AddMealFragment) currentFragment).personalize();
+		}
+		else if ( position == EDIT ) {
+			((EditMealFragment) currentFragment).personalize();
+		}
+	}
+
+
 
 	/**
 	 * Called to prepare picture.
@@ -455,7 +481,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 				// ***
 
 				int frequency = getFrequencyChoose();
-			
+
 				((EditMealFragment) currentFragment).getMealsDatabase().update(
 						idMeal, newName.getText().toString(), pcr, -1, frequency);
 				((EditMealFragment) currentFragment).getIngredientLayout().addInDatabase(idMeal);
@@ -513,7 +539,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 					if( test.exists() ) picture =  photo.getPath();
 				}
 				int frequency = getFrequencyChoose();
-				
+
 				int idMeal = igd.getMealsDatabase().add(name, picture, -1, frequency);
 
 				igd.addInDatabase(idMeal);
@@ -550,7 +576,7 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		Log.i("IdeeRepas.MainActivity.getFrequencyChoose()", "Frenquency = " + frequency);
 		return frequency;
 	}
-	
+
 	private void returnInMealList() {
 		FragmentTransaction transaction = getFragmentManager().beginTransaction();
 		currentFragment = new MealListFragment();
@@ -560,6 +586,9 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		onCreateOptionsMenu(menu);
 	}
 
+	/**
+	 * Display a alert dialog to delete meal.
+	 */
 	private void deleteMeal() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -587,19 +616,21 @@ public class MainActivity extends FragmentActivity implements TabListener {
 		builder.show();
 	}
 
+	/**
+	 * Call the menu generator.
+	 */
 	private void generate() {
+		if( ((MenuFragment) mAdapter.getItem(MENU)).getNbMeals() == 0 ) {
+			Toast.makeText(getApplicationContext(), R.string.empty_meals2, Toast.LENGTH_SHORT).show();
+			return;
+		}
+		else if( ((MenuFragment) mAdapter.getItem(MENU)).getNbMeals() < 5 ) {
+			Toast.makeText(getApplicationContext(), R.string.empty_meals4, Toast.LENGTH_LONG).show();
+			return;	
+		}
+		else if( ((MenuFragment) mAdapter.getItem(MENU)).getNbMeals() < 14 ) {
+			Toast.makeText(getApplicationContext(), R.string.empty_meals3, Toast.LENGTH_LONG).show();
+		}
 		( (MenuFragment) mAdapter.getItem(MENU)).generateMenu();
-	}
-
-	public void frequencyPredefine(View v) {
-		if( position == ADD) {
-			((AddMealFragment) currentFragment).predefine();
-		}
-	}
-
-	public void frequencyPersonalize(View v) {
-		if( position == ADD) {
-			((AddMealFragment) currentFragment).personalize();
-		}
 	}
 }
